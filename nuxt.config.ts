@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@hypernym/nuxt-anime'
   ],
   extends: [
     'nuxt-seo-kit'
