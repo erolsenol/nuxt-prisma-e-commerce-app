@@ -4,7 +4,7 @@ const foo = useFoo()
 
 <template>
     <div class="my-class">
-      {{ foo }}
+      {{ foo("99") }}
         <NuxtLink to="/about">About</NuxtLink>
         <NuxtLink to="/dashboard">dashboard</NuxtLink>
         <LazyElButton type="warning">lazy button</LazyElButton>
