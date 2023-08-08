@@ -10,7 +10,19 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
+    '@nuxtjs/google-fonts'
   ],
+  extends: [
+    'nuxt-seo-kit'
+  ],
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://example.com',
+      siteName: 'Awesome Site',
+      siteDescription: 'Welcome to my awesome site!',
+      language: 'en', // prefer more explicit language codes like `en-AU` over `en`
+    }
+  },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default
   },
@@ -35,4 +47,16 @@ export default defineNuxtConfig({
       ["isDate", "isLodashDate"], // => _isLodashDate
     ],
   },
+  googleFonts: {
+    families: {
+      Roboto: true,
+      Inter: [800, 900],
+       'Josefin+Sans': true,
+      Lato: [100, 300],
+      Raleway: {
+        wght: [100, 400],
+        ital: [100]
+      },
+    }
+  }
 });
