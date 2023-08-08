@@ -5,7 +5,6 @@ const { locale } = useI18n()
 
 <template>
   <div>
-    <p>{{ $t('welcome') }}</p>
     <NuxtWelcome />
   </div>
 </template>
