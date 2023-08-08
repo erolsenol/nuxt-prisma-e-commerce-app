@@ -6,6 +6,7 @@ const { isMobile } = useDevice();
 
 <template>
   <div>
+    
     <NuxtWelcome />
   </div>
 </template>
