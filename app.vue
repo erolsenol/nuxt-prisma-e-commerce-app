@@ -1,5 +1,6 @@
 <script setup>
 const { locale } = useI18n()
+const { isMobile } = useDevice();
 </script>
 
 
