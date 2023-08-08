@@ -1,8 +1,10 @@
 <script setup>
+const foo = useFoo()
 </script>
 
 <template>
     <div class="my-class">
+      {{ foo }}
         <NuxtLink to="/about">About</NuxtLink>
         <NuxtLink to="/dashboard">dashboard</NuxtLink>
         <LazyElButton type="warning">lazy button</LazyElButton>
