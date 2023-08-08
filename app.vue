@@ -5,6 +5,9 @@ import en from "element-plus/dist/locale/en.mjs";
 import tr from "element-plus/dist/locale/tr.mjs";
 
 
+
+const show = ref(true);
+
 const elConfig = ref({
   size: "small",
   zIndex: 2000,
@@ -21,7 +24,7 @@ const locale = ref({
     :z-index="elConfig.zIndex"
     :locale="locale"
   >
-    {{ elConfig }}
+    
     <router-view></router-view>
 
     <div class="my-class">
@@ -30,9 +33,11 @@ const locale = ref({
       <LazyElButton type="warning">lazy button</LazyElButton>
       <h1 class="title">Nuxt Anime</h1>
       <div>nasilsin iyi misin ben iyiym</div>
-
-      <NuxtSnackbar />
-      <SeoKit />
     </div>
+    
+    <NuxtSnackbar />
+    <SeoKit />
   </el-config-provider>
 </template>
+
+<style></style>
