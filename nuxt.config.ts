@@ -32,6 +32,16 @@ export default defineNuxtConfig({
   $development: {
     //
   },
+  //global style not working
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/assets/_colors.scss" as *;'
+        }
+      }
+    }
+  },
   elementPlus: {
     /** Options */
   },

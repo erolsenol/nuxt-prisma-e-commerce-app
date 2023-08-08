@@ -42,7 +42,7 @@ var other = _difference([7,8,9], 2, [3], [[4]]);
 
 
 <template>
-  <div>
+  <div class="my-class">
     <Form v-slot="{ errors }" @submit="onSubmit">
     <Field name="field" :rules="required" />
 
@@ -58,3 +58,10 @@ var other = _difference([7,8,9], 2, [3], [[4]]);
     <SeoKit />
   </div>
 </template>
+
+
+<style>
+.my-class {
+  background-color: var(--v-primaryy);
+}
+</style>
