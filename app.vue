@@ -1,5 +1,10 @@
+<script setup>
+const { locale } = useI18n()
+</script>
+
+
 <template>
   <div>
-    <NuxtWelcome />
+    <p>{{ $t('welcome') }}</p>
   </div>
 </template>
