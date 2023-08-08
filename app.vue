@@ -1,67 +1,38 @@
 <script setup>
-const { locale } = useI18n()
-const { isMobile } = useDevice();
-const { $anime } = useNuxtApp()
-const snackbar = useSnackbar();
-const runtimeConfig = useRuntimeConfig()
-
-import { useForm,Field, Form } from 'vee-validate';
-
-// Validation, or use `yup` or `zod`
-function required(value) {
-  return value ? true : 'This field is required';
-}
+import { ref, onMounted } from "vue";
+import { ElConfigProvider } from "element-plus";
+import en from "element-plus/dist/locale/en.mjs";
+import tr from "element-plus/dist/locale/tr.mjs";
 
 
-// Create the form
-const { defineInputBinds, handleSubmit, errors } = useForm({
-  validationSchema: {
-    field: required,
-  },
+const elConfig = ref({
+  size: "small",
+  zIndex: 2000,
 });
-
-// Define fields
-const field = defineInputBinds('field');
-
-// Submit handler
-const onSubmit = handleSubmit(values => {
-  // Submit to API
-  console.log(values);
+const locale = ref({
+  en,
+  tr,
 });
-
-onMounted(() => {
-    $anime({ targets: '.title', translateX: 250, duration: 800 })
-    snackbar.add({
-    type: 'success',
-    text: 'This is a snackbar message'
-})
-  })
-//lodash
-var other = _difference([7,8,9], 2, [3], [[4]]);
-const { data: count } = await useFetch('/api/count')
-const users = await $fetch('/api/users').catch((error) => error.data)
-
 </script>
 
-
 <template>
-  <router-view ></router-view>
+  <el-config-provider
+    :size="elConfig.size"
+    :z-index="elConfig.zIndex"
+    :locale="locale"
+  >
+    {{ elConfig }}
+    <router-view></router-view>
 
-  <div class="my-class">
-    <Form v-slot="{ errors }" @submit="onSubmit">
-    <Field name="field" :rules="required" />
+    <div class="my-class">
+      <NuxtLink to="/about">About</NuxtLink>
+      <NuxtLink to="/dashboard">dashboard</NuxtLink>
+      <LazyElButton type="warning">lazy button</LazyElButton>
+      <h1 class="title">Nuxt Anime</h1>
+      <div>nasilsin iyi misin ben iyiym</div>
 
-    <span>{{ errors.field }}</span>
-
-    <button>Submit</button>
-  </Form>
-  <NuxtLink to="/about">About</NuxtLink>
-  <NuxtLink to="/dashboard">dashboard</NuxtLink>
-  <LazyElButton type="warning">lazy button</LazyElButton>
-    <h1 class="title">Nuxt Anime</h1>
-    <div>nasilsin iyi misin ben iyiym</div>
-    <NuxtWelcome />
-    <NuxtSnackbar />
-    <SeoKit />
-  </div>
+      <NuxtSnackbar />
+      <SeoKit />
+    </div>
+  </el-config-provider>
 </template>

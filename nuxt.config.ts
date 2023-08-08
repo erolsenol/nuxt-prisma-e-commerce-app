@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import path from 'path'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -35,10 +36,15 @@ export default defineNuxtConfig({
   $development: {
     //
   },
-  css: ['~/assets/_colors.scss'],
+  css: [
+    '~/assets/_colors.scss',
+    '~/assets/_el_plus.scss'
+  ],
   //global style not working
   elementPlus: {
-    /** Options */
+    icon: 'ElIcon',
+    importStyle: 'scss',
+    themes: ['dark'],
   },
   snackbar: {
     bottom: true,
@@ -64,6 +70,7 @@ export default defineNuxtConfig({
     upperAfterPrefix: false,
     exclude: ["map"],
     alias: [
+      ['~/', `${path.resolve(__dirname, '.')}/`],
       ["camelCase", "stringToCamelCase"], // => stringToCamelCase
       ["kebabCase", "stringToKebab"], // => stringToKebab
       ["isDate", "isLodashDate"], // => _isLodashDate
@@ -72,13 +79,13 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Roboto: true,
-      Inter: [800, 900],
-      "Josefin+Sans": true,
+      Inter: [400, 700],
+       'Josefin+Sans': true,
       Lato: [100, 300],
       Raleway: {
         wght: [100, 400],
-        ital: [100],
+        ital: [100]
       },
-    },
+    }
   },
 });
