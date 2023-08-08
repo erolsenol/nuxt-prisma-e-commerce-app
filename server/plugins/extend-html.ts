@@ -5,6 +5,8 @@ export default defineNitroPlugin((nitroApp) => {
     //   html.head.push(`<meta name="description" content="My custom description" />`)
     })
     // You can also intercept the response here.
-    nitroApp.hooks.hook('render:response', (response, { event }) => { console.log(response) })
+    nitroApp.hooks.hook('render:response', (response, { event }) => { 
+        // console.log(response)
+     })
   })
   

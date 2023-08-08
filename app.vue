@@ -38,10 +38,15 @@ onMounted(() => {
   })
 //lodash
 var other = _difference([7,8,9], 2, [3], [[4]]);
+const { data: count } = await useFetch('/api/count')
+const users = await $fetch('/api/users').catch((error) => error.data)
+
 </script>
 
 
 <template>
+  <router-view ></router-view>
+
   <div class="my-class">
     <Form v-slot="{ errors }" @submit="onSubmit">
     <Field name="field" :rules="required" />
@@ -50,6 +55,8 @@ var other = _difference([7,8,9], 2, [3], [[4]]);
 
     <button>Submit</button>
   </Form>
+  <NuxtLink to="/about">About</NuxtLink>
+  <NuxtLink to="/dashboard">dashboard</NuxtLink>
   <LazyElButton type="warning">lazy button</LazyElButton>
     <h1 class="title">Nuxt Anime</h1>
     <div>nasilsin iyi misin ben iyiym</div>
@@ -58,10 +65,3 @@ var other = _difference([7,8,9], 2, [3], [[4]]);
     <SeoKit />
   </div>
 </template>
-
-
-<style>
-.my-class {
-  background-color: var(--v-primaryy);
-}
-</style>

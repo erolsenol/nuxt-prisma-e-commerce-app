@@ -15,6 +15,9 @@ export default defineNuxtConfig({
     "nuxt-snackbar",
     "@element-plus/nuxt",
   ],
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {
     public: {
@@ -32,16 +35,8 @@ export default defineNuxtConfig({
   $development: {
     //
   },
+  css: ['~/assets/_colors.scss'],
   //global style not working
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: '@use "@/assets/_colors.scss" as *;'
-        }
-      }
-    }
-  },
   elementPlus: {
     /** Options */
   },
