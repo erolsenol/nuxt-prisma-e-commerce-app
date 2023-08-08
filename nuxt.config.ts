@@ -20,7 +20,10 @@ export default defineNuxtConfig({
     pageTransition: { name: "page", mode: "out-in" },
   },
   components: [
-    "~/components",
+    {
+      path: "~/components",
+      extensions: [".vue"],
+    },
   ],
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {

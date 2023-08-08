@@ -24,7 +24,6 @@ const locale = ref({
     :z-index="elConfig.zIndex"
     :locale="locale"
   >
-    
     <router-view></router-view>
 
     <div class="my-class">
