@@ -11,7 +11,8 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "nuxt-lodash",
     '@nuxtjs/google-fonts',
-    '@hypernym/nuxt-anime'
+    '@hypernym/nuxt-anime',
+    'nuxt-snackbar'
   ],
   extends: [
     'nuxt-seo-kit'
@@ -23,6 +24,11 @@ export default defineNuxtConfig({
       siteDescription: 'Welcome to my awesome site!',
       language: 'en', // prefer more explicit language codes like `en-AU` over `en`
     }
+  },
+  snackbar: {
+    bottom: true,
+    right: true,
+    duration: 5000
   },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default

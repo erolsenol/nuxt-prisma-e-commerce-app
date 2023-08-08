@@ -2,9 +2,14 @@
 const { locale } = useI18n()
 const { isMobile } = useDevice();
 const { $anime } = useNuxtApp()
+const snackbar = useSnackbar();
 
 onMounted(() => {
     $anime({ targets: '.title', translateX: 250, duration: 800 })
+    snackbar.add({
+    type: 'success',
+    text: 'This is a snackbar message'
+})
   })
 //lodash
 var other = _difference([7,8,9], 2, [3], [[4]]);
@@ -17,5 +22,6 @@ var other = _difference([7,8,9], 2, [3], [[4]]);
     <h1 class="title">Nuxt Anime</h1>
     <div>nasilsin iyi misin ben iyiym</div>
     <NuxtWelcome />
+    <NuxtSnackbar />
   </div>
 </template>
