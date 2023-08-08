@@ -1,10 +1,12 @@
 <script setup>
 const foo = useFoo()
+const { $helper } = useNuxtApp()
 </script>
 
 <template>
     <div class="my-class">
       {{ foo("99") }}
+      {{ $helper("99") }}
         <NuxtLink to="/about">About</NuxtLink>
         <NuxtLink to="/dashboard">dashboard</NuxtLink>
         <LazyElButton type="warning">lazy button</LazyElButton>
