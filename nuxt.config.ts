@@ -10,25 +10,35 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
-    '@nuxtjs/google-fonts',
-    '@hypernym/nuxt-anime',
-    'nuxt-snackbar'
+    "@nuxtjs/google-fonts",
+    "@hypernym/nuxt-anime",
+    "nuxt-snackbar",
+    "@element-plus/nuxt",
   ],
-  extends: [
-    'nuxt-seo-kit'
-  ],
+  extends: ["nuxt-seo-kit"],
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://example.com',
-      siteName: 'Awesome Site',
-      siteDescription: 'Welcome to my awesome site!',
-      language: 'en', // prefer more explicit language codes like `en-AU` over `en`
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://example.com",
+      siteName: "Awesome Site",
+      siteDescription: "Welcome to my awesome site!",
+      language: "en", // prefer more explicit language codes like `en-AU` over `en`
+    },
+  },
+  $production: {
+    routeRules: {
+      '/**': { isr: true }
     }
+  },
+  $development: {
+    //
+  },
+  elementPlus: {
+    /** Options */
   },
   snackbar: {
     bottom: true,
     right: true,
-    duration: 5000
+    duration: 5000,
   },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default
@@ -58,12 +68,12 @@ export default defineNuxtConfig({
     families: {
       Roboto: true,
       Inter: [800, 900],
-       'Josefin+Sans': true,
+      "Josefin+Sans": true,
       Lato: [100, 300],
       Raleway: {
         wght: [100, 400],
-        ital: [100]
+        ital: [100],
       },
-    }
-  }
+    },
+  },
 });
