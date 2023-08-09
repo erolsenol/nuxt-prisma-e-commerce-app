@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-
+const { $bootstrap } = useNuxtApp()
 </script>
 
 <template>
