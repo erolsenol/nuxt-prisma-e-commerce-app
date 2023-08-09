@@ -2,7 +2,8 @@
 </script>
 
 <template>
-   <el-footer>Footer</el-footer>
+   <div>footer</div>
+   <!-- <el-footer>Footer</el-footer> -->
 </template>
 
 
