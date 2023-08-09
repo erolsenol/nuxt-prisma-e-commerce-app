@@ -17,7 +17,7 @@ const { $helper } = useNuxtApp();
       <el-col :span="6"> 2 </el-col>
       <el-col :span="8"> 3 </el-col>
       <el-col :span="2"> 
-        <Icon name="uil:github" color="black" />
+        
       </el-col>
     </el-row>
   </div>

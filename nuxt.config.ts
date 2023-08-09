@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
-    "nuxt-icon",
+    // "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
     "@nuxtjs/google-fonts",
