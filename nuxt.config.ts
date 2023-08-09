@@ -25,6 +25,7 @@ export default defineNuxtConfig({
       extensions: [".vue"],
     },
   ],
+  nitro: {},
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {
     public: {
