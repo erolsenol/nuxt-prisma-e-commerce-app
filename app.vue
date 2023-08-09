@@ -4,7 +4,6 @@ import { ElConfigProvider } from "element-plus";
 import en from "element-plus/dist/locale/en.mjs";
 import tr from "element-plus/dist/locale/tr.mjs";
 
-const show = ref(true);
 
 const elConfig = ref({
   size: "small",
