@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
-    "@element-plus/nuxt",
+   
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -43,13 +43,7 @@ export default defineNuxtConfig({
   $development: {
     //
   },
-  css: ["~/assets/_colors.scss", "~/assets/_el_plus.scss", "~/assets/_general.scss"],
-  //global style not working
-  elementPlus: {
-    icon: "ElIcon",
-    importStyle: "scss",
-    themes: ["dark"],
-  },
+  css: ["~/assets/_colors.scss", "~/assets/_variables.scss", "~/assets/_main.scss" ,"~/assets/_general.scss"],
   snackbar: {
     bottom: true,
     right: true,
