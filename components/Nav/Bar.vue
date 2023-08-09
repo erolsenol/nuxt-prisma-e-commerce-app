@@ -2,10 +2,10 @@
 </script>
 
 <template>
- <el-header>Header
-
-    <NavBar></NavBar>
- </el-header>
+<div>
+    NavBar
+    <NavItem></NavItem>
+</div>
 </template>
 
 

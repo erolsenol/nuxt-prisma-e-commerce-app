@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
-    "nuxt-icon",
+    // "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
     "@nuxtjs/google-fonts",
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
   $development: {
     //
   },
-  css: ["~/assets/_colors.scss", "~/assets/_el_plus.scss"],
+  css: ["~/assets/_colors.scss", "~/assets/_el_plus.scss", "~/assets/_general.scss"],
   //global style not working
   elementPlus: {
     icon: "ElIcon",
