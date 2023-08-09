@@ -2,8 +2,7 @@
 </script>
 
 <template>
- <el-header>Header
-
+ <el-header background-color="#2a598a">
     <NavBar></NavBar>
  </el-header>
 </template>
