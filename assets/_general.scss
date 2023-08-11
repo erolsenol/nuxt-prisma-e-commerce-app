@@ -36,3 +36,17 @@ body {
 body {
     background-image: url("./img/bg.webp") ;
 }
+
+
+.footer {
+    min-height: 200px;
+    background-color: var(--bs-gray-dark);
+    // background-color: black;
+  
+    .list-group-item {
+        background-color: var(--bs-gray-dark);
+        border-color: var(--bs-gray-dark);
+        color:  var( --bs-light);
+        
+    }
+}

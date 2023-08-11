@@ -15,7 +15,7 @@ const headerItems = [
 </script>
 
 <template>
-    <div>123</div>
+    <div>NAVBAR</div>
     <!-- <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
         <el-menu-item class="el-menu-logo" index="0">
             <el-text class="mx-1" size="large">LOGO</el-text>
