@@ -8,7 +8,8 @@ export default defineI18nConfig(() => ({
       services:"Hizmetler",
       news_and_publications: "Haberler ve Yayınlar",
       institutional:"Kurumsal",
-      communication:"İletişim"
+      communication:"İletişim",
+      about_us: "Hakkımızda"
     },
     en: {
       welcome: "Welcome",
@@ -16,7 +17,8 @@ export default defineI18nConfig(() => ({
       services:"Services",
       news_and_publications: "News and publications",
       institutional:"Institutional",
-      communication:"Communication"
+      communication:"Communication",
+      about_us: "About Us"
     },
   },
 }));
