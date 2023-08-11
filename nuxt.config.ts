@@ -8,13 +8,12 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
-    // "nuxt-icon",
+    "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
-   
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -51,6 +50,13 @@ export default defineNuxtConfig({
   },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default
+    locales: ['en', 'tr'],
+    detectBrowserLanguage: {
+      useCookie: true,
+      alwaysRedirect: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',  // recommended
+    }
   },
   image: {
     // Options

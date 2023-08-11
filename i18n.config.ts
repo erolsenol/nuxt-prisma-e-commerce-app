@@ -1,6 +1,6 @@
 export default defineI18nConfig(() => ({
   legacy: false,
-  locale: "en",
+  locale: "tr",
   messages: {
     tr: {
       welcome: "Hoşgeldiniz",
@@ -17,9 +17,6 @@ export default defineI18nConfig(() => ({
       news_and_publications: "News and publications",
       institutional:"Institutional",
       communication:"Communication"
-    },
-    fr: {
-      welcome: "Bienvenue",
     },
   },
 }));

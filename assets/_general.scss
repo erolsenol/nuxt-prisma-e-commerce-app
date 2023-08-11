@@ -24,3 +24,15 @@ body {
 .el-footer {
     min-height: 60px;
 }
+.nav  {
+    background-color: var(--bs-gray-300);
+    .nav-item {
+        transform: all 0.2s linear;
+        .nav-link-active {
+            border-bottom: 3px solid var(--bs-primary-border-subtle);
+        }
+    }
+}
+body {
+    background-image: url("./img/bg.webp") ;
+}
