@@ -12,7 +12,7 @@ const { $helper } = useNuxtApp();
     </div>
   </div>
 
-  <div class="content mt-3">
+  <div class="content">
     <div class="container">
      <QuickContent />
     </div>

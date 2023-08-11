@@ -20,7 +20,7 @@ const selectedIndex = ref("0")
 </script>
 
 <template>
-   <div class="header">
+   <div class="header mb-5">
       <div class="container">
          <ul class="nav nav-pills nav-fill shadow-lg justify-content-center flex-column flex-sm-row mb-4">
             <li class="nav-item me-1">

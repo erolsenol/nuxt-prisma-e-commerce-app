@@ -18,6 +18,19 @@ body {
     background-image: url("./img/bg.webp") ;
 }
 
+.about-content {
+    min-height: 300px;
+    .list {
+        border-right: 1px solid var(--bs-border-color);
+    }
+    .list-group-item {
+        border: none;
+        &:hover {
+            
+        }
+    }
+}
+
 
 .footer {
     min-height: 200px;
