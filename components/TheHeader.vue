@@ -4,15 +4,11 @@ import { ref } from "vue"
 import { useI18n, useLocalePath } from '#imports'
 const router = useRouter()
 
-console.log("router", router);
 
 function pageChange(key, url) {
-   console.log("key", key);
    selectedIndex.value = key
-   console.log("selectedIndex", selectedIndex);
-   console.log("url", url);
    if (url) {
-      router.push(`/tr/${url}`)
+      router.push(localeLocation(`/${url}`))
    }
 }
 

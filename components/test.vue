@@ -12,8 +12,6 @@ function required(value) {
   return value ? true : "This field is required";
 }
 
-console.log("runtimeConfig", runtimeConfig.public);
-console.log(process.env.BASE_URL);
 
 // Create the form
 const { defineInputBinds, handleSubmit, errors } = useForm({
