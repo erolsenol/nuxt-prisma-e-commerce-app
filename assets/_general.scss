@@ -47,4 +47,15 @@ body {
 
 .admin {
   min-height: 80vh;
+
+  .product {
+    .product-add {
+        .product-add-slide {
+          .swiper {
+            // max-height: 400px;
+            // max-width: 700px;
+          }
+        }
+    }
+  }
 }
