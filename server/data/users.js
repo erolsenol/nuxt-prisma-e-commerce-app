@@ -30,6 +30,17 @@ export async function postUser(data) {
   return user;
 }
 
+export async function update(id, data) {
+  const update = await prisma.user.update({
+    where: {
+      id: id,
+    },
+    data: data,
+  })
+
+  return
+}
+
 export async function createMany() {
   return await prisma.user.createMany({
     data: [

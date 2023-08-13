@@ -15,22 +15,32 @@ model User {
   firstName     String?   @db.VarChar(255)
   lastName      String?   @db.VarChar(255)
   age           Int?   
+  comments      Comment[]
 }
 
 model Product {
   id          Int       @id @default(autoincrement())
   name        String?   @db.VarChar(255)
-  Title       String?   @db.VarChar(255)
-  Content     String?   @db.VarChar(255)
+  title       String?   @db.VarChar(255)
+  content     String?   @db.VarChar(255)
+  images      Image[]
+  comments    Comment[]
+}
+
+model Image {
+  id            Int       @id @default(autoincrement())
+  data          Bytes     @db.Blob
+  product       Product   @relation(fields: [productId], references: [id])
+  productId     Int
 }
 
 model Comment {
   id          Int       @id @default(autoincrement())
+  product     Product   @relation(fields: [productId], references: [id])
   productId   Int       
-  userId      Int       
-  Title       String?   @db.VarChar(255)
-  Content     String?   @db.VarChar(255)
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int?
+  title       String?   @db.VarChar(255)
+  content     String?   @db.VarChar(255)
   point       Int?      
-
-   @@id([productId, userId])
 }
