@@ -6,6 +6,16 @@ export default {
 
 <script setup>
 import { ref } from "vue";
+import { Field, Form, ErrorMessage } from 'vee-validate';
+
+
+function isRequired(value) {
+  if (value && value.trim()) {
+    return true;
+  }
+  return 'This is required';
+}
+
 const snackbar = useSnackbar();
 // const { $hello, $readFileSync } =  useNuxtApp()
 
@@ -53,6 +63,7 @@ function createImage(files) {
 }
 
 async function save() {
+
   const imageData = []
 
   images.value.forEach((img, index) => {
@@ -98,21 +109,24 @@ async function save() {
 
 <template>
   <div class="product-add">
-
+    <Form @submit.prevent="save">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>
-        <input :value="product.name" @change="product.name = $event.target.value" type="text" class="form-control"
-          id="product-name" />
+        <Field name="name" :value="product.name" @change="product.name = $event.target.value" type="text" class="form-control"
+          id="product-name" rules="required" />
+        <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <input :value="product.title" @change="product.title = $event.target.value" type="text" class="form-control"
+        <Field name="title" rules="required" :value="product.title" @change="product.title = $event.target.value" type="text" class="form-control"
           id="product-name" />
+          <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">
         <label for="product-content" class="form-label">Ürün Açıklaması</label>
-        <input :value="product.content" @change="product.content = $event.target.value" type="text" class="form-control"
+        <Field name="content" rules="required" :value="product.content" @change="product.content = $event.target.value" type="text" class="form-control"
           id="product-content" />
+          <ErrorMessage class="invalid" name="content" />
       </div>
       <div class="product-add-slide mb-3">
         <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true" :effect="'creative'"
@@ -134,10 +148,11 @@ async function save() {
       </div>
       <div class="mb-3">
         <label for="product-image" class="form-label">Ürün Görselli</label>
-        <input @change="onFileChange" class="form-control" type="file" id="product-image" accept="image/png, image/jpeg"
+        <Field name="image" rules="required" @change="onFileChange" class="form-control" type="file" id="product-image" accept="image/png, image/jpeg"
           multiple />
+          <ErrorMessage class="invalid" name="image" />
       </div>
-      <button class="btn btn-primary" @click="save">Kaydet</button>
- 
+      <button class="btn btn-primary">Kaydet</button>
+    </Form>
   </div>
 </template>
