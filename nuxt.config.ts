@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
+    '@vee-validate/nuxt',
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -24,6 +25,17 @@ export default defineNuxtConfig({
       extensions: [".vue"],
     },
   ],
+  veeValidate: {
+    // disable or enable auto imports
+    autoImports: true,
+    // Use different names for components
+    componentNames: {
+      Form: 'VeeForm',
+      Field: 'VeeField',
+      FieldArray: 'VeeFieldArray',
+      ErrorMessage: 'VeeErrorMessage',
+    },
+  },
   nitro: {},
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {
