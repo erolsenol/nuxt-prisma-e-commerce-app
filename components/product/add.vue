@@ -28,13 +28,13 @@ const imageNames = ref([])
 const images = ref([])
 
 function dataClear() {
-  product.value.imageNames = {
+  imageNames.value = []
+  images.value = []
+  product.value = {
     name: null,
     title: null,
     content: null,
   }
-  imageNames.value = []
-  images.value = []
 }
 
 function onFileChange(e) {
@@ -43,7 +43,6 @@ function onFileChange(e) {
   createImage(files);
 }
 function createImage(files) {
-  dataClear()
 
   for (var index = 0; index < files.length; index++) {
     var reader = new FileReader();
@@ -62,7 +61,10 @@ function createImage(files) {
   }
 }
 
-async function save() {
+async function save(event) {
+  if(event && 'preventDefault' in event) {
+    event.preventDefault()
+  }
 
   const imageData = []
 
@@ -90,6 +92,7 @@ async function save() {
         type: "success",
         text: "Görsel Yüklendi",
       });
+      dataClear()
     } else {
       console.log("Görsel Kaydedilemedi");
       snackbar.add({
@@ -109,24 +112,24 @@ async function save() {
 
 <template>
   <div class="product-add">
-    <Form @submit.prevent="save">
+    <Form @submit="save">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>
-        <Field name="name" :value="product.name" @change="product.name = $event.target.value" type="text" class="form-control"
-          id="product-name" rules="required" />
+        <Field name="name" :value="product.name" @change="product.name = $event.target.value" type="text"
+          class="form-control" id="product-name" rules="required" />
         <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title" rules="required" :value="product.title" @change="product.title = $event.target.value" type="text" class="form-control"
-          id="product-name" />
-          <ErrorMessage class="invalid" name="title" />
+        <Field name="title" rules="required" :value="product.title" @change="product.title = $event.target.value"
+          type="text" class="form-control" id="product-name" />
+        <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">
         <label for="product-content" class="form-label">Ürün Açıklaması</label>
-        <Field name="content" rules="required" :value="product.content" @change="product.content = $event.target.value" type="text" class="form-control"
-          id="product-content" />
-          <ErrorMessage class="invalid" name="content" />
+        <Field name="content" rules="required" :value="product.content" @change="product.content = $event.target.value"
+          type="text" class="form-control" id="product-content" />
+        <ErrorMessage class="invalid" name="content" />
       </div>
       <div class="product-add-slide mb-3">
         <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true" :effect="'creative'"
@@ -148,9 +151,9 @@ async function save() {
       </div>
       <div class="mb-3">
         <label for="product-image" class="form-label">Ürün Görselli</label>
-        <Field name="image" rules="required" @change="onFileChange" class="form-control" type="file" id="product-image" accept="image/png, image/jpeg"
-          multiple />
-          <ErrorMessage class="invalid" name="image" />
+        <Field name="image" rules="required" @change="onFileChange" class="form-control" type="file" id="product-image"
+          accept="image/png, image/jpeg" multiple />
+        <ErrorMessage class="invalid" name="image" />
       </div>
       <button class="btn btn-primary">Kaydet</button>
     </Form>

@@ -1,5 +1,13 @@
 import { PrismaClient } from '@prisma/client'
 
+interface interfacePrisma {
+  comments?: Object;
+  images?: Object;
+  prodcuts?: Object;
+  users?: Object;
+
+}
+
 let prisma = null
 
 if (process.env.NODE_ENV === 'production') {

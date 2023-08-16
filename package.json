@@ -38,6 +38,7 @@
     "nuxt-snackbar": "^1.0.3",
     "nuxt-swiper": "^1.2.0",
     "path": "^0.12.7",
+    "qs": "^6.11.2",
     "sass": "^1.64.2",
     "vee-validate": "^4.11.1",
     "yup": "^1.2.0"
