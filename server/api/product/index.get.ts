@@ -2,7 +2,6 @@ import { getProducts } from "../../data/products";
 
 export default defineEventHandler(async (event) => {
   let response = {
-    data: null,
     status: false
   }
   const skip = getRouterParam(event, 'skip') || 0
@@ -15,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   console.log("products", products);
 
-  if (products) {
+  if (products && products.length > 0) {
     response.data = products
     response.status = true
     return response

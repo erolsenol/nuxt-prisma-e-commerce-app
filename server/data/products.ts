@@ -19,7 +19,7 @@ interface interfaceProduct {
 export async function getProducts({
   skip = 0,
   take = 20,
-}): Promise<interfaceGetProducts> {
+}): Promise<interfaceGetProducts[]> {
   const response = await prisma.product.findMany({
     skip,
     take,
