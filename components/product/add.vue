@@ -20,10 +20,16 @@ const product = ref(initialProduct());
 const imageNames = ref([])
 const images = ref([])
 
-function dataClear() {
-  imageNames.value.splice(0, imageNames.length)
-  images.value.splice(0, images.length)
-  Object.assign(product.value, initialProduct())
+async function formClear() {
+  return new Promise((resolve, reject) => {
+    imageNames.value = []
+    images.value = []
+    product.value.name = null
+    product.value.title = null
+    product.value.content = null
+    resolve(true)
+  })
+
 }
 
 function onFileChange(e) {
@@ -51,6 +57,7 @@ async function save(event) {
     imageData.push({ name: imageNames.value[index], image: img })
   });
 
+  console.log("send producttt 12312");
   const { data, pending, error, refresh } = await useFetch("/api/product", {
     method: "post",
     body: product,
@@ -77,7 +84,7 @@ async function save(event) {
         type: "success",
         text: "Görsel Yüklendi",
       });
-      dataClear()
+      await formClear()
     } else {
       console.log("Görsel Kaydedilemedi");
       snackbar.add({
@@ -97,25 +104,21 @@ async function save(event) {
 
 <template>
   <div class="product-add">
-    {{ imageNames }}
-    {{ images }}
     <Form @submit="save">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>
-        <Field name="name" :value="product.name" @change="product.name = $event.target.value" type="text"
-          class="form-control" id="product-name" rules="required" />
+        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-name" rules="required" />
         <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title" rules="required" :value="product.title" @change="product.title = $event.target.value"
-          type="text" class="form-control" id="product-name" />
+        <Field name="title" rules="required" v-model="product.title" type="text" class="form-control" id="product-name" />
         <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">
         <label for="product-content" class="form-label">Ürün Açıklaması</label>
-        <Field name="content" rules="required" :value="product.content" @change="product.content = $event.target.value"
-          type="text" class="form-control" id="product-content" />
+        <Field name="content" rules="required" v-model="product.content" type="text" class="form-control"
+          id="product-content" />
         <ErrorMessage class="invalid" name="content" />
       </div>
       <div class="product-add-slide mb-3">
