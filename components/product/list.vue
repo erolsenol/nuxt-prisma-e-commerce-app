@@ -9,7 +9,6 @@ import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 const { $qs } = useNuxtApp()
 
-console.log("$qs", $qs)
 
 
 const snackbar = useSnackbar();

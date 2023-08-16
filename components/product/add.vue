@@ -8,33 +8,22 @@ export default {
 import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 
-
-function isRequired(value) {
-  if (value && value.trim()) {
-    return true;
-  }
-  return 'This is required';
-}
-
 const snackbar = useSnackbar();
-// const { $hello, $readFileSync } =  useNuxtApp()
 
-const product = ref({
+const initialProduct = () => ({
   name: null,
   title: null,
   content: null,
 });
+
+const product = ref(initialProduct());
 const imageNames = ref([])
 const images = ref([])
 
 function dataClear() {
-  imageNames.value = []
-  images.value = []
-  product.value = {
-    name: null,
-    title: null,
-    content: null,
-  }
+  imageNames.value.splice(0, imageNames.length)
+  images.value.splice(0, images.length)
+  Object.assign(product.value, initialProduct())
 }
 
 function onFileChange(e) {
@@ -43,29 +32,19 @@ function onFileChange(e) {
   createImage(files);
 }
 function createImage(files) {
-
+  images.value = []
+  imageNames.value = []
   for (var index = 0; index < files.length; index++) {
     var reader = new FileReader();
     imageNames.value.push(files[index].name);
     reader.onload = (event) => {
       images.value.push(event.target.result);
     };
-    // reader.readAsArrayBuffer(files[index]);
-    // reader.readAsText(files[index]);
     reader.readAsDataURL(files[index]);
-
-    // const blob = new Blob([files[index]], { type: files[index].type });
-    // reader.readAsArrayBuffer(blob);
-
-    // data.value.files.push(blob)
   }
 }
 
 async function save(event) {
-  if(event && 'preventDefault' in event) {
-    event.preventDefault()
-  }
-
   const imageData = []
 
   images.value.forEach((img, index) => {
@@ -75,6 +54,8 @@ async function save(event) {
   const { data, pending, error, refresh } = await useFetch("/api/product", {
     method: "post",
     body: product,
+  }).catch((error) => {
+    console.error(error);
   });
   if (data.value.status) {
     console.log(data.value.data.id);
@@ -84,9 +65,13 @@ async function save(event) {
         productId: data.value.data.id,
         images: imageData
       },
+    }).catch((error) => {
+      console.error(error);
     });
 
-    if (response.data.status) {
+    console.log("response", response);
+
+    if (response.data.value.status) {
       console.log("Görsel Yüklendi");
       snackbar.add({
         type: "success",
@@ -112,6 +97,8 @@ async function save(event) {
 
 <template>
   <div class="product-add">
+    {{ imageNames }}
+    {{ images }}
     <Form @submit="save">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>
