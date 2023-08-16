@@ -1,5 +1,6 @@
 
 import { postImage } from "../../data/images";
+import { deleteProduct } from "../../data/products";
 import fs from "fs"
 import path from "path"
 
@@ -81,6 +82,6 @@ export default defineEventHandler(async (event) => {
     response.status = true
     return response
   }
-
+  await deleteProduct(body.productId)
   return response
 });
