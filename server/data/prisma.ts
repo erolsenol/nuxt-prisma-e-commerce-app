@@ -10,11 +10,17 @@ interface interfacePrisma {
 
 let prisma = null
 
+const prismaConfig = {
+  rejectOnNotFound: {
+    findUnique: true,
+  },
+}
+
 if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient()
+  prisma = new PrismaClient(prismaConfig)
 } else {
   if (!global.prisma) {
-    global.prisma = new PrismaClient()
+    global.prisma = new PrismaClient(prismaConfig)
   }
   prisma = global.prisma
 }
