@@ -53,21 +53,22 @@ let selectedIndex = ref("0")
    <div class="header mb-3">
       <div class="">
          <ul class="nav nav-pills nav-fill shadow-lg justify-content-center flex-column flex-sm-row mb-2">
-            <li class="nav-item me-1 logo">
-               <div class="logo-container">
+            <li class="nav-item logo">
+               <a class="nav-link shadow12 fs-5 logo-container-logo py-3" :class="selectedIndex == '0' ? 'nav-link-active' : ''"
+                  aria-current="page" href="#" @click="selectedIndex = '0'">
                   <span class="logo-container-mail fs-6">
                      erosnl@gmail.com
                   </span>
-                  <a class="nav-link fs-5 logo-container-logo py-3" :class="selectedIndex == '0' ? 'nav-link-active' : ''" aria-current="page" href="#"
-                  @click="selectedIndex = '0'">LOGO</a>
-               </div>
+                  <span>LOGO</span>
+               </a>
             </li>
-            <li class="nav-item me-1" v-for="(item, key) in headerItems" :key="key">
-               <NuxtLink class="nav-link fs-5 py-3" :class="selectedIndex == key + 1 ? 'nav-link-active' : ''"
+            <li class="nav-item " v-for="(item, key) in headerItems" :key="key">
+               <NuxtLink class="nav-link shadow12 fs-5 py-3" :class="selectedIndex == key + 1 ? 'nav-link-active' : ''"
                   @click="pageChange(key + 1, item.to)">{{ $t(item.text) }}</NuxtLink>
             </li>
             <li class="nav-item dropdown d-flex align-items-center lang">
-               <a class="nav-link fs-5 dropdown-toggle lang-item" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+               <a class="nav-link shadow12 fs-5 dropdown-toggle lang-item" data-bs-toggle="dropdown" role="button"
+                  aria-expanded="false">
                   {{ locale.toUpperCase() }}
                </a>
                <ul class="dropdown-menu">

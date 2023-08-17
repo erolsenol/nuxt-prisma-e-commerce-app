@@ -30,6 +30,7 @@ model Product {
   content   String    @db.VarChar(255)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
+  tags      Json?
   images    Image[]
   comments  Comment[]
 }
@@ -55,4 +56,28 @@ model Comment {
   productId Int
   user      User?    @relation(fields: [userId], references: [id])
   userId    Int?
+}
+
+model ContactUs {
+  id        Int      @id @default(autoincrement())
+  name      String?  @db.VarChar(255)
+  surname   String?  @db.VarChar(255)
+  mail      String?  @db.VarChar(255)
+  phone     String?  @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Site {
+  id          Int      @id @default(autoincrement())
+  headerLogo  String?  @db.VarChar(255)
+  footerLogo  String?  @db.VarChar(255)
+  mail        String?  @db.VarChar(255)
+  phone       String?  @db.VarChar(255)
+  address     String?  @db.VarChar(255)
+  footerText  String?  @db.VarChar(255)
+  aboutUsText String?  @db.VarChar(1500)
+  point       Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
