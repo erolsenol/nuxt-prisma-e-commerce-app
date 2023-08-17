@@ -1,8 +1,8 @@
-<script lang="ts" setup>
+<script setup>
 import { ref } from 'vue'
 
 const activeIndex = ref('1')
-const handleSelect = (key: string, keyPath: string[]) => {
+const handleSelect = (key, keyPath) => {
     console.log(key, keyPath)
 }
 const headerItems = [

@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
+    '@vee-validate/nuxt',
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -24,6 +25,17 @@ export default defineNuxtConfig({
       extensions: [".vue"],
     },
   ],
+  veeValidate: {
+    // disable or enable auto imports
+    autoImports: true,
+    // Use different names for components
+    componentNames: {
+      Form: 'VeeForm',
+      Field: 'VeeField',
+      FieldArray: 'VeeFieldArray',
+      ErrorMessage: 'VeeErrorMessage',
+    },
+  },
   nitro: {},
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {
@@ -42,7 +54,7 @@ export default defineNuxtConfig({
   $development: {
     //
   },
-  css: ["~/assets/_colors.scss", "~/assets/_variables.scss", "~/assets/_main.scss" ,"~/assets/_general.scss"],
+  css: ["~/assets/_colors.scss", "~/assets/_variables.scss", "~/assets/_main.scss", "~/assets/_general.scss"],
   snackbar: {
     bottom: true,
     right: true,
@@ -50,13 +62,7 @@ export default defineNuxtConfig({
   },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default
-    locales: ['en', 'tr'],
-    detectBrowserLanguage: {
-      useCookie: true,
-      alwaysRedirect: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root',  // recommended
-    }
+    locales: ['en', 'tr']
   },
   image: {
     // Options
