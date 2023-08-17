@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "ProductAdd",
+  name: "ProductUpdate",
 };
 </script>
 
@@ -103,7 +103,7 @@ async function save(event) {
 </script>
 
 <template>
-  <div class="product-add">
+  <div class="product-update">
     <Form @submit="save">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>

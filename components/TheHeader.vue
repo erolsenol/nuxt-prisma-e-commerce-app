@@ -2,6 +2,7 @@
 const { locale, locales } = useI18n()
 import { ref } from "vue"
 import { useI18n, useLocalePath } from '#imports'
+import { setLocale } from '@vee-validate/i18n';
 const router = useRouter()
 
 
@@ -13,9 +14,14 @@ function pageChange(key, url) {
 }
 
 const switchLocalePath = useSwitchLocalePath()
+
 const availableLocales = computed(() => {
    return (locales.value).filter(i => i !== locale.value)
 })
+
+function changeLocale(val) {
+   setLocale(val);
+}
 
 const headerItems = [
    {
@@ -62,7 +68,7 @@ let selectedIndex = ref("0")
                <ul class="dropdown-menu">
                   <template v-for="item in availableLocales" :key="locale.code">
                      <li>
-                        <NuxtLink class="dropdown-item" :to="switchLocalePath(item)">
+                        <NuxtLink class="dropdown-item" @click="changeLocale(item)" :to="switchLocalePath(item)">
                            {{ item.toUpperCase() }}
                         </NuxtLink>
                      </li>

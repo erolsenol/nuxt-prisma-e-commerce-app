@@ -19,7 +19,7 @@ interface interfaceProduct {
 export async function getProducts({
   skip = 0,
   take = 20,
-}): Promise<interfaceGetProducts> {
+}): Promise<interfaceGetProducts[]> {
   const response = await prisma.product.findMany({
     skip,
     take,
@@ -53,6 +53,18 @@ export async function updateProduct(id: String, data: interfaceProduct) {
   });
 
   return response;
+}
+
+export async function deleteProduct(id:Number) {
+  const deleteProduct = await prisma.product.delete({
+    where: {
+      email: {
+        id: id,
+      },
+    },
+  })
+
+  return deleteProduct
 }
 
 export async function createManyProduct() {
