@@ -14,8 +14,17 @@ const paginate = ref({
   skip: 0,
   take: 20
 })
+const product = ref({
+  id: null,
+  name: null,
+  title: null,
+  content: null,
+  createdAt: null,
+  updatedAt: null 
+})
 
 onMounted(() => {
+  console.log("onMounted");
   getAll()
 })
 
@@ -49,6 +58,30 @@ async function getAll() {
     });
   }
 }
+
+async function get(id){
+  const config = {
+    params: {
+      id
+    },
+    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+  };
+
+  const { data } = await useFetch("/api/product/"+id);
+  if (!data.value) return
+
+  if(data.value.data) {
+    product.value = data.value.data
+  }
+
+  if(data.value.error) {
+    console.log("Bir hata oluştu");
+    snackbar.add({
+      type: "error",
+      text: "Bir hata oluştu",
+    });
+  }
+}
 </script>
 
 <template>
@@ -75,14 +108,8 @@ async function getAll() {
                 İşlemler
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Güncelle</li>
-                <li class="dropdown-item ">
-
-                  <button type="button" class="btn btn-danger  mx-auto" data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop">
-                    Sil
-                  </button>
-                </li>
+                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#productFormModal">Güncelle</li>
+                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productFormModal"> TEST </li>
               </ul>
             </div>
           </td>
@@ -91,24 +118,18 @@ async function getAll() {
     </table>
     <button @click="getAll">QWE</button>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-      Launch static backdrop modal
-    </button>
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog">
+    <div class="modal fade" id="productFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="productFormModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="productFormModalLabel">Modal title</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            ...
+            <ProductForm type="update" :form="product" @update:form="newValue => product = newValue" />
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
-          </div>
+         
         </div>
       </div>
     </div>

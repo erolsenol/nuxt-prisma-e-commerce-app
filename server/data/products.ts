@@ -27,7 +27,7 @@ export async function getProducts({
   return response;
 }
 
-export async function getProduct(id: String) {
+export async function getProduct(id: Number) {
   const response = await prisma.product.findUnique({
     where: {
       id,
@@ -58,9 +58,7 @@ export async function updateProduct(id: String, data: interfaceProduct) {
 export async function deleteProduct(id:Number) {
   const deleteProduct = await prisma.product.delete({
     where: {
-      email: {
         id: id,
-      },
     },
   })
 
