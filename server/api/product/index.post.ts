@@ -7,6 +7,12 @@ export default defineEventHandler(async (event) => {
     status: false
   }
   const body = await readBody(event)
+
+  if(!body.name || !body.title || !body.content ) {
+    response.error = "cannot be empty"
+    return response
+  }
+
   const product = await postProduct({ name: body.name, title: body.title, content: body.content })
 
   if (product.id) {

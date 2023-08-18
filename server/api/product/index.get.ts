@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   console.log("products", products);
 
-  if (products && products.length > 0) {
+  if (products ) {
     response.data = products
     response.status = true
     return response

@@ -50,6 +50,13 @@ async function getAll() {
   if (data?.value?.status) {
     console.log("Görsel Yüklendi");
     rows.value = data.value.data
+
+    if(rows.value.length == 0) {
+      snackbar.add({
+      type: "success",
+      text: "Ürün sayısı 0",
+    });
+    }
   } else {
     console.log("Görseller çekilirken bir sorun oluştu");
     snackbar.add({

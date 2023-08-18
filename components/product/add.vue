@@ -7,6 +7,14 @@ export default {
 <script setup>
 import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import * as yup from 'yup';
+
+const schema = yup.object({
+  name: yup.string().required(),
+  title: yup.string().required(),
+  content: yup.string().required(),
+  image: yup.array().required(),
+});
 
 const snackbar = useSnackbar();
 
@@ -16,6 +24,7 @@ const initialProduct = () => ({
   content: null,
 });
 
+const addValidation = ref('addValidation');
 const product = ref(initialProduct());
 const imageNames = ref([])
 const images = ref([])
@@ -51,6 +60,15 @@ function createImage(files) {
 }
 
 async function save(event) {
+  const {valid} = await addValidation.value.validate()
+  if(!valid) {
+    snackbar.add({
+        type: "error",
+        text: "Formu Eksiksiz Doldurun",
+      });
+    return
+  }
+
   const imageData = []
 
   images.value.forEach((img, index) => {
@@ -104,20 +122,20 @@ async function save(event) {
 
 <template>
   <div class="product-add">
-    <Form @submit="save">
+    <Form @submit="save" as="v-form" ref="addValidation" :validation-schema="schema">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>
-        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-name" rules="required" />
+        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-name"  />
         <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title" rules="required" v-model="product.title" type="text" class="form-control" id="product-name" />
+        <Field name="title"  v-model="product.title" type="text" class="form-control" id="product-name" />
         <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">
         <label for="product-content" class="form-label">Ürün Açıklaması</label>
-        <Field name="content" rules="required" v-model="product.content" type="text" class="form-control"
+        <Field name="content"  v-model="product.content" type="text" class="form-control"
           id="product-content" />
         <ErrorMessage class="invalid" name="content" />
       </div>
@@ -141,11 +159,11 @@ async function save(event) {
       </div>
       <div class="mb-3">
         <label for="product-image" class="form-label">Ürün Görselli</label>
-        <Field name="image" rules="required" @change="onFileChange" class="form-control" type="file" id="product-image"
+        <Field name="image"  @change="onFileChange" class="form-control" type="file" id="product-image"
           accept="image/png, image/jpeg" multiple />
         <ErrorMessage class="invalid" name="image" />
       </div>
-      <button class="btn btn-primary">Kaydet</button>
+      <button @click="save" class="btn btn-primary">Kaydet</button>
     </Form>
   </div>
 </template>
