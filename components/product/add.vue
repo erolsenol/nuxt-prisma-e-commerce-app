@@ -66,7 +66,7 @@ async function save() {
         type: "error",
         text: "Formu Eksiksiz Doldurun",
       });
-    return
+    return 
   }
 
   const imageData = []
@@ -117,7 +117,9 @@ async function save() {
       type: "error",
       text: "Aynı İsimle Ürün bulunuyor",
     });
-      return
+      
+      await addValidation.value.reset()
+      return true
     }
     console.log("Ürün Kaydedilemedi");
     snackbar.add({
@@ -125,6 +127,8 @@ async function save() {
       text: "Ürün Kaydedilemedi",
     });
   }
+  await addValidation.value.reset()
+  return true
 }
 </script>
 
@@ -133,17 +137,19 @@ async function save() {
     <Form as="v-form" ref="addValidation" :validation-schema="schema">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>
-        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-name"  />
+        <Field name="name" v-model="product.name" as="input" type="text" v-slot="{ field, handleChange }" class="form-control" id="product-name">
+          <input v-bind="field" @change="handleChange">
+        </Field>
         <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title"  v-model="product.title" type="text" class="form-control" id="product-name" />
+        <Field name="title"  v-model="product.title" as="input" type="text" class="form-control" id="product-name" />
         <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">
         <label for="product-content" class="form-label">Ürün Açıklaması</label>
-        <Field name="content"  v-model="product.content" type="text" class="form-control"
+        <Field name="content"  v-model="product.content" as="input" type="text" class="form-control"
           id="product-content" />
         <ErrorMessage class="invalid" name="content" />
       </div>
@@ -167,11 +173,11 @@ async function save() {
       </div>
       <div class="mb-3">
         <label for="product-image" class="form-label">Ürün Görselli</label>
-        <Field name="image"  @change="onFileChange" class="form-control" type="file" id="product-image"
+        <Field name="image"  @change="onFileChange" class="form-control" as="input" type="file" id="product-image"
           accept="image/png, image/jpeg" multiple />
         <ErrorMessage class="invalid" name="image" />
       </div>
-      <button @click="save" class="btn btn-primary">Kaydet</button>
+      <button @click="save()" class="btn btn-primary">Kaydet</button>
     </Form>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "ProductList",
+  name: "SubCategoryList",
 };
 </script>
 
@@ -14,11 +14,12 @@ const paginate = ref({
   skip: 0,
   take: 20
 })
-const product = ref({
+const subCategory = ref({
   id: null,
   name: null,
-  title: null,
-  content: null,
+  name_en: null,
+  description: null,
+  categoryId: null,
   createdAt: null,
   updatedAt: null 
 })
@@ -28,11 +29,7 @@ onMounted(() => {
   getAll()
 })
 
-
 const snackbar = useSnackbar();
-// const { $hello, $readFileSync } =  useNuxtApp()
-
-
 
 async function getAll() {
   const config = {
@@ -42,26 +39,26 @@ async function getAll() {
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
-  const { data } = await useFetch("/api/product", config);
+  const { data } = await useFetch("/api/subCategory", config);
   if (!data.value) return
 
   console.log("response data", data.value);
 
   if (data?.value?.status) {
-    console.log("Görsel Yüklendi");
+    console.log("Kategori Yüklendi");
     rows.value = data.value.data
 
     if(rows.value.length == 0) {
       snackbar.add({
       type: "success",
-      text: "Ürün sayısı 0",
+      text: "Alt kategori sayısı 0",
     });
     }
   } else {
-    console.log("Görseller çekilirken bir sorun oluştu");
+    console.log("Alt kategoriler çekilirken bir sorun oluştu");
     snackbar.add({
       type: "error",
-      text: "Görseller çekilirken bir sorun oluştu",
+      text: "Alt kategori çekilirken bir sorun oluştu",
     });
   }
 }
@@ -74,11 +71,11 @@ async function get(id){
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
-  const { data } = await useFetch("/api/product/"+id);
+  const { data } = await useFetch("/api/subCategory/"+id);
   if (!data.value) return
 
   if(data.value.data) {
-    product.value = data.value.data
+    subCategory.value = data.value.data
   }
 
   if(data.value.error) {
@@ -92,14 +89,15 @@ async function get(id){
 </script>
 
 <template>
-  <div class="product-list">
+  <div class="subCategory-list">
     <table class="table table-hover table-striped ">
       <thead>
         <tr class="table-dark">
           <th scope="col">Id</th>
           <th scope="col">İsim</th>
-          <th scope="col">Başlık</th>
-          <th scope="col">İçerik</th>
+          <th scope="col">İngilizce İsim</th>
+          <th scope="col">Üst Kategori</th>
+          <th scope="col">Açıklama</th>
           <th scope="col">Aksiyon</th>
         </tr>
       </thead>
@@ -107,8 +105,9 @@ async function get(id){
         <tr class="table-light" v-for="(row, index) in rows" :key="index">
           <th scope="row">{{ row.id }}</th>
           <td>{{ row.name }}</td>
-          <td>{{ row.title }}</td>
-          <td>{{ row.content }}</td>
+          <td>{{ row.name_en }}</td>
+          <td>{{ row.categoryId }}</td>
+          <td>{{ row.description }}</td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
@@ -116,26 +115,27 @@ async function get(id){
                 İşlemler
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#productFormModal">Güncelle</li>
-                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productFormModal"> TEST </li>
+                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#subCategoryFormModal">Güncelle</li>
+                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#subCategoryFormModal"> TEST </li>
               </ul>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+    
     <button @click="getAll">QWE</button>
 
-    <div class="modal fade" id="productFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="productFormModalLabel" aria-hidden="true">
+    <div class="modal fade" id="subCategoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="subsubCategoryFormModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="productFormModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="subsubCategoryFormModalLabel">Modal title</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <ProductForm type="update" :form="product" @update:form="newValue => product = newValue" />
+            <SubCategoryForm type="update" :form="subCategory" @update:form="newValue => subCategory = newValue" />
           </div>
          
         </div>
