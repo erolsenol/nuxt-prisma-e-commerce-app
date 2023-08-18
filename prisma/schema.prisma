@@ -15,12 +15,12 @@ model User {
   firstname String?   @db.VarChar(255)
   lastname  String?   @db.VarChar(255)
   username  String    @db.VarChar(255)
-  email     String    @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
   phone     String?   @db.VarChar(255)
+  age       Int?
   deleted   Boolean?  @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  age       Int?
   comments  Comment[]
 }
 
@@ -112,6 +112,6 @@ model Site {
   point       Int?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
-  pageAbout   Json?
+
+  pageAbout Json?
 }
