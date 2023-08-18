@@ -14,7 +14,7 @@ export default defineEventHandler(
 
     const subCategory = await getSubCategory(id)
 
-    if (category && category.id) {
+    if (subCategory && subCategory.id) {
       response.data = subCategory
       response.status = true
       return response

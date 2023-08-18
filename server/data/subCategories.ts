@@ -19,15 +19,16 @@ export async function getSubCategories({
   skip = 0,
   take = 20,
 }): Promise<interfaceGetCategories[]> {
-  const response = await prisma.subcategory.findMany({
+  const response = await prisma.subCategory.findMany({
     skip,
     take,
   });
+  
   return response;
 }
 
 export async function getSubCategory(id: Number) {
-  const response = await prisma.subcategory.findUnique({
+  const response = await prisma.subCategory.findUnique({
     where: {
       id,
     },
@@ -36,7 +37,7 @@ export async function getSubCategory(id: Number) {
 }
 
 export async function getSubCategoryByName(name: String) {
-  const response = await prisma.subcategory.findMany({
+  const response = await prisma.subCategory.findMany({
     where: {
       name:name,
     },
@@ -45,7 +46,7 @@ export async function getSubCategoryByName(name: String) {
 }
 
 export async function postSubCategory(data: interfaceSubCategory) {
-  const response = await prisma.subcategory.create({
+  const response = await prisma.subCategory.create({
     data: data,
   });
 
@@ -53,7 +54,7 @@ export async function postSubCategory(data: interfaceSubCategory) {
 }
 
 export async function updateSubCategory(id: String, data: interfaceSubCategory) {
-  const response = await prisma.subcategory.update({
+  const response = await prisma.subCategory.update({
     where: {
       id: id,
     },
@@ -64,7 +65,7 @@ export async function updateSubCategory(id: String, data: interfaceSubCategory) 
 }
 
 export async function deleteSubCategory(id:Number) {
-  const deleteSubCategory = await prisma.subcategory.delete({
+  const deleteSubCategory = await prisma.subCategory.delete({
     where: {
         id: id,
     },

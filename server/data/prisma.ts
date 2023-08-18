@@ -5,7 +5,8 @@ interface interfacePrisma {
   images?: Object;
   prodcuts?: Object;
   users?: Object;
-
+  category?: Object;
+  subcategory?: Object;
 }
 
 let prisma = null

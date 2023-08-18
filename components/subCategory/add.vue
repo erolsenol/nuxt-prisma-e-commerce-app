@@ -110,14 +110,9 @@ async function save() {
       </div>
       <div class="mb-3">
         <label for="subCategory-categoryId" class="form-label">Üst kategori</label>
-        <Field name="categoryId" v-model="subCategory.categoryId" as="select" class="form-control"
+        <Field name="categoryId" v-model="subCategory.categoryId" class="form-control"
           id="subCategory-categoryId" v-slot="{ field }">
-          <select class="form-select" v-bind="field">
-            <option selected :value="null">Seçiniz</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+          <SelectCategory :value="field" v-bind="field" />
         </Field>
         <ErrorMessage class="invalid" name="categoryId" />
       </div>
