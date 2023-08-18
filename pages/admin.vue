@@ -2,7 +2,14 @@
 import { ref } from 'vue'
 
 const active = ref(0)
-const tabs = ["product","category", "subCategory", "user", "comment"]
+const tabs = [
+  "products",
+  "categories",
+  "sub_categories",
+  "users",
+  "comments",
+  "site_settings",
+  ]
 </script>
 
 <template>
@@ -13,21 +20,21 @@ const tabs = ["product","category", "subCategory", "user", "comment"]
           <button type="button" class="list-group-item list-group-item-action" @click="active = index"
             :class="`${active == index ? 'active' : ''}`" :aria-current="`${active == index ? 'true' : ''}`"
             v-for="(tab, index) in tabs" :key="index">
-            {{ tab }}
+            {{ $t(tab)  }}
           </button>
         </div>
       </div>
       <div class="col-12 col-md-9">
-        <div class="product" v-if="active == 0">
+        <div class="products" v-if="active == 0">
           <div class="accordion mb-3" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                  aria-expanded="true" aria-controls="collapseOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
+                  aria-expanded="true" aria-controls="collapseProduct">
                   Product Add
                 </button>
               </h2>
-              <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <ProductAdd />
                 </div>
@@ -37,16 +44,16 @@ const tabs = ["product","category", "subCategory", "user", "comment"]
           <h5 class="ps-1">Product List</h5>
           <ProductList />
         </div>
-        <div class="category" v-if="active == 1">
+        <div class="categories" v-if="active == 1">
           <div class="accordion mb-3" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                  aria-expanded="true" aria-controls="collapseOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
+                  aria-expanded="true" aria-controls="collapseProduct">
                   Kategori Ekle
                 </button>
               </h2>
-              <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <CategoryAdd />
                 </div>
@@ -60,12 +67,12 @@ const tabs = ["product","category", "subCategory", "user", "comment"]
           <div class="accordion mb-3" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                  aria-expanded="true" aria-controls="collapseOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
+                  aria-expanded="true" aria-controls="collapseProduct">
                   Alt Kategori Ekle
                 </button>
               </h2>
-              <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <SubCategoryAdd />
                 </div>
@@ -81,6 +88,24 @@ const tabs = ["product","category", "subCategory", "user", "comment"]
         <div class="comment" v-if="active == 4">
           comment
         </div>
+        <div class="site-settings" v-if="active == 5">
+          <div class="accordion mb-3" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
+                  aria-expanded="true" aria-controls="collapseProduct">
+                  {{$t('page_about_us')}}
+                </button>
+              </h2>
+              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                 <PageContentEdit />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
-</div></template>
+</template>

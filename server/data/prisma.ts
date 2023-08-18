@@ -1,15 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 
-interface interfacePrisma {
-  comments?: Object;
-  images?: Object;
-  prodcuts?: Object;
-  users?: Object;
-  category?: Object;
-  subcategory?: Object;
+declare global {
+  var prisma: PrismaClient; // This must be a `var` and not a `let / const`
 }
 
-let prisma = null
+
+let prisma: PrismaClient
 
 const prismaConfig = {
   rejectOnNotFound: {

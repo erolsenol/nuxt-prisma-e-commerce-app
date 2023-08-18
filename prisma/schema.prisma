@@ -25,13 +25,13 @@ model User {
 }
 
 model Product {
-  id            Int         @id @default(autoincrement())
-  name          String      @unique @db.VarChar(255)
-  title         String      @db.VarChar(255)
-  content       String      @db.VarChar(255)
-  deleted       Boolean?    @default(false)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id            Int          @id @default(autoincrement())
+  name          String       @unique @db.VarChar(255)
+  title         String       @db.VarChar(255)
+  content       String       @db.VarChar(255)
+  deleted       Boolean?     @default(false)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
   subCategoryId Int?
   tags          Json?
@@ -112,4 +112,6 @@ model Site {
   point       Int?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  
+  pageAbout   Json?
 }
