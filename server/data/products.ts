@@ -36,6 +36,15 @@ export async function getProduct(id: Number) {
   return response;
 }
 
+export async function getProductByName(name: String) {
+  const response = await prisma.product.findMany({
+    where: {
+      name:name,
+    },
+  });
+  return response;
+}
+
 export async function postProduct(data: interfaceProduct) {
   const response = await prisma.product.create({
     data: data,

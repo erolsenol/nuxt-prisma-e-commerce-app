@@ -59,7 +59,7 @@ function createImage(files) {
   }
 }
 
-async function save(event) {
+async function save() {
   const {valid} = await addValidation.value.validate()
   if(!valid) {
     snackbar.add({
@@ -76,9 +76,10 @@ async function save(event) {
   });
 
   console.log("send producttt 12312");
+  const productData = product.value
   const { data, pending, error, refresh } = await useFetch("/api/product", {
     method: "post",
-    body: product,
+    body: productData,
   }).catch((error) => {
     console.error(error);
   });
@@ -111,6 +112,13 @@ async function save(event) {
       });
     }
   } else {
+    if(data.value.error === "There is a product with the same name") {
+      snackbar.add({
+      type: "error",
+      text: "Aynı İsimle Ürün bulunuyor",
+    });
+      return
+    }
     console.log("Ürün Kaydedilemedi");
     snackbar.add({
       type: "error",
@@ -122,7 +130,7 @@ async function save(event) {
 
 <template>
   <div class="product-add">
-    <Form @submit="save" as="v-form" ref="addValidation" :validation-schema="schema">
+    <Form as="v-form" ref="addValidation" :validation-schema="schema">
       <div class="mb-3">
         <label for="product-name" class="form-label">Ürün Adı</label>
         <Field name="name" v-model="product.name" type="text" class="form-control" id="product-name"  />

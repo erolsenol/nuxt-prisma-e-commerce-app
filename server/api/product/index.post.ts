@@ -1,4 +1,4 @@
-import { postProduct } from "../../data/products";
+import { postProduct, getProductByName } from "../../data/products";
 import { postImage } from "../../data/images";
 
 export default defineEventHandler(async (event) => {
@@ -11,6 +11,13 @@ export default defineEventHandler(async (event) => {
   if(!body.name || !body.title || !body.content ) {
     response.error = "cannot be empty"
     return response
+  }
+
+  const nameProduct = await getProductByName(body.name)
+  if(nameProduct.length > 0) {
+    response.error = "There is a product with the same name"
+    return response
+
   }
 
   const product = await postProduct({ name: body.name, title: body.title, content: body.content })
