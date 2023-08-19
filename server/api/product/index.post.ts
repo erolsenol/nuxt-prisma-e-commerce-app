@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
   if(nameProduct.length > 0) {
     response.error = "There is a product with the same name"
     return response
-
   }
 
   const product = await postProduct({ name: body.name, title: body.title, content: body.content })
