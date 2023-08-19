@@ -47,6 +47,7 @@ export default defineEventHandler(async (event) => {
     status: false
   }
   const body = await readBody(event)
+  console.log("image post body:",body);
 
   const writePath = body.path || false
 
@@ -72,6 +73,7 @@ export default defineEventHandler(async (event) => {
       if (body.ownerName) {
         imageData[body.ownerName] = body.ownerId
       }
+      console.log("server image prisma create data:",imageData);
       const imgRes = await postImage(imageData)
       if (imgRes.id) {
         response.data.push(imgRes)

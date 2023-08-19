@@ -9,7 +9,7 @@ const tabs = [
   "users",
   "comments",
   "site_settings",
-  ]
+]
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const tabs = [
           <button type="button" class="list-group-item list-group-item-action" @click="active = index"
             :class="`${active == index ? 'active' : ''}`" :aria-current="`${active == index ? 'true' : ''}`"
             v-for="(tab, index) in tabs" :key="index">
-            {{ $t(tab)  }}
+            {{ $t(tab) }}
           </button>
         </div>
       </div>
@@ -36,13 +36,13 @@ const tabs = [
               </h2>
               <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <ProductAdd />
+                  <AdminProductAdd />
                 </div>
               </div>
             </div>
           </div>
           <h5 class="ps-1">Product List</h5>
-          <ProductList />
+          <AdminProductList />
         </div>
         <div class="categories" v-if="active == 1">
           <div class="accordion mb-3" id="accordionExample">
@@ -94,7 +94,7 @@ const tabs = [
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
                   aria-expanded="true" aria-controls="collapseProduct">
-                  {{$t('page_about_us')}}
+                  {{ $t('page_about_us') }}
                 </button>
               </h2>
               <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">

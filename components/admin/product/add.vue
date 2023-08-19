@@ -75,7 +75,6 @@ async function save() {
     imageData.push({ name: imageNames.value[index], image: img })
   });
 
-  console.log("send producttt 12312");
   const productData = product.value
   const { data, pending, error, refresh } = await useFetch("/api/product", {
     method: "post",
@@ -83,6 +82,7 @@ async function save() {
   }).catch((error) => {
     console.error(error);
   });
+  console.log("client product post response:",data.value);
   if (data.value.status) {
     console.log(data.value.data.id);
 
@@ -97,7 +97,7 @@ async function save() {
       console.error(error);
     });
 
-    console.log("response", response);
+    console.log("client image post response:", response.data.value);
 
     if (response.data.value.status) {
       console.log("Görsel Yüklendi");

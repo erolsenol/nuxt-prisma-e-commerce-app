@@ -32,6 +32,10 @@ export async function getProduct(id: Number) {
     where: {
       id,
     },
+    include: {
+      images: true,
+      comments: true,
+    },
   });
   return response;
 }

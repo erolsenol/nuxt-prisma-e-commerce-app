@@ -22,10 +22,10 @@ export default defineEventHandler(async (event) => {
     title,
     content
   }
-  const response = await pageAbout.post(data)
+  const res = await pageAbout.post(data)
 
-  if (response.id) {
-    response.data = response
+  if (res.id) {
+    response.data = res
     response.status = true
   }
   
