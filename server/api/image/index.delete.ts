@@ -48,7 +48,8 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  console.log(id,typeof id);
+
+  const body = await readBody(event)
   const image = await getImage(id);
 
   if (!image.id) {
@@ -56,9 +57,15 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
+  const writePath = body.path || false
   const dir = process.cwd();
 
-  const filePath = `${dir}/public/images/${image.name}`;
+  let filePath = null
+  if(writePath) {
+    filePath = `${dir}/public/images/${writePath}${image.name}`
+  }else {
+    filePath = `${dir}/public/images/${image.name}`
+  }
 
   const res = await deleteFile(filePath);
   console.log("delete file:", res);

@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   // console.log("body",body);
 
-  console.log("bodyimage", body.productId);
+  const writePath = body.path || false
 
   for (let index = 0; index < body.images.length; index++) {
     const image = body.images[index];
@@ -57,7 +57,12 @@ export default defineEventHandler(async (event) => {
 
     const dir = process.cwd();
 
-    const filePath = `${dir}/public/images/${image.name}`
+    let filePath = null
+    if(writePath) {
+      filePath = `${dir}/public/images/${writePath}${image.name}`
+    }else {
+      filePath = `${dir}/public/images/${image.name}`
+    }
 
     const res = await saveFile(filePath, data)
     if (res.success) {

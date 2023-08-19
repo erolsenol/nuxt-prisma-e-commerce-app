@@ -20,5 +20,5 @@ export default {
     page_about_us: "Hakkımızda Sayfası",
 
     page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
-    page_language: "Page Language: "
+    page_language: "Sayfa dili"
 }

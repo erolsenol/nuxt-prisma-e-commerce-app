@@ -21,5 +21,5 @@ export default {
     page_about_us: "About Us Page",
 
     page_valid_for_language: "This page is valid for english({0}) language",
-    page_language: "Page Language: "
+    page_language: "Page Language"
 }

@@ -64,14 +64,16 @@ model SubCategory {
 }
 
 model Image {
-  id        Int      @id @default(autoincrement())
-  path      String   @db.VarChar(255)
-  name      String   @db.VarChar(255)
-  deleted   Boolean? @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  product   Product  @relation(fields: [productId], references: [id])
-  productId Int
+  id          Int       @id @default(autoincrement())
+  path        String    @db.VarChar(255)
+  name        String    @db.VarChar(255)
+  deleted     Boolean?  @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   Int
+  pageabout   Pageabout @relation(fields: [pageaboutId], references: [id])
+  pageaboutId Int
 }
 
 model Comment {
@@ -114,4 +116,15 @@ model Site {
   updatedAt   DateTime @updatedAt
 
   pageAbout Json?
+}
+
+model Pageabout {
+  id        Int      @id @default(autoincrement())
+  locale    String   @db.VarChar(255)
+  title     String   @db.VarChar(255)
+  content   String   @db.VarChar(255)
+  deleted   Boolean? @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Image     Image
 }

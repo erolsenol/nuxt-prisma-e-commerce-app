@@ -99,7 +99,7 @@ const tabs = [
               </h2>
               <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                 <PageContentEdit />
+                  <PageAbout />
                 </div>
               </div>
             </div>
