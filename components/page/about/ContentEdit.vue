@@ -13,7 +13,11 @@ const { lang, index } = defineProps({
     lang: String,
     index: Number,
 })
-const image = ref("")
+const imageBase64 = ref("")
+const imageData = ref({
+    name: null,
+    data: null
+})
 const form = ref({
     title: null,
     content: null,
@@ -36,7 +40,9 @@ async function formClear() {
     return new Promise((resolve, reject) => {
         form.value.title = null
         form.value.content = null
-        image.value = ""
+        imageBase64.value = ""
+        imageData.value.name = null
+        imageData.value.data = null
         resolve(true)
     })
 }
@@ -51,17 +57,92 @@ function upload() {
 
 async function onFileChange(e) {
     let files = e.target.files || e.dataTransfer.files;
+    console.log("files", files);
     if (!files.length) return;
-    image.value = null
-    image.value = await $helper.fileToBase64(files[0])
+    imageBase64.value = null
+    imageBase64.value = await $helper.fileToBase64(files[0])
+    imageData.value.name = files[0].name
+    imageData.value.data = imageBase64.value
 }
 
-function save() {
-    const imgInput = document.querySelector(`#img-input-${lang}-${index}`)
-    console.log(imgInput);
-    if (!imgInput) return
+async function save() {
+    console.log(form.value.title);
+    console.log(form.value.content);
+    console.log(imageBase64.value);
+    console.log(lang);
+    if (!form.value.title || !form.value.content || !imageBase64.value) {
+        snackbar.add({
+            type: "error",
+            text: "Formu Eksiksiz Doldurun",s
+        });
+        return
+    }
 
-    imgInput.click()
+    const body = {
+        locale: lang,
+        title: form.value.title,
+        content: form.value.content
+    }
+
+    const { data, pending, error, refresh } = await useFetch("/api/pageAbout", {
+        method: "post",
+        body: body,
+    }).catch((error) => {
+        console.error(error);
+    });
+    if (data.value.status) {
+        console.log(data.value.data.id);
+        const imageBody = {
+            path: "about-us/",
+            ownerName: "pageaboutId",
+            ownerId: "pageaboutId",
+            images: [{
+                name: imageData.value.name,
+                image: imageData.value.data
+            }]
+        }
+
+        const response = await useFetch("/api/image", {
+            method: "post",
+            body: imageBody,
+        }).catch((error) => {
+            console.error(error);
+        });
+
+        console.log("response", response);
+
+        if (response.data.value.status) {
+            console.log("Görsel Yüklendi");
+            snackbar.add({
+                type: "success",
+                text: "Görsel Yüklendi",
+            });
+            await formClear()
+        } else {
+            console.log("Görsel Kaydedilemedi");
+            snackbar.add({
+                type: "error",
+                text: "Görsel Kaydedilemedi",
+            });
+        }
+    } else {
+        if (data.value.error === "There is a product with the same name") {
+            snackbar.add({
+                type: "error",
+                text: "Aynı İsimle Ürün bulunuyor",
+            });
+
+            await addValidation.value.reset()
+            return true
+        }
+        console.log("Ürün Kaydedilemedi");
+        snackbar.add({
+            type: "error",
+            text: "Ürün Kaydedilemedi",
+        });
+    }
+    await addValidation.value.reset()
+    return true
 }
 
 </script>
@@ -74,17 +155,17 @@ function save() {
             </div>
             <div class="mb-3">
                 <label for="title" class="form-label">{{ $t('title') }}</label>
-                <input type="email" class="form-control" id="title">
+                <input v-model="form.title" class="form-control" id="title">
             </div>
             <div class="mb-3">
                 <label for="content" class="form-label">{{ $t('content') }}</label>
-                <textarea class="form-control" id="content" rows="6"></textarea>
+                <textarea v-model="form.content" class="form-control" id="content" rows="6"></textarea>
             </div>
             <div class="mb-3 ">
                 <input v-show="false" name="image" @change="onFileChange" class="form-control" type="file"
                     :id="`img-input-${lang}-${index}`" accept="image/png, image/jpeg" />
-                <nuxt-img v-if="image" :src="image" class="card-img-top img-fluid" style="max-width: 20rem;" />
-                <button @click="upload()" type="button" class="btn btn-light float-end">{{ $t('upload_image')
+                <nuxt-img v-if="imageBase64" :src="imageBase64" class="card-img-top img-fluid" style="max-width: 20rem;" />
+                <button @click="upload" type="button" class="btn btn-light float-end">{{ $t('upload_image')
                 }}</button>
             </div>
             <div class="mb-3">
