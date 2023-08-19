@@ -83,7 +83,8 @@ async function save(event) {
         const response = await useFetch("/api/image", {
             method: "post",
             body: {
-                productId: data.value.data.id,
+                ownerName: "productId",
+                ownerId: data.value.data.id,
                 images: imageData
             },
         }).catch((error) => {

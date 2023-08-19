@@ -47,7 +47,6 @@ export default defineEventHandler(async (event) => {
     status: false
   }
   const body = await readBody(event)
-  // console.log("body",body);
 
   const writePath = body.path || false
 
@@ -58,9 +57,9 @@ export default defineEventHandler(async (event) => {
     const dir = process.cwd();
 
     let filePath = null
-    if(writePath) {
+    if (writePath) {
       filePath = `${dir}/public/images/${writePath}${image.name}`
-    }else {
+    } else {
       filePath = `${dir}/public/images/${image.name}`
     }
 
@@ -69,12 +68,14 @@ export default defineEventHandler(async (event) => {
       const imageData = {
         path: filePath,
         name: image.name,
-        productId: body.productId
+      }
+      if (body.ownerName) {
+        imageData[body.ownerName] = body.ownerId
       }
       const imgRes = await postImage(imageData)
       if (imgRes.id) {
         response.data.push(imgRes)
-      }else {
+      } else {
         const errData: errorData = { name: image.name, error: "failed to write to image database" }
         response.data.push(errData)
       }
