@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   if (response.id) {
     response.data = response
     response.status = true
-    return response
   }
+  
   return response
 });

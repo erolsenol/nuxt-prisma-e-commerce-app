@@ -26,6 +26,13 @@ export async function getImageWithProductId(id) {
   return response;
 }
 
+export async function getImageWithDynamicId(data) {
+  const response = await prisma.image.findMany({
+    where: data,
+  });
+  return response;
+}
+
 export async function postImage(data) {
   const response = await prisma.image.create({
     data: data,

@@ -8,10 +8,10 @@ export default defineEventHandler(async (event) => {
   const items = await pageAbout.geAll()
 
 
-  if (items) {
+  if (items && items.length > 0) {
     response.data = items
     response.status = true
-    return response
   }
+
   return response
 });

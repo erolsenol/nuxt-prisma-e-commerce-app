@@ -1,5 +1,5 @@
-import { getProduct } from "../../data/products";
-import { getImageWithProductId } from "../../data/images";
+import pageAbout from "../../data/pageAbout";
+import { getImageWithDynamicId } from "../../data/images";
 
 export default defineEventHandler(
   async (event) => {
@@ -13,18 +13,19 @@ export default defineEventHandler(
       return response
     }
 
-    const product = await getProduct(id)
+    const data = await pageAbout.get(id)
+    console.log("page about first data:", data);
 
-    if (product && product.id) {
-      const images = await getImageWithProductId(id)
-      
-      if(images.length > 0) {
-        product.images = images
-      }else {
-        product.images = []
+    if (data && data.id) {
+      const images = await getImageWithDynamicId({ pageaboutId: id })
+
+      if (images.length > 0) {
+        data.images = images
+      } else {
+        data.images = []
       }
 
-      response.data = product
+      response.data = data
       response.status = true
       return response
     }
