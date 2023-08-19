@@ -47,7 +47,7 @@ model Category {
   deleted     Boolean?      @default(false)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  SubCategory SubCategory[]
+  subCategory SubCategory[]
 }
 
 model SubCategory {
@@ -60,7 +60,7 @@ model SubCategory {
   updatedAt   DateTime  @updatedAt
   category    Category  @relation(fields: [categoryId], references: [id])
   categoryId  Int
-  Product     Product[]
+  product     Product[]
 }
 
 model Image {

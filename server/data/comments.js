@@ -1,7 +1,12 @@
 import prisma from "./prisma";
 
 export async function getComments() {
-  const comments = await prisma.comment.findMany();
+  const comments = await prisma.comment.findMany({
+    include: {
+      product: true,
+      user: true,
+    },
+  });
   return comments;
 }
 
@@ -10,6 +15,10 @@ export async function getCommentFromProduct(id) {
     {
       where: {
         productId: id
+      },
+      include: {
+        product: true,
+        user: true,
       },
     }
   );

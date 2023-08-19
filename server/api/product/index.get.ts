@@ -1,4 +1,4 @@
-import { getProducts } from "../../data/products";
+import { getProducts, countProduct } from "../../data/products";
 
 export default defineEventHandler(async (event) => {
   let response = {
@@ -11,11 +11,15 @@ export default defineEventHandler(async (event) => {
   console.log("take", take)
 
   const products = await getProducts({ skip: Number(skip), take: Number(take) })
+  const total = await countProduct({})
 
   console.log("products", products);
 
   if (products ) {
     response.data = products
+    response.paginate = {
+      total: total
+    }
     response.status = true
     return response
   }

@@ -18,7 +18,11 @@ interface response {
 }
 
 async function geAll(): Promise<response[]> {
-  const response = await prisma.pageabout.findMany();
+  const response = await prisma.pageabout.findMany({
+    include: {
+      images: true,
+    },
+  });
   return response;
 }
 
@@ -26,6 +30,9 @@ async function get(id: Number) {
   const response = await prisma.pageabout.findUnique({
     where: {
       id,
+    },
+    include: {
+      images: true,
     },
   });
   return response;

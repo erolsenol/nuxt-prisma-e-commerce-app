@@ -4,6 +4,10 @@ export async function getImages() {
   const response = await prisma.image.findMany({
     skip: 0,
     take: 20,
+    include: {
+      product: true,
+      pageabout: true,
+    },
   });
   return response;
 }
@@ -12,6 +16,10 @@ export async function getImage(id: Number) {
   const response = await prisma.image.findUnique({
     where: {
       id,
+    },
+    include: {
+      product: true,
+      pageabout: true,
     },
   });
   return response;
@@ -22,6 +30,10 @@ export async function getImageWithProductId(id) {
     where: {
       productId: id,
     },
+    include: {
+      product: true,
+      pageabout: true,
+    },
   });
   return response;
 }
@@ -29,6 +41,10 @@ export async function getImageWithProductId(id) {
 export async function getImageWithDynamicId(data) {
   const response = await prisma.image.findMany({
     where: data,
+    include: {
+      product: true,
+      pageabout: true,
+    },
   });
   return response;
 }
@@ -55,7 +71,7 @@ export async function updateImage(id, data) {
 export async function deleteImage(id) {
   const deleteImage = await prisma.image.delete({
     where: {
-        id: id,
+      id: id,
     },
   })
 

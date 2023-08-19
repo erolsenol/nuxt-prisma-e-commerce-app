@@ -22,6 +22,9 @@ export async function getSubCategories({
   const response = await prisma.subCategory.findMany({
     skip,
     take,
+    include: {
+      product: true,
+    },
   });
   
   return response;
@@ -32,6 +35,9 @@ export async function getSubCategory(id: Number) {
     where: {
       id,
     },
+    include: {
+      product: true,
+    },
   });
   return response;
 }
@@ -40,6 +46,9 @@ export async function getSubCategoryByName(name: String) {
   const response = await prisma.subCategory.findMany({
     where: {
       name:name,
+    },
+    include: {
+      product: true,
     },
   });
   return response;

@@ -3,6 +3,9 @@ export async function getUsers() {
   const users = await prisma.user.findMany({
     skip: 0,
     take: 20,
+    include: {
+      comments: true,
+    },
   });
   return users;
 }
@@ -12,6 +15,9 @@ export async function getUser(id) {
     {
       where: {
         id
+      },
+      include: {
+        comments: true,
       },
     }
   );

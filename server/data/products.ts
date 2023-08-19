@@ -23,6 +23,10 @@ export async function getProducts({
   const response = await prisma.product.findMany({
     skip,
     take,
+    include: {
+      images: true,
+      comments: true,
+    },
   });
   return response;
 }
@@ -73,6 +77,14 @@ export async function deleteProduct(id:Number) {
     where: {
         id: id,
     },
+  })
+
+  return deleteProduct
+}
+
+export async function countProduct(where: Object) {
+  const deleteProduct = await prisma.product.count({
+    where: where,
   })
 
   return deleteProduct

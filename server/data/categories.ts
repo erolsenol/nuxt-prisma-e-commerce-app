@@ -21,6 +21,9 @@ export async function getCategories({
   const response = await prisma.category.findMany({
     skip,
     take,
+    include: {
+      subCategory: true,
+    },
   });
   return response;
 }
@@ -29,6 +32,9 @@ export async function getCategory(id: Number) {
   const response = await prisma.category.findUnique({
     where: {
       id,
+    },
+    include: {
+      subCategory: true,
     },
   });
   return response;

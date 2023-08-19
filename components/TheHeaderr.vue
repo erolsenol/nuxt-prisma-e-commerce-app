@@ -26,7 +26,7 @@ function changeLocale(val) {
 const headerItems = [
    {
       text: "products",
-      to: null
+      to: "/"
    },
    {
       text: "services",
@@ -38,7 +38,7 @@ const headerItems = [
    },
    {
       text: "about_us",
-      to: "about"
+      to: "/about"
    },
    {
       text: "communication",
@@ -60,7 +60,7 @@ let selectedIndex = ref("0")
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
          <li v-for="(item, index) in headerItems" :key="index">
-            <NuxtLink :to="`${locale}/${item.to}`" class="nav-link cool-link px-2">
+            <NuxtLink :to="`${item.to}`" class="nav-link cool-link px-2">
                {{ $t(item.text) }}
             </NuxtLink>
 
