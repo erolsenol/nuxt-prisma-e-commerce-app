@@ -8,6 +8,7 @@ export default {
 import { ref, toRef, computed } from "vue";
 
 const { t } = useI18n();
+const { $qs } = useNuxtApp()
 
 const storeUser = useUser()
 
@@ -42,6 +43,57 @@ function formClear() {
 async function submit() {
     console.log("type", type.value);
     if (type.value == 'login') {
+        if (!form.value.email) {
+            snackbar.add({
+                type: "error",
+                text: t('errors.email_required'),
+            });
+            return
+        } else if (!form.value.password0) {
+            snackbar.add({
+                type: "error",
+                text: t('errors.password_required'),
+            });
+            return
+        }
+
+        const config = {
+            params: {
+                email: form.value.email,
+                password: form.value.password0,
+            },
+            paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+        };
+        const { data, pending, error, refresh } = await useFetch("/api/user", {
+            ...config,
+        }).catch((error) => {
+            console.error(error);
+        });
+
+        if (data.value.status) {
+            snackbar.add({
+                type: "success",
+                text: t('success.user_created'),
+            });
+            storeUser.login(data.value.data)
+            console.log("loginModal", loginModal);
+            loginModal.value.click()
+            formClear()
+            return
+        } else {
+            if (data.value.error === "your password is wrong") {
+                snackbar.add({
+                    type: "error",
+                    text: t('your_password_wrong'),
+                });
+                return
+            }
+            console.log("giriş yapılamnadı");
+            snackbar.add({
+                type: "error",
+                text: t('login_failed'),
+            });
+        }
 
     } else if (type.value == 'sing_up') {
         if (form.value.password0 !== form.value.password1) {

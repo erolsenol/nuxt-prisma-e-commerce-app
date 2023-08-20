@@ -1,5 +1,6 @@
 import prisma from "./prisma";
-export async function getUsers() {
+export async function getUsers({ skip = 0,
+  take = 20, }) {
   const users = await prisma.user.findMany({
     skip: 0,
     take: 20,
@@ -10,7 +11,7 @@ export async function getUsers() {
   return users;
 }
 
-export async function getUser(id) {
+export async function getUser(id: Number) {
   const users = await prisma.user.findUnique(
     {
       where: {
@@ -24,11 +25,11 @@ export async function getUser(id) {
   return users;
 }
 
-export async function getUserByEmail(email) {
+export async function getUserByEmail(email: String) {
   const users = await prisma.user.findUnique(
     {
       where: {
-        email:email
+        email: email
       },
       include: {
         comments: true,
@@ -38,18 +39,18 @@ export async function getUserByEmail(email) {
   return users;
 }
 
-export async function postUser(data) {
+export async function postUser(data: Object) {
   const user = await prisma.user.create({
-    data: data,
+    data
   });
   console.log("user 123123", user);
   return user;
 }
 
-export async function update(id, data) {
+export async function update(id: Number, data: Object) {
   const update = await prisma.user.update({
     where: {
-      id: id,
+      id
     },
     data: data,
   })
@@ -57,13 +58,10 @@ export async function update(id, data) {
   return
 }
 
-export async function createMany() {
-  return await prisma.user.createMany({
-    data: [
-      { firstName: 'test1', lastName: 'last1' },
-      { firstName: 'test2', lastName: 'last2' },
-      { firstName: 'test3', lastName: 'last3' },
-    ],
-    skipDuplicates: true, // Skip 'Bobo'
+export async function countUser(where: Object = {}) {
+  const count = await prisma.user.count({
+    where: where,
   })
-} 
+
+  return count
+}

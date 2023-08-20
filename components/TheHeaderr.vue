@@ -63,22 +63,18 @@ let loginFormType = ref("login")
    <header class="header">
       <div
          class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
-
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
             <a href="/" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
                <NuxtImg class="logo ms-3" src="/img/google-logo.webp" />
             </a>
          </div>
-
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li class="" v-for="(item, index) in headerItems" :key="index">
                <NuxtLink :to="`${item.to}`" class="nav-link cool-link px-2">
                   {{ $t(item.text) }}
                </NuxtLink>
-
             </li>
          </ul>
-
          <div
             class="d-flex flex-row align-items-center justify-content-lg-end col-lg-3 col-md-5 col-sm-6 text-xl-end text-lg-start mt-xl-0 mt-lg-3 mt-md-3 me-3">
             <template v-if="storeUser.getHasLogin != true">
@@ -121,8 +117,6 @@ let loginFormType = ref("login")
                   </template>
                </ul>
             </div>
-
-
          </div>
       </div>
       <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -136,7 +130,6 @@ let loginFormType = ref("login")
                <div class="modal-body">
                   <LoginForm :type="loginFormType" />
                </div>
-
             </div>
          </div>
       </div>
