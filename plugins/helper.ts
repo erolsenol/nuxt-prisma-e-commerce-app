@@ -1,11 +1,12 @@
-import {fileToBase64} from "../helper"
-  
+import { fileToBase64, replaceTurkishCharacters } from "../helper"
+
 export default defineNuxtPlugin(() => {
-    return {
-      provide: {
-        helper: {
-          fileToBase64
-        }
+  return {
+    provide: {
+      helper: {
+        fileToBase64,
+        replaceTurkishCharacters
       }
     }
-  })
+  }
+})

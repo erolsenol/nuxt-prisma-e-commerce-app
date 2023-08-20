@@ -50,41 +50,44 @@ let selectedIndex = ref("0")
 </script>
 
 <template>
-   <header
-      class="header d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div class="col-md-3 mb-2 mb-md-0">
-         <a href="/" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
-            <NuxtImg class="logo ms-3" src="/img/google-logo.webp" />
-         </a>
-      </div>
+   <header class="header">
+      <div
+         class=" container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-         <li v-for="(item, index) in headerItems" :key="index">
-            <NuxtLink :to="`${item.to}`" class="nav-link cool-link px-2">
-               {{ $t(item.text) }}
-            </NuxtLink>
-
-         </li>
-      </ul>
-
-      <div class="col-md-3 text-end me-3">
-         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-light dropdown-toggle px-3" data-bs-toggle="dropdown"
-               aria-expanded="false">
-               {{ locale.toUpperCase() }}
-            </button>
-            <ul class="dropdown-menu">
-               <template v-for="item in availableLocales" :key="locale.code">
-                  <li class="text-center">
-                     <NuxtLink class="dropdown-item" @click="changeLocale(item)" :to="switchLocalePath(item)">
-                        {{ item.toUpperCase() }}
-                     </NuxtLink>
-                  </li>
-               </template>
-            </ul>
+         <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
+               <NuxtImg class="logo ms-3" src="/img/google-logo.webp" />
+            </a>
          </div>
-         <!-- <button type="button" class="btn btn-outline-primary me-2">Login</button>
+
+         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li class="" v-for="(item, index) in headerItems" :key="index">
+               <NuxtLink :to="`${item.to}`" class="nav-link cool-link px-2">
+                  {{ $t(item.text) }}
+               </NuxtLink>
+
+            </li>
+         </ul>
+
+         <div class="col-md-3 text-xl-end mt-xl-0 text-lg-start mt-lg-3 me-3">
+            <div class="btn-group" role="group">
+               <button type="button" class="btn btn-outline-light dropdown-toggle px-3" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  {{ locale.toUpperCase() }}
+               </button>
+               <ul class="dropdown-menu">
+                  <template v-for="item in availableLocales" :key="locale.code">
+                     <li class="text-center">
+                        <NuxtLink class="dropdown-item" @click="changeLocale(item)" :to="switchLocalePath(item)">
+                           {{ item.toUpperCase() }}
+                        </NuxtLink>
+                     </li>
+                  </template>
+               </ul>
+            </div>
+            <!-- <button type="button" class="btn btn-outline-primary me-2">Login</button>
          <button type="button" class="btn btn-primary">Sign-up</button> -->
+         </div>
       </div>
    </header>
 </template>

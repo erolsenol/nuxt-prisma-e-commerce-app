@@ -13,8 +13,10 @@ export default defineEventHandler(async (event) => {
     return response
   }
 
+  console.log("product post body",body);
+
   const nameProduct = await getProductByName(body.name)
-  if(nameProduct.length > 0) {
+  if(nameProduct && nameProduct.length > 0) {
     response.error = "There is a product with the same name"
     return response
   }

@@ -14,7 +14,12 @@ const paginate = ref({ skip: 0, take: 20 })
 const items = ref([])
 
 onMounted(() => {
-  getAll()
+  console.log("product onMounted");
+  //fix
+  setTimeout(() => {
+    getAll()  
+  }, 500);
+  
 })
 
 async function getAll() {
@@ -26,17 +31,25 @@ async function getAll() {
   };
 
   const { data } = await useFetch("/api/product", config);
-  if (!data.value && !data.value.data) return
+  console.log("data",data.value);
+  if (!data || !data.value || !data.value.data) return
 
   items.value = data.value.data
+  console.log("items.value",items.value);
 }
 
 </script>
 
 <template>
   <div class="product">
-    <div class="product-item" v-for="(item, index) in items" :key="index">
-      {{ item.name }}
+    <div class="row">
+      <div class="col product-filter p-2 px-3 mb-2">
+        filter
+      </div>
+    </div>
+    <div class="row">
+      <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content" :name="item.name" v-for="(item, index) in items"
+        :key="index" />
     </div>
   </div>
 </template>

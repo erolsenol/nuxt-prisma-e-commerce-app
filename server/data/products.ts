@@ -45,9 +45,13 @@ export async function getProduct(id: Number) {
 }
 
 export async function getProductByName(name: String) {
-  const response = await prisma.product.findMany({
+  const response = await prisma.product.findUnique({
     where: {
-      name:name,
+      name: name,
+    },
+    include: {
+      images: true,
+      comments: true,
     },
   });
   return response;
@@ -72,10 +76,10 @@ export async function updateProduct(id: String, data: interfaceProduct) {
   return response;
 }
 
-export async function deleteProduct(id:Number) {
+export async function deleteProduct(id: Number) {
   const deleteProduct = await prisma.product.delete({
     where: {
-        id: id,
+      id: id,
     },
   })
 

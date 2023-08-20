@@ -9,7 +9,7 @@ let prisma: PrismaClient
 
 const prismaConfig = {
   rejectOnNotFound: {
-    findUnique: true,
+    findUnique: false,
   },
 }
 

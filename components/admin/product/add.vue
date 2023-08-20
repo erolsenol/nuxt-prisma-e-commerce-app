@@ -9,6 +9,8 @@ import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 
+const { $helper } = useNuxtApp();
+
 const schema = yup.object({
   name: yup.string().required(),
   title: yup.string().required(),
@@ -74,6 +76,11 @@ async function save() {
   images.value.forEach((img, index) => {
     imageData.push({ name: imageNames.value[index], image: img })
   });
+
+  const test = $helper.replaceTurkishCharacters(product.value.name) 
+  console.log("test",test);
+ 
+  product.value.name = $helper.replaceTurkishCharacters(product.value.name) 
 
   const productData = product.value
   const { data, pending, error, refresh } = await useFetch("/api/product", {
