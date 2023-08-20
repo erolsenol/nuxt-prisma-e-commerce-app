@@ -14,7 +14,7 @@ const type = toRef(props, 'type')
 
 
 const form = ref({
-    name: null,
+    firstname: null,
     lastname: null,
     username: null,
     age: null,
@@ -23,6 +23,16 @@ const form = ref({
     password1: null,
 })
 const snackbar = useSnackbar();
+
+function formClear() {
+    form.value.firstname = null
+    form.value.lastname = null
+    form.value.username = null
+    form.value.age = null
+    form.value.email = null
+    form.value.password0 = null
+    form.value.password1 = null
+}
 
 async function submit() {
     console.log("type", type.value);
@@ -34,20 +44,62 @@ async function submit() {
                 type: "error",
                 text: t('errors.password_not_match'),
             });
+            return
         } else if (form.value.password0.length < 8) {
             snackbar.add({
                 type: "error",
                 text: t('errors.password_min_length_8'),
             });
+            return
         } else if (!form.value.email) {
             snackbar.add({
                 type: "error",
                 text: t('errors.email_required'),
             });
+            return
         } else if (!form.value.username) {
             snackbar.add({
                 type: "error",
                 text: t('errors.username_required'),
+            });
+            return
+        }
+
+        form.value.password = form.value.password0
+        const body = {
+            firstname: form.value.firstname,
+            lastname: form.value.lastname,
+            username: form.value.username,
+            age: form.value.age,
+            email: form.value.email,
+            password: form.value.password,
+        }
+        const { data, pending, error, refresh } = await useFetch("/api/user", {
+            method: "post",
+            body: body,
+        }).catch((error) => {
+            console.error(error);
+        });
+
+        if (data.value.status) {
+            snackbar.add({
+                type: "success",
+                text: t('success.user_created'),
+            });
+            formClear()
+            return
+        } else {
+            if (data.value.error === "email address is already registered") {
+                snackbar.add({
+                    type: "error",
+                    text: t('email_already_existing'),
+                });
+                return
+            }
+            console.log("Ürün Kaydedilemedi");
+            snackbar.add({
+                type: "error",
+                text: t('register_failed'),
             });
         }
     }
@@ -60,7 +112,7 @@ async function submit() {
         <div class="mb-3 d-flex flex-row justify-content-between" v-if="type != 'login'">
             <div>
                 <label for="form-name" class="form-label">{{ $t('name') }}</label>
-                <input v-model="form.name" type="text" class="form-control" id="form-name">
+                <input v-model="form.firstname" type="text" class="form-control" id="form-name">
             </div>
             <div>
                 <label for="form-lastname" class="form-label">{{ $t('lastname') }}</label>
@@ -82,11 +134,11 @@ async function submit() {
             </div>
         </div>
         <div class="mb-3">
-            <label for="form-email" class="form-label">{{ $t('email') }}  *</label>
+            <label for="form-email" class="form-label">{{ $t('email') }} *</label>
             <input v-model="form.email" type="email" class="form-control" id="form-email">
         </div>
         <div class="mb-3">
-            <label for="form-password0" class="form-label">{{ $t('password') }}  *</label>
+            <label for="form-password0" class="form-label">{{ $t('password') }} *</label>
             <input v-model="form.password0" type="password" class="form-control" id="form-password0">
         </div>
         <div class="mb-3" v-if="type != 'login'">

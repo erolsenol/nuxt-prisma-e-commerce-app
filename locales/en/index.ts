@@ -38,6 +38,11 @@ export default {
         password_not_match: "The passwords you entered do not match",
         password_min_length_8: "Your password must be at least 8 characters",
         email_required: "Enter your e-mail",
-        username_required: "Enter username"
+        username_required: "Enter username",
+        email_already_existing: "Email address registered",
+        register_failed: "Registration Failed"
+    },
+    success: {
+        user_created: "Registration successful"
     }
 }

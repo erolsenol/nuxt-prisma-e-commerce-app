@@ -37,6 +37,11 @@ export default {
         password_not_match: "Girdiğiniz şifreler uyuşmuyor",
         password_min_length_8: "Şifreniz en az 8 karakter olmalıdır",
         email_required: "E-posta giriniz",
-        username_required: "Kullanıcı adı giriniz"
+        username_required: "Kullanıcı adı giriniz",
+        email_already_existing: "E-posta adresi kayıtlı",
+        register_failed: "Kayıt Yapılamadı"
+    },
+    success: {
+        user_created: "Kayıt başarılı"
     }
 }

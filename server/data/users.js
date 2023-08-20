@@ -24,6 +24,20 @@ export async function getUser(id) {
   return users;
 }
 
+export async function getUserByEmail(email) {
+  const users = await prisma.user.findUnique(
+    {
+      where: {
+        email:email
+      },
+      include: {
+        comments: true,
+      },
+    }
+  );
+  return users;
+}
+
 export async function postUser(data) {
   const user = await prisma.user.create({
     data: data,

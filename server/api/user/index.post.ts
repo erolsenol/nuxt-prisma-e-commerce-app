@@ -1,5 +1,4 @@
-import { postUser, getProductByName } from "../../data/users";
-import { postImage } from "../../data/images";
+import { postUser, getUserByEmail } from "../../data/users";
 
 export default defineEventHandler(async (event) => {
   let response = {
@@ -13,10 +12,9 @@ export default defineEventHandler(async (event) => {
     return response
   }
 
-
-  const nameProduct = await getProductByName(body.name)
-  if (nameProduct && nameProduct.id) {
-    response.error = "There is a product with the same name"
+  const userEmail = await getUserByEmail(body.email)
+  if (userEmail && userEmail.id) {
+    response.error = "email address is already registered"
     return response
   }
 
