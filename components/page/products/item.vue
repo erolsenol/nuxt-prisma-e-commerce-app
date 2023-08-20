@@ -15,7 +15,6 @@ const { id, title, content, name, images } = defineProps({
 })
 
 const image = images && images.length > 0 && images[0]
-console.log("image", image);
 
 function openDetail() {
   router.push({ path: "/product-" + name });
@@ -31,8 +30,10 @@ const paginate = ref({ skip: 0, take: 20 })
 <template>
   <div class="col-6 col-md-4 col-lg-3 product-item px-md-2 px-sm-1 px-xs-1 mb-3">
     <div class="card" style="width: 100%; height: 27rem;" @click="openDetail">
-      <NuxtImg class="border-bottom border-secondary-subtle" v-if="image" :src="'images/' + image.name" style="height: 15rem;" />
-      <NuxtImg class="border-bottom border-secondary-subtle" v-else :src="'images/no-image.jpeg'" style="height: 15rem;" />
+      <NuxtImg class="border-bottom border-secondary-subtle" v-if="image" :src="'images/' + image.name"
+        style="height: 15rem;" />
+      <NuxtImg class="border-bottom border-secondary-subtle" v-else :src="'images/no-image.jpeg'"
+        style="height: 15rem;" />
       <div class="card-body p-2">
         <h5 class="card-title text-capitalize mb-3">{{ title }}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary text-capitalize mb-3">{{ name }}</h6>

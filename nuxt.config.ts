@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
     '@vee-validate/nuxt',
-    
+    '@pinia/nuxt',
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -36,6 +36,17 @@ export default defineNuxtConfig({
       FieldArray: 'VeeFieldArray',
       ErrorMessage: 'VeeErrorMessage',
     },
+  },
+  imports: {
+    dirs: ['./stores'],
+  },
+  pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      'defineStore', // import { defineStore } from 'pinia'
+      ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
+      'acceptHMRUpdate'
+    ],
   },
   nitro: {},
   extends: ["nuxt-seo-kit"],
@@ -100,5 +111,5 @@ export default defineNuxtConfig({
       },
     },
   },
-  
+
 });

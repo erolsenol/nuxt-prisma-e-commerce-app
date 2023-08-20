@@ -31,11 +31,10 @@ async function getAll() {
   };
 
   const { data } = await useFetch("/api/product", config);
-  console.log("data",data.value);
+  
   if (!data || !data.value || !data.value.data) return
 
-  items.value = data.value.data
-  console.log("items.value",items.value);
+  items.value = data.value.data 
 }
 
 </script>
@@ -44,7 +43,7 @@ async function getAll() {
   <div class="product">
     <div class="row">
       <div class="col product-filter p-2 px-3 mb-2">
-        filter
+        <!-- filter -->
       </div>
     </div>
     <div class="row">

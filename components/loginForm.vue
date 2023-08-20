@@ -6,11 +6,16 @@ export default {
 
 <script setup>
 import { ref, toRef, computed } from "vue";
+
 const { t } = useI18n();
+
+const storeUser = useUser()
+
 const props = defineProps({
     type: { type: String, required: true },
 })
 const type = toRef(props, 'type')
+const loginModal = ref("loginModal")
 
 
 const form = ref({
@@ -86,6 +91,9 @@ async function submit() {
                 type: "success",
                 text: t('success.user_created'),
             });
+            storeUser.login(data.value.data)
+            console.log("loginModal", loginModal);
+            loginModal.value.click()
             formClear()
             return
         } else {
@@ -151,7 +159,7 @@ async function submit() {
         </div>
         <div class="border-1 border-bottom mb-3"></div>
         <div class="text-end">
-            <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal" ref="loginModal">Close</button>
             <button type="button" class="btn btn-primary" @click="submit">{{ type ==
                 'login' ?
                 $t('login') :
