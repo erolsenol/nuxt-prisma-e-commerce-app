@@ -22,6 +22,9 @@ const availableLocales = computed(() => {
 function changeLocale(val) {
    setLocale(val);
 }
+function formTypeChange(str) {
+   loginFormType.value = str
+}
 
 const headerItems = [
    {
@@ -47,14 +50,15 @@ const headerItems = [
 ]
 
 let selectedIndex = ref("0")
+let loginFormType = ref("login")
 </script>
 
 <template>
    <header class="header">
       <div
-         class=" container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+         class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
 
-         <div class="col-md-3 mb-2 mb-md-0">
+         <div class="col-md-2 mb-2 mb-md-0">
             <a href="/" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
                <NuxtImg class="logo ms-3" src="/img/google-logo.webp" />
             </a>
@@ -70,6 +74,11 @@ let selectedIndex = ref("0")
          </ul>
 
          <div class="col-md-3 text-xl-end mt-xl-0 text-lg-start mt-lg-3 me-3">
+
+            <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
+               @click="formTypeChange('login')">{{ $t('login') }}</button>
+            <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
+               @click="formTypeChange('sing_up')"> {{ $t('sing_up') }}</button>
             <div class="btn-group" role="group">
                <button type="button" class="btn btn-outline-light dropdown-toggle px-3" data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -87,6 +96,21 @@ let selectedIndex = ref("0")
             </div>
             <!-- <button type="button" class="btn btn-outline-primary me-2">Login</button>
          <button type="button" class="btn btn-primary">Sign-up</button> -->
+         </div>
+      </div>
+      <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">{{ loginFormType == 'login' ? $t('login') :
+                     $t('sing_up') }}</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <LoginForm :type="loginFormType" />
+               </div>
+
+            </div>
          </div>
       </div>
    </header>

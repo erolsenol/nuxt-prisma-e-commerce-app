@@ -26,11 +26,7 @@ export async function getUser(id) {
 
 export async function postUser(data) {
   const user = await prisma.user.create({
-    data: {
-      firstName: "Erol",
-      lastName: "Senol",
-      age: 20,
-    },
+    data: data,
   });
   console.log("user 123123", user);
   return user;

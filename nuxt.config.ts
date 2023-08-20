@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
     '@vee-validate/nuxt',
+    
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -54,7 +55,7 @@ export default defineNuxtConfig({
   $development: {
     //
   },
-  css: ["~/assets/_colors.scss", "~/assets/_variables.scss", "~/assets/_main.scss", "~/assets/_general.scss","~/assets/_effects.scss"],
+  css: ["~/assets/_colors.scss", "~/assets/_variables.scss", "~/assets/_main.scss", "~/assets/_general.scss", "~/assets/_effects.scss"],
   snackbar: {
     bottom: true,
     right: true,
@@ -99,4 +100,5 @@ export default defineNuxtConfig({
       },
     },
   },
+  
 });
