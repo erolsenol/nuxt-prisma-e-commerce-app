@@ -12,14 +12,15 @@ const { $qs } = useNuxtApp()
 // the name must match template ref value
 const paginate = ref({ skip: 0, take: 20 })
 const items = ref([])
+let loading = ref(true)
 
 onMounted(() => {
   console.log("product onMounted");
   //fix
   setTimeout(() => {
-    getAll()  
+    getAll()
   }, 500);
-  
+
 })
 
 async function getAll() {
@@ -30,11 +31,11 @@ async function getAll() {
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
-  const { data } = await useFetch("/api/product", config);
-  
+  const { data } = await useFetch("/api/product", config).finally(() => loading = false);
+
   if (!data || !data.value || !data.value.data) return
 
-  items.value = data.value.data 
+  items.value = data.value.data
 }
 
 </script>
@@ -46,9 +47,10 @@ async function getAll() {
         <!-- filter -->
       </div>
     </div>
-    <div class="row">
-      <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content" :name="item.name" v-for="(item, index) in items"
-        :key="index" />
+    <div class="row" v-if="!loading">
+      <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content" :name="item.name"
+        v-for="(item, index) in items" :key="index" />
     </div>
+    <Loading v-else />
   </div>
 </template>

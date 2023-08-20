@@ -65,7 +65,7 @@ let loginFormType = ref("login")
          class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
             <a href="/" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
-               <NuxtImg class="logo ms-3" src="/img/google-logo.webp" />
+               <NuxtImg class="logo" src="/img/google-logo.webp" />
             </a>
          </div>
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
@@ -76,11 +76,11 @@ let loginFormType = ref("login")
             </li>
          </ul>
          <div
-            class="d-flex flex-row align-items-center justify-content-lg-end col-lg-3 col-md-5 col-sm-6 text-xl-end text-lg-start mt-xl-0 mt-lg-3 mt-md-3 me-3">
+            class="d-flex flex-row align-items-center justify-content-lg-end col-lg-4 col-md-5 col-sm-6 text-xl-end text-lg-start mt-xl-0 mt-lg-3 mt-md-3 me-0">
             <template v-if="storeUser.getHasLogin != true">
-               <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
+               <button type="button" class="btn btn-outline-light px-3 me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
                   @click="formTypeChange('login')">{{ $t('login') }}</button>
-               <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
+               <button type="button" class="btn btn-outline-light px-3 me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
                   @click="formTypeChange('sing_up')"> {{ $t('sing_up') }}</button>
             </template>
             <template v-else>

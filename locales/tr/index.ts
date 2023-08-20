@@ -18,6 +18,7 @@ export default {
     password: "Şifre",
     password_again: "Şifre Tekrar Girin",
     age: "Yaş",
+    loading: "Yükleniyor...",
 
     products: "Ürünler",
     site_settings: "Site Ayarları",

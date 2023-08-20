@@ -18,7 +18,7 @@ export default {
     password: "Password",
     password_again: "Password Again",
     age: "Age",
-
+    loading: "Loading...",
 
     products: "Products",
     site_settings: "Site Settings",
