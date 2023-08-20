@@ -169,12 +169,12 @@ async function save() {
             prev: { shadow: false, translate: ['-20%', 0, -1], },
             next: { translate: ['100%', 0, 0], },
           }">
-          <SwiperSlide v-for="(image, index) in product.images" :key="index">
+          <SwiperSlide v-for="(image, index) in images" :key="index">
             <div class="card" style="width: 28rem">
-              <nuxt-img :src="image" class="card-img-top img-fluid" style="width: 100%" />
+              <nuxt-img :src="image" class="card-img-top img-fluid" style="width: 100%; height: 18rem;" />
               <div class="card-body">
                 <h5 class="card-title">
-                  Görsel Adı: {{ product.imageNames[index] }}
+                  Görsel Adı: {{ imageNames[index] }}
                 </h5>
               </div>
             </div>
