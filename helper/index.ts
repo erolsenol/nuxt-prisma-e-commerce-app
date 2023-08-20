@@ -13,7 +13,6 @@ export function fileToBase64(file: Blob): PromiseLike<String | null> {
 }
 
 export function replaceTurkishCharacters(str: String) {
-
     const text = str.replace(/\s/g, '-').replace(/[^a-zA-Z0-9_-]/g, '');
     return text
 }
