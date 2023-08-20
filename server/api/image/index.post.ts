@@ -8,6 +8,8 @@ const base64Replace = (str: String) => str.replace(/^data:image\/\w+;base64,/, "
 
 interface fileRes {
   success: Boolean;
+  path?: String,
+  name?: String,
   error?: String;
 }
 interface errorData {
@@ -20,22 +22,30 @@ interface response {
   status: Boolean
 }
 
-async function saveFile(filePath: String, data: String) {
+function writeFile(filePath: String, data: String, name: String dataType = 'base64') {
   return new Promise<fileRes>((resolve, reject) => {
-    fs.access(filePath, fs.constants.F_OK, (err: String) => {
+    fs.writeFile(filePath, data, dataType, function (err: String) {
       if (err) {
-        fs.writeFile(filePath, data, 'base64', function (err: String) {
-          if (err) {
-            console.log(err);
-            return resolve({ success: false, error: "There is a problem" })
-          }
+        console.log(err);
+        return resolve({ success: false, error: "There is a problem" })
+      }
 
-          console.log("The file was saved!");
-          return resolve({ success: true })
-        });
+      console.log("The file was saved!");
+      return resolve({ success: true, path: filePath, name: name })
+    });
+  })
+}
+
+async function saveFile(filePath: String, name: String, data: String) {
+  return new Promise<fileRes>(async (resolve, reject) => {
+    fs.access(filePath, fs.constants.F_OK, async (err: String) => {
+      if (err) {
+        return resolve(await writeFile(filePath, name, data))
       } else {
-        console.log('Dosya mevcut.');
-        return resolve({ success: false, error: "File exists" })
+        return resolve(await writeFile(filePath.replace('.', '0.'), name.replace('.', '0.'), data))
+
+        // console.log('Dosya mevcut.');
+        // return resolve({ success: false, error: "File exists" })
       }
     });
   })
@@ -47,7 +57,6 @@ export default defineEventHandler(async (event) => {
     status: false
   }
   const body = await readBody(event)
-  console.log("image post body:",body);
 
   const writePath = body.path || false
 
@@ -64,16 +73,16 @@ export default defineEventHandler(async (event) => {
       filePath = `${dir}/public/images/${image.name}`
     }
 
-    const res = await saveFile(filePath, data)
+    const res = await saveFile(filePath, image.name, data)
     if (res.success) {
       const imageData = {
-        path: filePath,
-        name: image.name,
+        path: res.path,
+        name: res.name,
       }
       if (body.ownerName) {
         imageData[body.ownerName] = body.ownerId
       }
-      console.log("server image prisma create data:",imageData);
+      console.log("server image prisma create data:", imageData);
       const imgRes = await postImage(imageData)
       if (imgRes.id) {
         response.data.push(imgRes)
