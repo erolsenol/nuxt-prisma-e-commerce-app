@@ -93,9 +93,9 @@ async function get(id) {
 
 <template>
   <div class="product-list">
-    <table class="table table-hover table-striped ">
+    <table class="table table-hover table-striped">
       <thead>
-        <tr class="table-dark">
+        <tr class="table-light">
           <th scope="col">Id</th>
           <th scope="col">İsim</th>
           <th scope="col">Başlık</th>

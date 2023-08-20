@@ -95,10 +95,8 @@ export default defineEventHandler(async (event) => {
       prefix += "0"
     }
 
-    console.log("image.name2", image.name.replace(".", prefix + "."));
-
     const res = await writeFile(filePath.replace(".", prefix + "."), image.name.replace(".", prefix + "."), data)
-    console.log("saveFile", res);
+
     if (res.success) {
       const imageData = {
         path: res.path,
@@ -108,7 +106,9 @@ export default defineEventHandler(async (event) => {
         imageData[body.ownerName] = body.ownerId
       }
 
+      console.log("postImage", imageData);
       const imgRes = await postImage(imageData)
+      console.log("imgRes", imgRes);
       if (imgRes.id) {
         response.data.push(imgRes)
       } else {
