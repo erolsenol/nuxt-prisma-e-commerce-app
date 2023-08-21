@@ -17,8 +17,9 @@ interface response {
   image: Object
 }
 
-async function geAll(): Promise<response[]> {
+async function geAll(where: Object): Promise<response[]> {
   const response = await prisma.pageabout.findMany({
+    where: where,
     include: {
       images: true,
     },

@@ -8,8 +8,6 @@ export default {
 import { ref } from 'vue'
 const { locale, locales } = useI18n()
 
-// declare a ref to hold the element reference
-// the name must match template ref value
 
 </script>
 

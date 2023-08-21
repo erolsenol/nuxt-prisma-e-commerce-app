@@ -5,7 +5,11 @@ export default defineEventHandler(async (event) => {
     status: false
   }
 
-  const items = await pageAbout.geAll()
+  const query = getQuery(event);
+
+  const locale: String = (query.locale || "") as string;
+
+  const items = await pageAbout.geAll({ locale })
 
 
   if (items && items.length > 0) {

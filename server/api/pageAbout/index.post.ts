@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
     data: null,
     status: false
   }
+  
   const { locale, title, content, image } = await readBody(event)
 
   // locale
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
   // content
   // image
 
-  if (!body.locale || !body.title || !body.content) {
+  if (!locale || !title || !content) {
     response.error = "cannot be empty"
     return response
   }

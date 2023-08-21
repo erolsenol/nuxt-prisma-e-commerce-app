@@ -152,7 +152,7 @@ model Pageabout {
   locale    String   @db.VarChar(255)
   bigTitle  String?  @db.VarChar(255)
   title     String   @db.VarChar(255)
-  content   String   @db.VarChar(255)
+  content   String   @db.VarChar(2000)
   deleted   Boolean? @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

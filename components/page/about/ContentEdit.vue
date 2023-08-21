@@ -7,7 +7,12 @@ export default {
 <script setup>
 import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import * as yup from 'yup';
+import { object,string } from 'yup';
+
+const schema = object().shape({
+    title: string().required(),
+    content: string().required(),
+});
 
 const { lang, index } = defineProps({
     lang: String,
@@ -24,14 +29,7 @@ const form = ref({
 })
 const { $helper } = useNuxtApp()
 
-console.log("$helper", $helper);
 
-const schema = yup.object({
-    name: yup.string().required(),
-    name_en: yup.string().required(),
-    description: yup.string(),
-    categoryId: yup.number().required(),
-});
 
 const snackbar = useSnackbar();
 
@@ -49,15 +47,16 @@ async function formClear() {
 
 function upload() {
     const imgInput = document.querySelector(`#img-input-${lang}-${index}`)
-    console.log(imgInput);
+    
     if (!imgInput) return
 
     imgInput.click()
 }
 
 async function onFileChange(e) {
+    
     let files = e.target.files || e.dataTransfer.files;
-    console.log("files", files);
+    
     if (!files.length) return;
     imageBase64.value = null
     imageBase64.value = await $helper.fileToBase64(files[0])
@@ -66,14 +65,10 @@ async function onFileChange(e) {
 }
 
 async function save() {
-    console.log(form.value.title);
-    console.log(form.value.content);
-    console.log(imageBase64.value);
-    console.log(lang);
     if (!form.value.title || !form.value.content || !imageBase64.value) {
         snackbar.add({
             type: "error",
-            text: "Formu Eksiksiz Doldurun",s
+            text: "Formu Eksiksiz Doldurun",
         });
         return
     }
@@ -95,7 +90,7 @@ async function save() {
         const imageBody = {
             path: "about-us/",
             ownerName: "pageaboutId",
-            ownerId: "pageaboutId",
+            ownerId: data.value.data.id,
             images: [{
                 name: imageData.value.name,
                 image: imageData.value.data
@@ -108,8 +103,6 @@ async function save() {
         }).catch((error) => {
             console.error(error);
         });
-
-        console.log("response", response);
 
         if (response.data.value.status) {
             console.log("Görsel Yüklendi");
@@ -132,8 +125,7 @@ async function save() {
                 text: "Aynı İsimle Ürün bulunuyor",
             });
 
-            await addValidation.value.reset()
-            return true
+          
         }
         console.log("Ürün Kaydedilemedi");
         snackbar.add({
@@ -141,37 +133,43 @@ async function save() {
             text: "Ürün Kaydedilemedi",
         });
     }
-    await addValidation.value.reset()
-    return true
 }
 
 </script>
 
 <template>
     <div class="page-content-edit">
-        <div class="page-content-edit-language" :class="lang">
-            <div class="alert alert-primary py-1" role="alert">
-                {{ $t('page_language') }}: {{ lang }}
+        <Form @submit="save" :validation-schema="schema">
+            <div class="page-content-edit-language" :class="lang">
+                <div class="alert alert-primary py-1" role="alert">
+                    {{ $t('page_language') }}: {{ lang }}
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-label">{{ $t('title') }}</label>
+                    <Field v-model="form.title" name="title" class="form-control" id="title" />
+                    <ErrorMessage class="invalid text-capitalize" name="title" />
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">{{ $t('content') }}</label>
+                    <Field v-model="form.content" as="textarea" name="content" class="form-control" id="content" rows="6" />
+                    <ErrorMessage class="invalid text-capitalize" name="content" />
+                </div>
+                <div class="mb-3 d-flex flex-row justify-content-between">
+                    <div>
+                        <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+                    </div>
+                    <input v-show="false" name="image" @change="onFileChange" class="form-control" type="file"
+                        :id="`img-input-${lang}-${index}`" accept="image/png, image/jpeg" />
+
+                    <nuxt-img v-if="imageBase64" :src="imageBase64" class="card-img-top img-fluid"
+                        style="max-width: 20rem;" />
+                    <div>
+                        <button @click="upload" type="button" class="btn btn-light float-end">{{ $t('upload_image')
+                        }}</button>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="title" class="form-label">{{ $t('title') }}</label>
-                <input v-model="form.title" class="form-control" id="title">
-            </div>
-            <div class="mb-3">
-                <label for="content" class="form-label">{{ $t('content') }}</label>
-                <textarea v-model="form.content" class="form-control" id="content" rows="6"></textarea>
-            </div>
-            <div class="mb-3 ">
-                <input v-show="false" name="image" @change="onFileChange" class="form-control" type="file"
-                    :id="`img-input-${lang}-${index}`" accept="image/png, image/jpeg" />
-                <nuxt-img v-if="imageBase64" :src="imageBase64" class="card-img-top img-fluid" style="max-width: 20rem;" />
-                <button @click="upload" type="button" class="btn btn-light float-end">{{ $t('upload_image')
-                }}</button>
-            </div>
-            <div class="mb-3">
-                <button type="button" @click="save" class="btn btn-primary">{{ $t('save') }}</button>
-            </div>
-        </div>
+        </Form>
         <hr class="hr" />
     </div>
 </template>

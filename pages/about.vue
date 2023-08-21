@@ -1,35 +1,57 @@
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
+const { locale, locales } = useI18n()
 
-const activeIndex = ref(0)
+const { $qs, $helper } = useNuxtApp()
 
-const tabs = ["Home", "Profile", "Messages", "Settings"]
+const items = ref([])
+const loading = ref(true)
+
+async function getAll() {
+  const config = {
+    params: {
+      locale
+    },
+    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+  };
+
+  loading.value = true
+  const { data } = await useFetch("/api/pageAbout", config).finally(() => loading.value = false);
+  if (!data.value) return
+
+  console.log("response data", data.value);
+
+  if (data?.value?.status) {
+    items.value = data.value.data
+
+  } else {
+    console.log("Görseller çekilirken bir sorun oluştu");
+    snackbar.add({
+      type: "error",
+      text: "Görseller çekilirken bir sorun oluştu",
+    });
+  }
+}
+
+onMounted(() => {
+  setTimeout(() => {
+    getAll()
+  }, 300);
+})
 </script>
 
 <template>
   <div class="about-content">
     <div class="container">
-      <div class="row">
-        <div class="col-3 list">
-          <div class="list-group" id="myList" role="tablist">
-            <a class="list-group-item list-group-item-action" :class="index === activeIndex ? 'active' : ''"
-              data-bs-toggle="list" :href="`#${tab}`" @click="activeIndex = index" role="tab"
-              v-for="(tab, index) in tabs">
-              <span class="fs-6 fw-medium">{{ tab }}</span>
-            </a>
-          </div>
-        </div>
-        <div class="col-9">
-          <div class="tab-content">
-            <div class="tab-pane" :class="index === activeIndex ? 'active' : ''" :id="tab" role="tabpanel"
-              v-for="(tab, index) in tabs">
-              <p class="lh-sm">
-                {{ `${tab} Content` }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {{ items }}
+      <PageDesing>
+        <template v-slot:content>
+          content
+        </template>
+        <template v-slot:image>
+          image
+        </template>
+      </PageDesing>
     </div>
   </div>
 </template>
