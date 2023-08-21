@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  const writePath = body.path || false
+  const writePath = body?.path || false
   const dir = process.cwd();
 
   let filePath = null

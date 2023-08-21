@@ -6,9 +6,22 @@ export default {
 
 <script setup>
 import { ref, toRef, computed } from "vue";
+import { Field, Form, ErrorMessage } from 'vee-validate';
+import { array, number, string,  object } from 'yup';
 
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
+
+const schema = object().shape({
+    firstname: string(),
+    lastname: string(),
+    username: string(),
+    age: number(),
+    email: string(),
+    password0: string().min(8).required(),
+    password1: string()
+        .oneOf([ref('password0'), null], 'Passwords must match')
+});
 
 const storeUser = useUser()
 
@@ -169,53 +182,62 @@ async function submit() {
 
 <template>
     <div class="login-form">
-        <div class="mb-3 d-flex flex-row justify-content-between" v-if="type != 'login'">
-            <div>
-                <label for="form-name" class="form-label">{{ $t('name') }}</label>
-                <input v-model="form.firstname" type="text" class="form-control" id="form-name">
+        <Form @submit="submit" :validation-schema="schema">
+            <div class="mb-3 d-flex flex-row justify-content-between" v-if="type != 'login'">
+                <div>
+                    <label for="form-name" class="form-label">{{ $t('name') }}</label>
+                    <Field v-model="form.firstname" name="firstname" type="text" class="form-control" id="form-name" />
+                    <ErrorMessage class="invalid text-capitalize" name="firstname" />
+                </div>
+                <div>
+                    <label for="form-lastname" class="form-label">{{ $t('lastname') }}</label>
+                    <Field v-model="form.lastname" name="lastname" type="text" class="form-control" id="form-lastname" />
+                    <ErrorMessage class="invalid text-capitalize" name="lastname" />
+                </div>
             </div>
-            <div>
-                <label for="form-lastname" class="form-label">{{ $t('lastname') }}</label>
-                <input v-model="form.lastname" type="text" class="form-control" id="form-lastname">
-            </div>
-        </div>
-        <!-- <div class="mb-3">
+            <!-- <div class="mb-3">
             <label for="form-lastname" class="form-label">Email address</label>
             <input type="email" class="form-control" id="form-lastname" >
         </div> -->
-        <div class="mb-3 d-flex flex-row justify-content-between" v-if="type != 'login'">
-            <div class="w-75">
-                <label for="form-username" class="form-label">{{ $t('username') }} *</label>
-                <input v-model="form.username" type="email" class="form-control" id="form-username">
+            <div class="mb-3 d-flex flex-row justify-content-between" v-if="type != 'login'">
+                <div class="w-75">
+                    <label for="form-username" class="form-label">{{ $t('username') }} *</label>
+                    <Field v-model="form.username" name="username" type="email" class="form-control" id="form-username" />
+                    <ErrorMessage class="invalid text-capitalize" name="username" />
+                </div>
+                <div class="ms-2 w-25">
+                    <label for="form-age" class="form-label">{{ $t('age') }}</label>
+                    <Field v-model="form.age" name="age" type="number" class="form-control" id="form-age" />
+                    <ErrorMessage class="invalid text-capitalize" name="age" />
+                </div>
             </div>
-            <div class="ms-2 w-25">
-                <label for="form-age" class="form-label">{{ $t('age') }}</label>
-                <input v-model="form.age" type="number" class="form-control" id="form-age">
+            <div class="mb-3">
+                <label for="form-email" class="form-label">{{ $t('email') }} *</label>
+                <Field v-model="form.email" name="email" type="email" class="form-control" id="form-email" />
+                <ErrorMessage class="invalid text-capitalize" name="email" />
             </div>
-        </div>
-        <div class="mb-3">
-            <label for="form-email" class="form-label">{{ $t('email') }} *</label>
-            <input v-model="form.email" type="email" class="form-control" id="form-email">
-        </div>
-        <div class="mb-3">
-            <label for="form-password0" class="form-label">{{ $t('password') }} *</label>
-            <input v-model="form.password0" type="password" class="form-control" id="form-password0">
-        </div>
-        <div class="mb-3" v-if="type != 'login'">
-            <label for="form-password1" class="form-label">{{ $t('password_again') }} *</label>
-            <input v-model="form.password1" type="password" id="form-password1" class="form-control"
-                aria-describedby="passwordHelpBlock">
-            <div id="passwordHelpBlock" class="form-text">
-                {{ $t('password_hint') }}
+            <div class="mb-3">
+                <label for="form-password0" class="form-label">{{ $t('password') }} *</label>
+                <Field v-model="form.password0" name="password0" type="password" class="form-control" id="form-password0" />
+                <ErrorMessage class="invalid text-capitalize" name="password0" />
             </div>
-        </div>
-        <div class="border-1 border-bottom mb-3"></div>
-        <div class="text-end">
-            <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal" ref="loginModal">Close</button>
-            <button type="button" class="btn btn-primary" @click="submit">{{ type ==
-                'login' ?
-                $t('login') :
-                $t('sing_up') }}</button>
-        </div>
+            <div class="mb-3" v-if="type != 'login'">
+                <label for="form-password1" class="form-label">{{ $t('password_again') }} *</label>
+                <Field v-model="form.password1" name="password1" type="password" id="form-password1" class="form-control"
+                    aria-describedby="passwordHelpBlock" />
+                <ErrorMessage class="invalid text-capitalize" name="password1" />
+                <div id="passwordHelpBlock" class="form-text">
+                    {{ $t('password_hint') }}
+                </div>
+            </div>
+            <div class="border-1 border-bottom mb-3"></div>
+            <div class="text-end">
+                <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal" ref="loginModal">Close</button>
+                <button type="submit" class="btn btn-primary">{{ type ==
+                    'login' ?
+                    $t('login') :
+                    $t('sing_up') }}</button>
+            </div>
+        </Form>
     </div>
 </template>

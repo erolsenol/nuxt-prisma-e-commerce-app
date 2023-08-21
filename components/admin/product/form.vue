@@ -7,11 +7,12 @@ export default {
 <script setup>
 import { ref, computed, toRefs, toRef } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+const emit = defineEmits(['update'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
-const { type, form } = defineProps({
+let { type, form } = defineProps({
     type: String,
     form: Object,
     value: Object,
@@ -116,7 +117,18 @@ async function save(event) {
     }
 }
 
-async function remove(id) {
+async function get(id) {
+    const { data } = await useFetch("/api/product/" + id);
+    if (!data.value) return
+
+    if (data.value.status) {
+        console.log("data.value.data", data.value.data);
+        emit('update', data.value.data)
+        console.log("emit update");
+    }
+}
+
+async function removeImage(id) {
     const config = {
         params: {
             id
@@ -139,6 +151,7 @@ async function remove(id) {
         });
         return
     }
+    get(id)
 
     console.log("Görsel Silindi");
     snackbar.add({
@@ -150,24 +163,17 @@ async function remove(id) {
 
 <template>
     <div class="product-form">
-        <div>
-            {{ type }} - {{ form }}
-        </div>
-        <div>
-            innerForm - {{ innerForm }}
-        </div>
-
         <Form @submit="save">
             <div class="mb-3">
-                <label for="product-name" class="form-label">Ürün Adı</label>
-                <Field name="name" v-model="form.name" type="text" class="form-control" id="product-name"
+                <label for="product-form-name" class="form-label">Ürün Adı</label>
+                <Field name="name" v-model="form.name" type="text" class="form-control" id="product-form-name"
                     rules="required" />
                 <ErrorMessage class="invalid" name="name" />
             </div>
             <div class="mb-3">
-                <label for="product-name" class="form-label">Ürün Başlığı</label>
+                <label for="product-form-title" class="form-label">Ürün Başlığı</label>
                 <Field name="title" rules="required" v-model="form.title" type="text" class="form-control"
-                    id="product-name" />
+                    id="product-form-title" />
                 <ErrorMessage class="invalid" name="title" />
             </div>
             <div class="mb-3">
@@ -186,7 +192,7 @@ async function remove(id) {
                     <SwiperSlide v-for="(image, index) in form.images" :key="`img-${index}`">
                         <div class="card" style="width: 28rem">
                             <div class="card-header">
-                                <button type="button" @click="remove(image.id)"
+                                <button type="button" @click="removeImage(image.id)"
                                     class="btn btn-danger float-end px-3 d-flex align-items-center justify-content-center">
                                     <Icon name="material-symbols:delete-outline" color="white" size="22" class="me-2" />
                                     Sil

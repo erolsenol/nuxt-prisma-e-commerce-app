@@ -6,16 +6,17 @@ export default {
 
 <script setup>
 import { ref } from "vue";
-import { Field, Form, ErrorMessage } from 'vee-validate';
-import * as yup from 'yup';
+import { Field, Form, ErrorMessage, useForm } from 'vee-validate';
+import { array, string, object } from 'yup';
 
+const { resetForm } = useForm();
 const { $helper } = useNuxtApp();
 
-const schema = yup.object({
-  name: yup.string().required(),
-  title: yup.string().required(),
-  content: yup.string().required(),
-  image: yup.array().required(),
+const schema = object().shape({
+  name: string().required(),
+  title: string().required(),
+  content: string().required(),
+  image: array().min(1).required(),
 });
 
 const snackbar = useSnackbar();
@@ -24,9 +25,11 @@ const initialProduct = () => ({
   name: null,
   title: null,
   content: null,
+  image: [],
 });
 
-const addValidation = ref('addValidation');
+
+const productAddForm = ref('productAddForm');
 const product = ref(initialProduct());
 const imageNames = ref([])
 const images = ref([])
@@ -38,6 +41,21 @@ async function formClear() {
     product.value.name = null
     product.value.title = null
     product.value.content = null
+    product.value.image = []
+    // resetForm({
+    //   errors: {
+    //     name: null,
+    //     title: null,
+    //     content: null,
+    //     image: null
+    //   },
+    //   values: {
+    //     name: null,
+    //     title: null,
+    //     content: null,
+    //     image: null
+    //   }
+    // })
     resolve(true)
   })
 
@@ -62,14 +80,8 @@ function createImage(files) {
 }
 
 async function save() {
-  const { valid } = await addValidation.value.validate()
-  if (!valid) {
-    snackbar.add({
-      type: "error",
-      text: "Formu Eksiksiz Doldurun",
-    });
-    return
-  }
+  console.log("savee");
+
 
   const imageData = []
 
@@ -77,19 +89,19 @@ async function save() {
     imageData.push({ name: imageNames.value[index], image: img })
   });
 
-  const test = $helper.replaceTurkishCharacters(product.value.name) 
-  console.log("test",test);
- 
-  product.value.name = $helper.replaceTurkishCharacters(product.value.name) 
+  const test = $helper.replaceTurkishCharacters(product.value.name)
+  console.log("test", test);
 
-  const productData = product.value
+  product.value.name = $helper.replaceTurkishCharacters(product.value.name)
+
+  const productData = { ...product.value }
   const { data, pending, error, refresh } = await useFetch("/api/product", {
     method: "post",
     body: productData,
   }).catch((error) => {
     console.error(error);
   });
-  console.log("client product post response:",data.value);
+  console.log("client product post response:", data.value);
   if (data.value.status) {
     console.log(data.value.data.id);
 
@@ -112,8 +124,17 @@ async function save() {
         type: "success",
         text: "Görsel Yüklendi",
       });
+
       await formClear()
     } else {
+      if (response.data.value.error === "cannot be empty") {
+        snackbar.add({
+          type: "error",
+          text: "Görsel Boş olamaz",
+        });
+        return
+      }
+
       console.log("Görsel Kaydedilemedi");
       snackbar.add({
         type: "error",
@@ -127,7 +148,7 @@ async function save() {
         text: "Aynı İsimle Ürün bulunuyor",
       });
 
-      await addValidation.value.reset()
+
       return true
     }
     console.log("Ürün Kaydedilemedi");
@@ -136,32 +157,29 @@ async function save() {
       text: "Ürün Kaydedilemedi",
     });
   }
-  await addValidation.value.reset()
-  return true
+
 }
+
 </script>
 
 <template>
   <div class="product-add">
-    <Form as="v-form" ref="addValidation" :validation-schema="schema">
+    <Form @submit="save" ref="productAddForm" :validation-schema="schema">
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Adı</label>
-        <Field name="name" v-model="product.name" as="input" type="text" v-slot="{ field, handleChange }"
-          class="form-control" id="product-name">
-          <input v-bind="field" @change="handleChange">
+        <label for="product-add-name" class="form-label">{{ $t('product_name') }}</label>
+        <Field name="name" v-model="product.name" class="form-control" id="product-add-name">
         </Field>
-        <ErrorMessage class="invalid" name="name" />
+        <ErrorMessage class="invalid text-capitalize" name="name" />
       </div>
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title" v-model="product.title" as="input" type="text" class="form-control" id="product-name" />
-        <ErrorMessage class="invalid" name="title" />
+        <label for="product-add-title" class="form-label">{{ $t('product_title') }}</label>
+        <Field name="title" v-model="product.title" type="text" class="form-control" id="product-add-title" />
+        <ErrorMessage class="invalid text-capitalize" name="title" />
       </div>
       <div class="mb-3">
-        <label for="product-content" class="form-label">Ürün Açıklaması</label>
-        <Field name="content" v-model="product.content" as="input" type="text" class="form-control"
-          id="product-content" />
-        <ErrorMessage class="invalid" name="content" />
+        <label for="product-add-content" class="form-label">{{ $t('product_content') }}</label>
+        <Field name="content" v-model="product.content" type="text" class="form-control" id="product-add-content" />
+        <ErrorMessage class="invalid text-capitalize" name="content" />
       </div>
       <div class="product-add-slide mb-3">
         <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true" :effect="'creative'"
@@ -182,12 +200,12 @@ async function save() {
         </Swiper>
       </div>
       <div class="mb-3">
-        <label for="product-image" class="form-label">Ürün Görselli</label>
-        <Field name="image" @change="onFileChange" class="form-control" as="input" type="file" id="product-image"
-          accept="image/png, image/jpeg" multiple />
-        <ErrorMessage class="invalid" name="image" />
+        <label for="product-add-image" class="form-label">{{ $t('product_image') }}</label>
+        <Field name="image" @change="onFileChange" v-model="product.image" class="form-control" type="file"
+          id="product-add-image" accept="image/png, image/jpeg" multiple />
+        <ErrorMessage class="invalid text-capitalize" name="image" />
       </div>
-      <button @click="save()" class="btn btn-primary">Kaydet</button>
+      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </Form>
   </div>
 </template>

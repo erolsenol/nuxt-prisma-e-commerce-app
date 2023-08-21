@@ -7,13 +7,19 @@ export default {
 <script setup>
 import { ref, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-const { $qs } = useNuxtApp()
+const { $qs, $helper } = useNuxtApp()
 
 const rows = ref([])
+const loading = ref(true)
 const paginate = ref({
   skip: 0,
-  take: 20
+  take: 4,
 })
+const total = ref({
+  count: 0,
+  page: 0
+})
+const goPage = ref(1)
 const product = ref({
   id: null,
   name: null,
@@ -24,14 +30,21 @@ const product = ref({
 })
 
 onMounted(() => {
-  console.log("onMounted");
-  getAll()
+  setTimeout(() => {
+    getAll()
+  }, 500);
+
 })
 
 
 const snackbar = useSnackbar();
 // const { $hello, $readFileSync } =  useNuxtApp()
 
+function getPage(page) {
+  goPage.value = page
+  paginate.value.skip = (paginate.value.take * page) - paginate.value.take
+  getAll()
+}
 
 
 async function getAll() {
@@ -42,7 +55,8 @@ async function getAll() {
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
-  const { data } = await useFetch("/api/product", config);
+  loading.value = true
+  const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
   if (!data.value) return
 
   console.log("response data", data.value);
@@ -50,6 +64,9 @@ async function getAll() {
   if (data?.value?.status) {
     console.log("Görsel Yüklendi");
     rows.value = data.value.data
+
+    total.value.count = data.value.paginate.totalCount
+    total.value.page = data.value.paginate.totalPage
 
     if (rows.value.length == 0) {
       snackbar.add({
@@ -89,11 +106,17 @@ async function get(id) {
     });
   }
 }
+
+function itemUpdate(val) {
+  console.log("itemUpdate", val);
+  product.value = val
+}
+
 </script>
 
 <template>
-  <div class="product-list">
-    <table class="table table-hover table-striped">
+  <div class="product-list position-relative mb-5">
+    <table class="table table-hover table-striped" v-if="!loading">
       <thead>
         <tr class="table-light">
           <th scope="col">Id</th>
@@ -125,20 +148,48 @@ async function get(id) {
         </tr>
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary" @click="getAll">
-      Ürünleri Getir
-    </button>
+    <Loading v-else />
+    <nav class="d-flex flex-row align-items-center justify-content-end position-absolute bottom-10 end-0">
+      <ul class="pagination mb-0 me-5">
+        <li class="page-item">
+          <a class="page-link" aria-label="Previous" @click="getPage(1)">
+            <span aria-hidden="true">First</span>
+          </a>
+        </li>
+        <template v-for="(page, index) in total.page">
+          <li class="page-item" :class="goPage == page ? 'active' : ''" @click="getPage(page)"
+            v-if="$helper.paginationCondition(page, goPage, total.page)"><a class="page-link">{{ page }}</a></li>
+        </template>
+        <li class="page-item">
+          <a class="page-link" aria-label="Next" @click="getPage(total.page)">
+            <span aria-hidden="true">Last</span>
+          </a>
+        </li>
+      </ul>
+
+      <span class="fs-6 me-2">{{ total.page }} /</span>
+      <div class="d-flex flex-row align-items-center input-group me-3" style="width: 8rem;">
+        <input type="text" class="form-control" v-model="goPage">
+        <span class="input-group-text btn" style="cursor: pointer;" @click="getPage(goPage)">
+          <Icon name="el:search" size="24" color="gray" />
+        </span>
+      </div>
+
+      <button type="button" class="btn btn-primary" @click="getPage(goPage)">
+        Ürünleri Getir
+      </button>
+    </nav>
 
     <div class="modal fade" id="productFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="productFormModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="productFormModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="productFormModalLabel"> {{ product.name }} {{ $t('detail') }}</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <AdminProductForm type="update" :form="product" @update:form="newValue => product = newValue" />
+            <AdminProductForm type="update" @update="itemUpdate" :form="product" />
           </div>
 
         </div>
