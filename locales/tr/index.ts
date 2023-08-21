@@ -19,6 +19,9 @@ export default {
     password_again: "Şifre Tekrar Girin",
     age: "Yaş",
     loading: "Yükleniyor...",
+    ask_question: "Soru sor",
+    please_login: "Giriş yapın lütfen",
+    like_not_save: "Beğeni gönderilemedi",
 
     products: "Ürünler",
     site_settings: "Site Ayarları",

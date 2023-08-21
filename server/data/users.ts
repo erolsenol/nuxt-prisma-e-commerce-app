@@ -55,7 +55,7 @@ export async function update(id: Number, data: Object) {
     data: data,
   })
 
-  return
+  return update
 }
 
 export async function countUser(where: Object = {}) {

@@ -19,6 +19,9 @@ export default {
     password_again: "Password Again",
     age: "Age",
     loading: "Loading...",
+    ask_question: "Ask question",
+    please_login: "Sign in please",
+    like_not_save: "Failed to send likes",
 
     products: "Products",
     site_settings: "Site Settings",
