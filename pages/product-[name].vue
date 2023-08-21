@@ -66,6 +66,10 @@ async function sendStar() {
       text: t('like_not_save'),
     });
   } else {
+    if (data.value.data === "star remove") {
+      likeStatus.value = false
+      return
+    }
     likeStatus.value = true
   }
 }

@@ -13,10 +13,18 @@ export default defineEventHandler(async (event) => {
   }
 
   const oldStar = await stars.getWhere(body)
+  console.log("oldStar", oldStar);
+
+  if (oldStar) {
+    stars.remove(oldStar.id)
+    response.data = "star remove"
+    response.status = true
+    return response
+  }
 
   const star = await stars.post(body)
 
-  if (!oldStar && star.id) {
+  if (star.id) {
     response.data = star
     response.status = true
   } else {
