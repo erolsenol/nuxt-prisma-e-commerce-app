@@ -107,13 +107,13 @@ async function save(event) {
   <div class="product-update">
     <Form @submit="save">
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Adı</label>
-        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-name" rules="required" />
+        <label for="product-update-name" class="form-label">Ürün Adı</label>
+        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-update-name" rules="required" />
         <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title" rules="required" v-model="product.title" type="text" class="form-control" id="product-name" />
+        <label for="product-update-title" class="form-label">Ürün Başlığı</label>
+        <Field name="title" rules="required" v-model="product.title" type="text" class="form-control" id="product-update-title" />
         <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">

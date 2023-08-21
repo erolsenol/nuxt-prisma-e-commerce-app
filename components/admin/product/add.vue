@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { ref } from "vue";
-import { Field, Form, ErrorMessage } from 'vee-validate';
+import { Field, Form, ErrorMessage, useForm } from 'vee-validate';
 import * as yup from 'yup';
 
 const { $helper } = useNuxtApp();
@@ -16,6 +16,11 @@ const schema = yup.object({
   title: yup.string().required(),
   content: yup.string().required(),
   image: yup.array().required(),
+});
+
+// Create the form
+const { defineInputBinds, handleSubmit, errors } = useForm({
+  validationSchema: schema,
 });
 
 const snackbar = useSnackbar();
@@ -61,7 +66,8 @@ function createImage(files) {
   }
 }
 
-async function save() {
+const save = handleSubmit(async values => {
+  console.log("savee", values);
   const { valid } = await addValidation.value.validate()
   if (!valid) {
     snackbar.add({
@@ -77,10 +83,10 @@ async function save() {
     imageData.push({ name: imageNames.value[index], image: img })
   });
 
-  const test = $helper.replaceTurkishCharacters(product.value.name) 
-  console.log("test",test);
- 
-  product.value.name = $helper.replaceTurkishCharacters(product.value.name) 
+  const test = $helper.replaceTurkishCharacters(product.value.name)
+  console.log("test", test);
+
+  product.value.name = $helper.replaceTurkishCharacters(product.value.name)
 
   const productData = product.value
   const { data, pending, error, refresh } = await useFetch("/api/product", {
@@ -89,7 +95,7 @@ async function save() {
   }).catch((error) => {
     console.error(error);
   });
-  console.log("client product post response:",data.value);
+  console.log("client product post response:", data.value);
   if (data.value.status) {
     console.log(data.value.data.id);
 
@@ -137,30 +143,31 @@ async function save() {
     });
   }
   await addValidation.value.reset()
-  return true
-}
+
+})
+
 </script>
 
 <template>
   <div class="product-add">
-    <Form as="v-form" ref="addValidation" :validation-schema="schema">
+    <Form @submit="save" ref="addValidation" :validation-schema="schema">
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Adı</label>
+        <label for="product-add-name" class="form-label">Ürün Adı</label>
         <Field name="name" v-model="product.name" as="input" type="text" v-slot="{ field, handleChange }"
-          class="form-control" id="product-name">
+          class="form-control" id="product-add-name">
           <input v-bind="field" @change="handleChange">
         </Field>
         <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title" v-model="product.title" as="input" type="text" class="form-control" id="product-name" />
+        <label for="product-add-title" class="form-label">Ürün Başlığı</label>
+        <Field name="title" v-model="product.title" as="input" type="text" class="form-control" id="product-add-title" />
         <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">
-        <label for="product-content" class="form-label">Ürün Açıklaması</label>
+        <label for="product-add-content" class="form-label">Ürün Açıklaması</label>
         <Field name="content" v-model="product.content" as="input" type="text" class="form-control"
-          id="product-content" />
+          id="product-add-content" />
         <ErrorMessage class="invalid" name="content" />
       </div>
       <div class="product-add-slide mb-3">
@@ -182,12 +189,12 @@ async function save() {
         </Swiper>
       </div>
       <div class="mb-3">
-        <label for="product-image" class="form-label">Ürün Görselli</label>
-        <Field name="image" @change="onFileChange" class="form-control" as="input" type="file" id="product-image"
+        <label for="product-add-image" class="form-label">Ürün Görselli</label>
+        <Field name="image" @change="onFileChange" class="form-control" as="input" type="file" id="product-add-image"
           accept="image/png, image/jpeg" multiple />
         <ErrorMessage class="invalid" name="image" />
       </div>
-      <button @click="save()" class="btn btn-primary">Kaydet</button>
+      <button type="submit" class="btn btn-primary">Kaydet</button>
     </Form>
   </div>
 </template>
