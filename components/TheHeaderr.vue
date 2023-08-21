@@ -23,6 +23,7 @@ const availableLocales = computed(() => {
 })
 
 function changeLocale(val) {
+   console.log("changeLocale");
    setLocale(val);
 }
 function formTypeChange(str) {

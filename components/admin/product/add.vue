@@ -9,6 +9,7 @@ import { ref } from "vue";
 import { Field, Form, ErrorMessage, useForm } from 'vee-validate';
 import { array, string, object } from 'yup';
 
+const { resetForm } = useForm();
 const { $helper } = useNuxtApp();
 
 const schema = object().shape({
@@ -18,21 +19,17 @@ const schema = object().shape({
   image: array().min(1).required(),
 });
 
-// Create the form
-const { defineInputBinds, handleSubmit, errors } = useForm({
-  validationSchema: schema,
-});
-
 const snackbar = useSnackbar();
 
 const initialProduct = () => ({
   name: null,
   title: null,
   content: null,
-  image: null,
+  image: [],
 });
 
 
+const productAddForm = ref('productAddForm');
 const product = ref(initialProduct());
 const imageNames = ref([])
 const images = ref([])
@@ -44,7 +41,21 @@ async function formClear() {
     product.value.name = null
     product.value.title = null
     product.value.content = null
-    product.value.image = null
+    product.value.image = []
+    // resetForm({
+    //   errors: {
+    //     name: null,
+    //     title: null,
+    //     content: null,
+    //     image: null
+    //   },
+    //   values: {
+    //     name: null,
+    //     title: null,
+    //     content: null,
+    //     image: null
+    //   }
+    // })
     resolve(true)
   })
 
@@ -113,8 +124,17 @@ async function save() {
         type: "success",
         text: "Görsel Yüklendi",
       });
+
       await formClear()
     } else {
+      if (response.data.value.error === "cannot be empty") {
+        snackbar.add({
+          type: "error",
+          text: "Görsel Boş olamaz",
+        });
+        return
+      }
+
       console.log("Görsel Kaydedilemedi");
       snackbar.add({
         type: "error",
@@ -144,20 +164,20 @@ async function save() {
 
 <template>
   <div class="product-add">
-    <Form @submit="save" :validation-schema="schema">
+    <Form @submit="save" ref="productAddForm" :validation-schema="schema">
       <div class="mb-3">
-        <label for="product-add-name" class="form-label">Ürün Adı</label>
+        <label for="product-add-name" class="form-label">{{ $t('product_name') }}</label>
         <Field name="name" v-model="product.name" class="form-control" id="product-add-name">
         </Field>
         <ErrorMessage class="invalid text-capitalize" name="name" />
       </div>
       <div class="mb-3">
-        <label for="product-add-title" class="form-label">Ürün Başlığı</label>
+        <label for="product-add-title" class="form-label">{{ $t('product_title') }}</label>
         <Field name="title" v-model="product.title" type="text" class="form-control" id="product-add-title" />
         <ErrorMessage class="invalid text-capitalize" name="title" />
       </div>
       <div class="mb-3">
-        <label for="product-add-content" class="form-label">Ürün Açıklaması</label>
+        <label for="product-add-content" class="form-label">{{ $t('product_content') }}</label>
         <Field name="content" v-model="product.content" type="text" class="form-control" id="product-add-content" />
         <ErrorMessage class="invalid text-capitalize" name="content" />
       </div>
@@ -180,12 +200,12 @@ async function save() {
         </Swiper>
       </div>
       <div class="mb-3">
-        <label for="product-add-image" class="form-label">Ürün Görseli</label>
+        <label for="product-add-image" class="form-label">{{ $t('product_image') }}</label>
         <Field name="image" @change="onFileChange" v-model="product.image" class="form-control" type="file"
           id="product-add-image" accept="image/png, image/jpeg" multiple />
         <ErrorMessage class="invalid text-capitalize" name="image" />
       </div>
-      <button type="submit" class="btn btn-primary">Kaydet</button>
+      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </Form>
   </div>
 </template>
