@@ -7,15 +7,15 @@ export default {
 <script setup>
 import { ref } from "vue";
 import { Field, Form, ErrorMessage, useForm } from 'vee-validate';
-import * as yup from 'yup';
+import { array, string, object } from 'yup';
 
 const { $helper } = useNuxtApp();
 
-const schema = yup.object({
-  name: yup.string().required(),
-  title: yup.string().required(),
-  content: yup.string().required(),
-  image: yup.array().required(),
+const schema = object().shape({
+  name: string().required(),
+  title: string().required(),
+  content: string().required(),
+  image: array().min(1).required(),
 });
 
 // Create the form
@@ -29,9 +29,10 @@ const initialProduct = () => ({
   name: null,
   title: null,
   content: null,
+  image: null,
 });
 
-const addValidation = ref('addValidation');
+
 const product = ref(initialProduct());
 const imageNames = ref([])
 const images = ref([])
@@ -43,6 +44,7 @@ async function formClear() {
     product.value.name = null
     product.value.title = null
     product.value.content = null
+    product.value.image = null
     resolve(true)
   })
 
@@ -66,16 +68,9 @@ function createImage(files) {
   }
 }
 
-const save = handleSubmit(async values => {
-  console.log("savee", values);
-  const { valid } = await addValidation.value.validate()
-  if (!valid) {
-    snackbar.add({
-      type: "error",
-      text: "Formu Eksiksiz Doldurun",
-    });
-    return
-  }
+async function save() {
+  console.log("savee");
+
 
   const imageData = []
 
@@ -88,7 +83,7 @@ const save = handleSubmit(async values => {
 
   product.value.name = $helper.replaceTurkishCharacters(product.value.name)
 
-  const productData = product.value
+  const productData = { ...product.value }
   const { data, pending, error, refresh } = await useFetch("/api/product", {
     method: "post",
     body: productData,
@@ -133,7 +128,7 @@ const save = handleSubmit(async values => {
         text: "Aynı İsimle Ürün bulunuyor",
       });
 
-      await addValidation.value.reset()
+
       return true
     }
     console.log("Ürün Kaydedilemedi");
@@ -142,33 +137,29 @@ const save = handleSubmit(async values => {
       text: "Ürün Kaydedilemedi",
     });
   }
-  await addValidation.value.reset()
 
-})
+}
 
 </script>
 
 <template>
   <div class="product-add">
-    <Form @submit="save" ref="addValidation" :validation-schema="schema">
+    <Form @submit="save" :validation-schema="schema">
       <div class="mb-3">
         <label for="product-add-name" class="form-label">Ürün Adı</label>
-        <Field name="name" v-model="product.name" as="input" type="text" v-slot="{ field, handleChange }"
-          class="form-control" id="product-add-name">
-          <input v-bind="field" @change="handleChange">
+        <Field name="name" v-model="product.name" class="form-control" id="product-add-name">
         </Field>
-        <ErrorMessage class="invalid" name="name" />
+        <ErrorMessage class="invalid text-capitalize" name="name" />
       </div>
       <div class="mb-3">
         <label for="product-add-title" class="form-label">Ürün Başlığı</label>
-        <Field name="title" v-model="product.title" as="input" type="text" class="form-control" id="product-add-title" />
-        <ErrorMessage class="invalid" name="title" />
+        <Field name="title" v-model="product.title" type="text" class="form-control" id="product-add-title" />
+        <ErrorMessage class="invalid text-capitalize" name="title" />
       </div>
       <div class="mb-3">
         <label for="product-add-content" class="form-label">Ürün Açıklaması</label>
-        <Field name="content" v-model="product.content" as="input" type="text" class="form-control"
-          id="product-add-content" />
-        <ErrorMessage class="invalid" name="content" />
+        <Field name="content" v-model="product.content" type="text" class="form-control" id="product-add-content" />
+        <ErrorMessage class="invalid text-capitalize" name="content" />
       </div>
       <div class="product-add-slide mb-3">
         <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true" :effect="'creative'"
@@ -189,10 +180,10 @@ const save = handleSubmit(async values => {
         </Swiper>
       </div>
       <div class="mb-3">
-        <label for="product-add-image" class="form-label">Ürün Görselli</label>
-        <Field name="image" @change="onFileChange" class="form-control" as="input" type="file" id="product-add-image"
-          accept="image/png, image/jpeg" multiple />
-        <ErrorMessage class="invalid" name="image" />
+        <label for="product-add-image" class="form-label">Ürün Görseli</label>
+        <Field name="image" @change="onFileChange" v-model="product.image" class="form-control" type="file"
+          id="product-add-image" accept="image/png, image/jpeg" multiple />
+        <ErrorMessage class="invalid text-capitalize" name="image" />
       </div>
       <button type="submit" class="btn btn-primary">Kaydet</button>
     </Form>
