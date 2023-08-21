@@ -47,7 +47,7 @@ async function getAll() {
         <!-- filter -->
       </div>
     </div>
-    {{ loading }}
+    
     <div class="row" v-if="!loading">
       <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content" :name="item.name"
         v-for="(item, index) in items" :key="index" />

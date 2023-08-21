@@ -85,13 +85,13 @@ let loginFormType = ref("login")
             </template>
             <template v-else>
                <div class="dropdown text-end me-3" style="max-width: 12rem;">
-                  <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                  <a href="#" class="d-block link-body-emphasis text-decoration-none"
                      data-bs-toggle="dropdown" aria-expanded="false">
-                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                     <img src="https://github.com/mdo.png" alt="mdo" width="40" height="40" class="rounded-circle">
 
                      <Icon class="ms-1" color="white" name="ri:arrow-down-s-fill" />
                   </a>
-                  <ul class="dropdown-menu text-small">
+                  <ul class="dropdown-menu" style="cursor: pointer;">
                      <!-- <li><a class="dropdown-item">New project...</a></li>
                      <li><a class="dropdown-item">Settings</a></li>
                      <li><a class="dropdown-item">Profile</a></li>
