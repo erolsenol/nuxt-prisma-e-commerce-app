@@ -26,6 +26,8 @@ export async function getProducts({
     include: {
       images: true,
       comments: true,
+      star: true,
+      question: true,
     },
   });
   return response;
@@ -39,6 +41,8 @@ export async function getProduct(id: Number) {
     include: {
       images: true,
       comments: true,
+      star: true,
+      question: true,
     },
   });
   return response;
@@ -52,6 +56,8 @@ export async function getProductByName(name: String) {
     include: {
       images: true,
       comments: true,
+      star: true,
+      question: true,
     },
   });
   return response;

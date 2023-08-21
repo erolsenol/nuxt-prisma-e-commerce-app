@@ -9,6 +9,7 @@ export default {
     content: "Content",
     upload_image: "Upload Image",
     save: "Save",
+    send: "Send",
     login: "Login",
     sing_up: "Sing-up",
     name: "Name",
@@ -22,6 +23,10 @@ export default {
     ask_question: "Ask question",
     please_login: "Sign in please",
     like_not_save: "Failed to send likes",
+    write_commet: "Write a comment",
+    upload: "Upload",
+    image_name: "Image name",
+    fill_form_completely: "Fill out the form completely",
 
     products: "Products",
     site_settings: "Site Settings",

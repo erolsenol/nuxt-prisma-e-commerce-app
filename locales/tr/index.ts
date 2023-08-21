@@ -9,6 +9,7 @@ export default {
     content: "İçerik",
     upload_image: "Görsel Yükle",
     save: "Kaydet",
+    send: "Gönder",
     login: "Giriş Yap",
     sing_up: "Kayıt Ol",
     name: "İsim",
@@ -22,6 +23,10 @@ export default {
     ask_question: "Soru sor",
     please_login: "Giriş yapın lütfen",
     like_not_save: "Beğeni gönderilemedi",
+    write_commet: "Yorum yaz",
+    upload: "Yükle",
+    image_name: "Görsel adı",
+    fill_form_completely:"Formu eksiksiz doldurunuz",
 
     products: "Ürünler",
     site_settings: "Site Ayarları",

@@ -7,6 +7,7 @@ export default {
 import { ref, onMounted } from 'vue'
 const route = useRoute()
 const { t } = useI18n();
+const { $qs } = useNuxtApp()
 const storeUser = useUser()
 const snackbar = useSnackbar();
 
@@ -69,6 +70,23 @@ async function sendStar() {
   }
 }
 
+async function getStar() {
+
+
+  const config = {
+    params: {
+      productId: item.id
+    },
+    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+  };
+  const { data, pending, error, refresh } = await useFetch("/api/star", {
+    method: "post",
+    body: body,
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
 </script>
 
 <template>
@@ -100,9 +118,17 @@ async function sendStar() {
           </div>
         </div>
 
-        <div class="product-detail-content-question d-flex justify-content-between mt-2" style="cursor: pointer;">
-          <Icon class="product-detail-content-question-like" name="icon-park-outline:like"
-            :color="likeStatus ? 'red' : 'black'" size="30" style="cursor: pointer;" @click="sendStar" />
+        <div class="product-detail-content-question d-flex justify-content-between mt-3" style="cursor: pointer;">
+          <div class="position-relative">
+            <Icon class="product-detail-content-question-like" name="icon-park-outline:like"
+              :color="likeStatus ? 'red' : 'black'" size="36" style="cursor: pointer;" @click="sendStar">
+            </Icon>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+              99+
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </div>
+
           <span class="badge bg-secondary py-2 px-3">{{ $t('ask_question') }}</span>
         </div>
         <!-- <div class="product-detail-content-start text-start mt-2" style="cursor: pointer;">
