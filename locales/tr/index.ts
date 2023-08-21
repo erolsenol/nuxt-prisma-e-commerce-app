@@ -34,6 +34,7 @@ export default {
   product_description: "Ürün Açıklaması",
   product_image: "Ürün Görseli",
   product_list: "Ürün Listesi",
+  detail:"Detay",
 
   products: "Ürünler",
   site_settings: "Site Ayarları",

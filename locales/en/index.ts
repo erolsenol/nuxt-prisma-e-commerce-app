@@ -34,6 +34,7 @@ export default {
   product_description: "Product Description",
   product_image: "Product Image",
   product_list: "Product List",
+  detail:"Detail",
 
   products: "Products",
   site_settings: "Site Settings",

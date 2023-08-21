@@ -1,8 +1,11 @@
 import {
-  fileToBase64, replaceTurkishCharacters, get,
+  fileToBase64,
+  replaceTurkishCharacters,
+  get,
+  paginationCondition,
   set,
-  remove
-} from "../helper"
+  remove,
+} from "../helper";
 
 export default defineNuxtPlugin(() => {
   return {
@@ -10,10 +13,11 @@ export default defineNuxtPlugin(() => {
       helper: {
         fileToBase64,
         replaceTurkishCharacters,
+        paginationCondition,
         get,
         set,
-        remove
-      }
-    }
-  }
-})
+        remove,
+      },
+    },
+  };
+});
