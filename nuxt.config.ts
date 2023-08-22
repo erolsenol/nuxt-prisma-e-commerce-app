@@ -8,14 +8,14 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
-    "nuxt-icon",
+    // "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
-    '@vee-validate/nuxt',
-    '@pinia/nuxt',
+    "@vee-validate/nuxt",
+    "@pinia/nuxt",
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -31,21 +31,29 @@ export default defineNuxtConfig({
     autoImports: true,
     // Use different names for components
     componentNames: {
-      Form: 'VeeForm',
-      Field: 'VeeField',
-      FieldArray: 'VeeFieldArray',
-      ErrorMessage: 'VeeErrorMessage',
+      Form: "VeeForm",
+      Field: "VeeField",
+      FieldArray: "VeeFieldArray",
+      ErrorMessage: "VeeErrorMessage",
     },
   },
+  // nuxtIcon: {
+  //   // size: '24px', // default <Icon> size applied
+  //   class: "icon", // default <Icon> class applied
+  //   aliases: {
+  //     nuxt: "logos:nuxt-icon",
+  //   },
+  // },
   imports: {
-    dirs: ['./stores'],
+    autoImport: true,
+    dirs: ["./stores"],
   },
   pinia: {
     autoImports: [
       // automatically imports `defineStore`
-      'defineStore', // import { defineStore } from 'pinia'
-      ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
-      'acceptHMRUpdate'
+      "defineStore", // import { defineStore } from 'pinia'
+      ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
+      "acceptHMRUpdate",
     ],
   },
   nitro: {},
@@ -66,7 +74,13 @@ export default defineNuxtConfig({
   $development: {
     //
   },
-  css: ["~/assets/_colors.scss", "~/assets/_variables.scss", "~/assets/_main.scss", "~/assets/_general.scss", "~/assets/_effects.scss"],
+  css: [
+    "~/assets/_colors.scss",
+    "~/assets/_variables.scss",
+    "~/assets/_main.scss",
+    "~/assets/_general.scss",
+    "~/assets/_effects.scss",
+  ],
   snackbar: {
     bottom: true,
     right: true,
@@ -74,8 +88,8 @@ export default defineNuxtConfig({
   },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default
-    locales: ['en', 'tr'],
-    defaultLocale: 'tr',
+    locales: ["en", "tr"],
+    defaultLocale: "tr",
   },
   image: {
     // Options
@@ -111,5 +125,4 @@ export default defineNuxtConfig({
       },
     },
   },
-
 });

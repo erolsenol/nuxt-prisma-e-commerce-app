@@ -1,4 +1,4 @@
-import pageAbout from "../../data/pageAbout";
+import pageAbout from "../../data/pageContents";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);

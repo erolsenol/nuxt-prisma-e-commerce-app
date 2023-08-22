@@ -43,7 +43,8 @@ export default {
   sub_categories: "Alt Kategoriler",
   categories: "Kategoriler",
 
-  page_about_us: "Hakkımızda Sayfası",
+  page_about: "Hakkımızda Sayfası",
+  page_contact: "İletişim Sayfası",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_language: "Sayfa dili",

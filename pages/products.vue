@@ -9,6 +9,7 @@ import { ref, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 const { $qs } = useNuxtApp()
 
+
 const rows = ref([])
 const paginate = ref({
   skip: 0,

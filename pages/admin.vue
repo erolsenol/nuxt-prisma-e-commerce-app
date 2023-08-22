@@ -1,7 +1,21 @@
+<script>
+export default {
+  name: "PageContact",
+  components: {
+    pageEditAbout,
+    pageEditContact,
+  }
+};
+</script>
+
 <script setup>
 import { ref } from 'vue'
 
+import pageEditAbout from '~/components/page/about/index.vue'
+import pageEditContact from '~/components/page/contact/index.vue'
+
 const active = ref(0)
+const activeSiteSetting = ref(0)
 const tabs = [
   "products",
   "categories",
@@ -26,15 +40,15 @@ const tabs = [
       </div>
       <div class="col-12 col-md-9">
         <div class="products" v-if="active == 0">
-          <div class="accordion mb-3" id="accordionExample">
+          <div class="accordion mb-3" id="accordionProduct">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
-                  aria-expanded="true" aria-controls="collapseProduct">
+                <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseProduct" aria-expanded="true" aria-controls="collapseProduct">
                   {{ $t('product_add') }}
                 </button>
               </h2>
-              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionProduct">
                 <div class="accordion-body">
                   <AdminProductAdd />
                 </div>
@@ -45,15 +59,15 @@ const tabs = [
           <AdminProductList />
         </div>
         <div class="categories" v-if="active == 1">
-          <div class="accordion mb-3" id="accordionExample">
+          <div class="accordion mb-3" id="accordionCategory">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
-                  aria-expanded="true" aria-controls="collapseProduct">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">
                   Kategori Ekle
                 </button>
               </h2>
-              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div id="collapseCategory" class="accordion-collapse collapse" data-bs-parent="#accordionCategory">
                 <div class="accordion-body">
                   <CategoryAdd />
                 </div>
@@ -64,15 +78,15 @@ const tabs = [
           <CategoryList />
         </div>
         <div class="subCategory" v-if="active == 2">
-          <div class="accordion mb-3" id="accordionExample">
+          <div class="accordion mb-3" id="accordionSubCategory">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
-                  aria-expanded="true" aria-controls="collapseProduct">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseSubCategory" aria-expanded="true" aria-controls="collapseSubCategory">
                   Alt Kategori Ekle
                 </button>
               </h2>
-              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div id="collapseSubCategory" class="accordion-collapse collapse" data-bs-parent="#accordionSubCategory">
                 <div class="accordion-body">
                   <SubCategoryAdd />
                 </div>
@@ -89,20 +103,41 @@ const tabs = [
           comment
         </div>
         <div class="site-settings" v-if="active == 5">
-          <div class="accordion mb-3" id="accordionExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct"
-                  aria-expanded="true" aria-controls="collapseProduct">
-                  {{ $t('page_about_us') }}
-                </button>
-              </h2>
-              <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  <PageAbout />
+          <div class="accordion mb-3" id="accordionSiteSettings">
+            <template v-for="(page, index) in ['About', 'Contact']">
+              <div class="accordion-item" :class="index > 0 ? 'mt-3' : ''">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    @click="activeSiteSetting = index" :data-bs-target="`#collapsePage${page}`" aria-expanded="true"
+                    :aria-controls="`collapsePage${page}`">
+                    {{ $t(`page_${page.toLowerCase()}`) }}
+                  </button>
+                </h2>
+                <div :id="`collapsePage${page}`" class="accordion-collapse collapse"
+                  data-bs-parent="#accordionSiteSettings">
+                  <div class="accordion-body">
+                    <template v-if="activeSiteSetting === index">
+                      <component :is="`pageEdit${page}`" :key="`page${page}`"></component>
+                    </template>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
+
+            <!-- <div class="accordion-item mt-3">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapsePageContact" aria-expanded="true" aria-controls="collapsePageContact">
+                  {{ $t('page_contact_us') }}
+                </button>
+              </h2>
+              <div id="collapsePageContact" class="accordion-collapse collapse" data-bs-parent="#accordionSiteSettings">
+                <div class="accordion-body">
+                  PageContact
+                  <PageContact :key="'pageContact'" />
+                </div>
+              </div>
+            </div> -->
           </div>
         </div>
       </div>

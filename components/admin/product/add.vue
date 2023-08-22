@@ -6,10 +6,9 @@ export default {
 
 <script setup>
 import { ref } from "vue";
-import { Field, Form, ErrorMessage, useForm } from 'vee-validate';
+import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
 
-const { resetForm } = useForm();
 const { $helper } = useNuxtApp();
 
 const schema = object().shape({

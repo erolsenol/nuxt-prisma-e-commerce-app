@@ -1,4 +1,4 @@
-import pageAbout from "../../data/pageAbout";
+import pageAbout from "../../data/pageContents";
 import { getImageWithDynamicId } from "../../data/images";
 
 export default defineEventHandler(
@@ -17,7 +17,7 @@ export default defineEventHandler(
     console.log("page about first data:", data);
 
     if (data && data.id) {
-      const images = await getImageWithDynamicId({ pageaboutId: id })
+      const images = await getImageWithDynamicId({ pageContentId: id })
 
       if (images.length > 0) {
         data.images = images

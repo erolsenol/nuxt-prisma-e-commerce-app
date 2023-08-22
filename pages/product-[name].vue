@@ -5,6 +5,8 @@ export default {
 </script>
 <script setup>
 import { ref, onMounted } from 'vue'
+
+
 const route = useRoute()
 const { t } = useI18n();
 const { $qs } = useNuxtApp()

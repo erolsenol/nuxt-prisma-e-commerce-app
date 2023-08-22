@@ -1,8 +1,15 @@
+<script>
+export default {
+  name: "PageAbout",
+};
+</script>
 <script setup>
-import { ref, onMounted } from "vue"
-const { locale, locales } = useI18n()
 
-const { $qs, $helper } = useNuxtApp()
+import { onMounted } from "vue"
+const { locale } = useI18n()
+
+const { $qs } = useNuxtApp()
+
 
 const items = ref([])
 const loading = ref(true)
@@ -10,13 +17,14 @@ const loading = ref(true)
 async function getAll() {
   const config = {
     params: {
+      pageName: "about",
       locale
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
   loading.value = true
-  const { data } = await useFetch("/api/pageAbout", config).finally(() => loading.value = false);
+  const { data } = await useFetch("/api/pageContent", config).finally(() => loading.value = false);
   if (!data.value) return
 
   console.log("response data", data.value);

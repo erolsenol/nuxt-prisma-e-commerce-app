@@ -5,17 +5,19 @@ export default {
 </script>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import { object,string } from 'yup';
+import { object, string } from 'yup';
 
 const schema = object().shape({
     title: string().required(),
     content: string().required(),
 });
 
-const { lang, index } = defineProps({
+const { lang, pageName, imagePath, index } = defineProps({
     lang: String,
+    pageName: String,
+    imagePath: String,
     index: Number,
 })
 const imageBase64 = ref("")
@@ -28,8 +30,6 @@ const form = ref({
     content: null,
 })
 const { $helper } = useNuxtApp()
-
-
 
 const snackbar = useSnackbar();
 
@@ -47,16 +47,16 @@ async function formClear() {
 
 function upload() {
     const imgInput = document.querySelector(`#img-input-${lang}-${index}`)
-    
+
     if (!imgInput) return
 
     imgInput.click()
 }
 
 async function onFileChange(e) {
-    
+    console.log("onFileChange", pageName);
     let files = e.target.files || e.dataTransfer.files;
-    
+    console.log("files", files);
     if (!files.length) return;
     imageBase64.value = null
     imageBase64.value = await $helper.fileToBase64(files[0])
@@ -75,11 +75,12 @@ async function save() {
 
     const body = {
         locale: lang,
+        pageName: pageName,
         title: form.value.title,
         content: form.value.content
     }
 
-    const { data, pending, error, refresh } = await useFetch("/api/pageAbout", {
+    const { data, pending, error, refresh } = await useFetch("/api/pageContent", {
         method: "post",
         body: body,
     }).catch((error) => {
@@ -88,8 +89,8 @@ async function save() {
     if (data.value.status) {
         console.log(data.value.data.id);
         const imageBody = {
-            path: "about-us/",
-            ownerName: "pageaboutId",
+            path: imagePath,
+            ownerName: "pageContentId",
             ownerId: data.value.data.id,
             images: [{
                 name: imageData.value.name,
@@ -125,7 +126,7 @@ async function save() {
                 text: "Aynı İsimle Ürün bulunuyor",
             });
 
-          
+
         }
         console.log("Ürün Kaydedilemedi");
         snackbar.add({
@@ -160,6 +161,7 @@ async function save() {
                     </div>
                     <input v-show="false" name="image" @change="onFileChange" class="form-control" type="file"
                         :id="`img-input-${lang}-${index}`" accept="image/png, image/jpeg" />
+                    {{ pageName }}
 
                     <nuxt-img v-if="imageBase64" :src="imageBase64" class="card-img-top img-fluid"
                         style="max-width: 20rem;" />

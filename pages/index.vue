@@ -4,8 +4,6 @@ export default {
 };
 </script>
 <script setup>
-const foo = useFoo();
-const { $helper } = useNuxtApp();
 
 
 </script>
