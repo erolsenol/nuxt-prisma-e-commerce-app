@@ -7,8 +7,6 @@ const { locale, locales } = useI18n()
 const router = useRouter()
 const storeUser = useUser()
 
-console.log("storeUser", storeUser);
-
 function pageChange(key, url) {
    selectedIndex.value = key
    if (url) {
@@ -66,7 +64,7 @@ let loginFormType = ref("login")
          class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
             <a href="/" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
-               <NuxtImg class="logo" src="/google-logo.webp" />
+               <!-- <NuxtImg class="logo" src="/google-logo.webp" /> -->
             </a>
          </div>
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">

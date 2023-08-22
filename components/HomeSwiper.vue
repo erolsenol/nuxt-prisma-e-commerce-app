@@ -22,7 +22,7 @@
     }"
   >
     <SwiperSlide v-for="slide in 10" :key="slide">
-        <nuxt-img src="/horizontal-image.jpg" class="img-fluid" style="width: 100%;" />
+        <!-- <nuxt-img src="/horizontal-image.jpg" class="img-fluid" style="width: 100%;" /> -->
     </SwiperSlide>
   </Swiper>
 </template>
