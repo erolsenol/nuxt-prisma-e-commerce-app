@@ -9,7 +9,7 @@ export default {
 </script>
 
 <template>
-    <div class="page-null">
-        Null
+    <div class="page-null d-flex aling-items-center justify-content-center">
+        <NuxtImg src="img/404.jpg" />
     </div>
 </template>

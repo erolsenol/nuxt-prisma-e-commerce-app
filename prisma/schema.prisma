@@ -102,6 +102,20 @@ model Image {
   pageContentId Int?
   comment       Comment?     @relation(fields: [commentId], references: [id])
   commentId     Int?
+  Photo         Photo[]
+}
+
+model Photo {
+  id      Int     @id @unique @default(autoincrement())
+  name    String?
+  type    String?
+  image   Image   @relation(fields: [imageId], references: [id])
+  imageId Int
+}
+
+model Phototype {
+  id       Int    @id @unique @default(autoincrement())
+  typeName String @unique
 }
 
 model Comment {
@@ -131,6 +145,19 @@ model ContactUs {
   updatedAt DateTime @updatedAt
 }
 
+model Pagecontent {
+  id        Int      @id @unique @default(autoincrement())
+  locale    String   @db.VarChar(255)
+  bigTitle  String?  @db.VarChar(255)
+  title     String   @db.VarChar(255)
+  content   String   @db.VarChar(2000)
+  pageName  String   @db.VarChar(255)
+  deleted   Boolean? @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  images    Image[]
+}
+
 model Site {
   id          Int      @id @unique @default(autoincrement())
   headerLogo  String?  @db.VarChar(255)
@@ -147,17 +174,4 @@ model Site {
   updatedAt   DateTime @updatedAt
 
   pageAbout Json?
-}
-
-model Pagecontent {
-  id        Int      @id @unique @default(autoincrement())
-  locale    String   @db.VarChar(255)
-  bigTitle  String?  @db.VarChar(255)
-  title     String   @db.VarChar(255)
-  content   String   @db.VarChar(2000)
-  pageName  String   @db.VarChar(255)
-  deleted   Boolean? @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  images    Image[]
 }
