@@ -2,6 +2,7 @@
 import path from "path";
 
 export default defineNuxtConfig({
+  ssr: true,
   devtools: { enabled: true },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
