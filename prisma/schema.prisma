@@ -102,6 +102,8 @@ model Image {
   pageContentId Int?
   comment       Comment?     @relation(fields: [commentId], references: [id])
   commentId     Int?
+  minislider    Minislider?  @relation(fields: [minisliderId], references: [id])
+  minisliderId  Int?
   Photo         Photo[]
 }
 
@@ -156,6 +158,15 @@ model Pagecontent {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   images    Image[]
+}
+
+model Minislider {
+  id        Int      @id @unique @default(autoincrement())
+  texts     Json
+  deleted   Boolean? @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Image     Image[]
 }
 
 model Site {

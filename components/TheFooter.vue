@@ -1,5 +1,28 @@
 <script setup>
+const { locale, locales } = useI18n()
 
+const headerItems = [
+   {
+      text: "products",
+      to: "index"
+   },
+   {
+      text: "services",
+      to: null
+   },
+   {
+      text: "news_and_publications",
+      to: null
+   },
+   {
+      text: "about_us",
+      to: "about"
+   },
+   {
+      text: "communication",
+      to: null
+   },
+]
 </script>
 
 <template>
@@ -29,10 +52,10 @@
             </div>
             <div class="col-12 col-sm-6  mb-3">
                <ul class="list-group list-group-vertical">
-                  <li class="list-group-item">Ürünler</li>
-                  <li class="list-group-item">Hakkımızda</li>
-                  <li class="list-group-item">Haberler ve Yayınlar</li>
-                  <li class="list-group-item">İletişim</li>
+                  <li class="list-group-item" v-for="(item, index) in headerItems">
+                     <span class="cool-link">{{ $t(item.text) }}</span>
+                     </li>
+                 
                </ul>
             </div>
 
@@ -47,4 +70,8 @@
    </div>
 </template>
 
-<style></style>
+<style>
+.cool-link {
+   display: inline-block;
+}
+</style>

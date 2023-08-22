@@ -5,8 +5,6 @@ export default {
 </script>
 <script setup>
 import { ref, onMounted } from 'vue'
-
-
 const route = useRoute()
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
@@ -27,9 +25,26 @@ onMounted(() => {
 })
 
 async function get() {
+  let productName = null
+  if (!route || !route.params || !route.params.name) {
+    setTimeout(() => {
+      const pathname = window.location.pathname
+      const index = pathname.indexOf('ct-')
+      if (index > -1) {
+        productName = pathname.substring(index + 3, pathname.length - index + 3)
+      }
+      console.log(window.location);
+      if (!productName) {
+        get()
+      }
+
+    }, 200);
+    return
+  }
+
   const config = {
     params: {
-      name: route.params.name
+      name: route.params.name || productName
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
@@ -116,7 +131,7 @@ async function getStar() {
 
         <div class="product-detail-content-price d-flex flex-row justify-content-between">
           <div class="w-50 text-start">
-            <span class="fs-3"> 3.852.00 <span class="fs-5">TL</span></span>
+            <span class="fs-3">3.852.00 <span class="fs-5">TL</span></span>
           </div>
           <div class="w-50 d-flex flex-row justify-content-end align-items-center">
             <span class="fs-4 me-3"> 4.4</span>
