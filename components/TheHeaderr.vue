@@ -6,24 +6,21 @@ import { setLocale } from '@vee-validate/i18n';
 const { locale, locales } = useI18n()
 const router = useRouter()
 const storeUser = useUser()
+const switchLocalePath = useSwitchLocalePath()
 
-function pageChange(key, url) {
-   selectedIndex.value = key
-   if (url) {
-      router.push(localeLocation(`/${url}`))
-   }
+function langChange(lang) {
+   const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
+   router.push(({ name: `${pathName}${lang}` }))
 }
 
-const switchLocalePath = useSwitchLocalePath()
+function pageChange(to) {
+   router.push({ name: `${to}___${locale.value}` })
+}
 
 const availableLocales = computed(() => {
    return (locales.value).filter(i => i !== locale.value)
 })
 
-function changeLocale(val) {
-   console.log("changeLocale");
-   setLocale(val);
-}
 function formTypeChange(str) {
    loginFormType.value = str
 }
@@ -34,7 +31,7 @@ function logout() {
 const headerItems = [
    {
       text: "products",
-      to: "/"
+      to: "index"
    },
    {
       text: "services",
@@ -46,7 +43,7 @@ const headerItems = [
    },
    {
       text: "about_us",
-      to: "/about"
+      to: "about"
    },
    {
       text: "communication",
@@ -63,13 +60,13 @@ let loginFormType = ref("login")
       <div
          class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
-            <a href="/" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
-               <!-- <NuxtImg class="logo" src="/google-logo.webp" /> -->
+            <a @click="pageChange('index')" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
+               <NuxtImg class="logo" src="neva/logo.svg" />
             </a>
          </div>
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li class="" v-for="(item, index) in headerItems" :key="index">
-               <NuxtLink :to="`${item.to}`" class="nav-link cool-link px-2">
+               <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2">
                   {{ $t(item.text) }}
                </NuxtLink>
             </li>
@@ -77,15 +74,15 @@ let loginFormType = ref("login")
          <div
             class="d-flex flex-row align-items-center justify-content-lg-end col-lg-4 col-md-5 col-sm-6 text-xl-end text-lg-start mt-xl-0 mt-lg-3 mt-md-3 me-0">
             <template v-if="storeUser.getHasLogin != true">
-               <button type="button" class="btn btn-outline-light px-3 me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
-                  @click="formTypeChange('login')">{{ $t('login') }}</button>
-               <button type="button" class="btn btn-outline-light px-3 me-2" data-bs-toggle="modal" data-bs-target="#loginModal"
-                  @click="formTypeChange('sing_up')"> {{ $t('sing_up') }}</button>
+               <button type="button" class="btn btn-outline-light px-3 me-2" data-bs-toggle="modal"
+                  data-bs-target="#loginModal" @click="formTypeChange('login')">{{ $t('login') }}</button>
+               <button type="button" class="btn btn-outline-light px-3 me-2" data-bs-toggle="modal"
+                  data-bs-target="#loginModal" @click="formTypeChange('sing_up')"> {{ $t('sing_up') }}</button>
             </template>
             <template v-else>
                <div class="dropdown text-end me-3" style="max-width: 12rem;">
-                  <a href="#" class="d-block link-body-emphasis text-decoration-none"
-                     data-bs-toggle="dropdown" aria-expanded="false">
+                  <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown"
+                     aria-expanded="false">
                      <img src="https://github.com/mdo.png" alt="mdo" width="40" height="40" class="rounded-circle">
 
                      <Icon class="ms-1" color="white" name="ri:arrow-down-s-fill" />
@@ -109,7 +106,7 @@ let loginFormType = ref("login")
                <ul class="dropdown-menu">
                   <template v-for="item in availableLocales" :key="locale.code">
                      <li class="text-center">
-                        <NuxtLink class="dropdown-item" @click="changeLocale(item)" :to="switchLocalePath(item)">
+                        <NuxtLink class="dropdown-item" @click="langChange(item)">
                            {{ item.toUpperCase() }}
                         </NuxtLink>
                      </li>

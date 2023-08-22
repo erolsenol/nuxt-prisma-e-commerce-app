@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
-    // "nuxt-icon",
+    "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
     "@nuxtjs/google-fonts",
@@ -64,7 +64,7 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://example.com",
       siteName: "Awesome Site",
       siteDescription: "Welcome to my awesome site!",
-      language: "en", // prefer more explicit language codes like `en-AU` over `en`
+      language: "tr", // prefer more explicit language codes like `en-AU` over `en`
     },
   },
   $production: {

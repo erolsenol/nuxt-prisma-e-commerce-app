@@ -17,27 +17,27 @@ export function replaceTurkishCharacters(str: String) {
   return text;
 }
 
-export function get(name: String) {
+export function get(name: string) {
   let data = localStorage.getItem(name);
   if (!data) return data;
   return JSON.parse(data);
 }
 
-export function set(name: String, val) {
+export function set(name: string, val: any) {
   return localStorage.setItem(name, JSON.stringify(val));
 }
 
-export function addArray(name: String, val) {
+export function addArray(name: String, val: Array) {
   let oVal = localStorage.get(name);
   let nVal = oVal.concat(val);
   localStorage.set(name, nVal);
 }
 
-export function remove(name) {
+export function remove(name: string) {
   localStorage.removeItem(name);
 }
 
-export function paginationCondition(index, current, total) {
+export function paginationCondition(index: number, current: number, total: number) {
   if (total < 7) {
     return true;
   }

@@ -11,14 +11,14 @@ export default defineEventHandler(async (event) => {
     status: false,
   };
 
-  const { locale, title, content, image } = await readBody(event);
+  const { locale, title, content, pageName, image } = await readBody(event);
 
   // locale
   // title
   // content
   // image
 
-  if (!locale || !title || !content) {
+  if (!locale || !title || !content || !pageName) {
     response.error = "cannot be empty";
     return response;
   }
@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) => {
     locale: locale,
     title: title,
     content: content,
+    pageName: pageName
   };
   const res = await pageContent.post(data);
 
