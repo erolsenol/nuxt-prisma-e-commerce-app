@@ -1,5 +1,10 @@
 <script setup>
-const { locale, locales } = useI18n()
+const { locale } = useI18n()
+const router = useRouter()
+
+function pageChange(to) {
+   router.push({ name: `${to}___${locale.value}` })
+}
 
 const headerItems = [
    {
@@ -41,21 +46,18 @@ const headerItems = [
                   <li class="list-group-item">
                      <Icon name="material-symbols:mail" color="white" size="30" />
                      <span class="ms-2">qweqw qwe qwe qwe qwe</span>
-
                   </li>
                   <li class="list-group-item">
                      <Icon name="material-symbols:mail" color="white" size="30" />
                      <span class="ms-2">qweqw qwe qwe qwe qwe</span>
-
                   </li>
                </ul>
             </div>
             <div class="col-12 col-sm-6  mb-3">
                <ul class="list-group list-group-vertical">
                   <li class="list-group-item" v-for="(item, index) in headerItems">
-                     <span class="cool-link">{{ $t(item.text) }}</span>
-                     </li>
-                 
+                     <span class="cool-link" @click="pageChange(item.to)">{{ $t(item.text) }}</span>
+                  </li>
                </ul>
             </div>
 

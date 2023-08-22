@@ -25,8 +25,8 @@ onMounted(() => {
 })
 
 async function get() {
-  let productName = null
-  if (!route || !route.params || !route.params.name) {
+  let productName = route.params.name
+  if (!productName) {
     setTimeout(() => {
       const pathname = window.location.pathname
       const index = pathname.indexOf('ct-')
@@ -37,10 +37,12 @@ async function get() {
       if (!productName) {
         get()
       }
-
     }, 200);
     return
   }
+
+  console.log("route.params.name",route.params.name);
+  console.log("productName",productName);
 
   const config = {
     params: {
@@ -150,13 +152,13 @@ async function getStar() {
             </span>
           </div>
 
-          <span class="badge bg-secondary py-2 px-3">{{ $t('ask_question') }}</span>
+          <span class="badge bg-secondary text-wrap py-3 px-3 fs-6">{{ $t('ask_question') }}</span>
         </div>
         <!-- <div class="product-detail-content-start text-start mt-2" style="cursor: pointer;">
           <Icon name="icon-park-outline:like" color="black" size="30" style="cursor: pointer;" />
         </div> -->
       </div>
-      <PageProductsSendComment />
+      <PageProductsSendComment :productId="item.id" />
     </div>
     <Loading v-else />
 

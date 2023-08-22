@@ -123,7 +123,7 @@ model Phototype {
 model Comment {
   id        Int      @id @unique @default(autoincrement())
   title     String?  @db.VarChar(255)
-  content   String?  @db.VarChar(255)
+  content   String?  @db.VarChar(755)
   point     Int?
   deleted   Boolean? @default(false)
   createdAt DateTime @default(now())
@@ -132,7 +132,7 @@ model Comment {
   productId Int
   user      User?    @relation(fields: [userId], references: [id])
   userId    Int?
-  Image     Image[]
+  images    Image[]
 }
 
 model ContactUs {

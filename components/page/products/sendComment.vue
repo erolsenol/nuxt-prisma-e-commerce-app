@@ -8,6 +8,11 @@ import { ref, onMounted } from 'vue'
 const { t } = useI18n();
 const snackbar = useSnackbar();
 
+const { productId } = defineProps({
+    productId: { type: Number, required: false },
+})
+
+let loading = ref(false)
 const comment = ref({
     title: null,
     content: null,
@@ -15,6 +20,13 @@ const comment = ref({
 const images = ref([])
 const imageNames = ref([])
 const commentImage = ref('commentImage')
+
+function formClear() {
+    comment.value.title = null
+    comment.value.content = null
+    images.value = []
+    imageNames.value = []
+}
 
 function onFileChange(e) {
     let files = e.target.files || e.dataTransfer.files;
@@ -47,19 +59,41 @@ async function send() {
         return
     }
 
-    const config = {
-        params: {
-            name: route.params.name
-        },
-        paramsSerializer: (params) => $qs.stringify(params, { encode: false })
-    };
+    console.log("productId", productId);
 
-    const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
-    console.log("data", data.value);
+    const body = { ...comment.value, productId: productId }
+
+    loading.value = true
+    const { data } = await useFetch("/api/comment", { method: "post", body: body }).finally(() => loading.value = false);
+    console.log("data.value.data", data.value.data);
     if (!data || !data.value || !data.value.data) return
 
-    item.value = data.value.data
-    console.log("item.value", item.value);
+
+    if (data.value.status) {
+        console.log("if true");
+        let body = []
+        for (let index = 0; index < images.value.length; index++) {
+            body.push({ name: imageNames[index], image: images[index] })
+        }
+        console.log("body", body);
+        if (body.length > 0) {
+            const response = await useFetch("/api/image", {
+                method: "post",
+                body: {
+                    ownerName: "commentId",
+                    ownerId: data.value.data.id,
+                    images: imageData
+                },
+            }).catch((error) => {
+                console.error(error);
+            }).finally(() => loading.value = false);
+        } else {
+            loading.value = false
+        }
+
+        formClear()
+    }
+
 }
 
 </script>
@@ -68,6 +102,7 @@ async function send() {
     <div class="container product-detail-comment">
         <div class="row mt-3">
             <div class="col-12">
+                {{ productId }}
                 <div class="card">
                     <h5 class="card-header"> {{ $t('write_commet') }}</h5>
                     <div class="card-body">
@@ -83,7 +118,13 @@ async function send() {
                                         rows="3"></textarea>
                                 </div>
                                 <div class="mt-4">
-                                    <a @click="send" class="btn btn-primary">{{ $t('send') }}</a>
+                                    <a @click="send"
+                                        class="btn btn-primary d-inline-flex justify-content-center align-items-center">
+                                        <div class="spinner-border spinner-border-sm float-start me-3" role="status"
+                                            v-if="loading">
+                                        </div>
+                                        {{ $t('send') }}
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
@@ -96,8 +137,9 @@ async function send() {
                                 <input name="image" v-show="false" @change="onFileChange" class="form-control" type="file"
                                     ref="commentImage" accept="image/png, image/jpeg" multiple />
                                 <div class="mt-3">
-                                    <button class="btn btn-outline-secondary" @click="uploadImage">{{ $t('upload')
-                                    }}</button>
+                                    <button class="btn btn-outline-secondary" @click="uploadImage">
+                                        {{ $t('upload') }}
+                                    </button>
                                 </div>
                             </div>
                         </div>
