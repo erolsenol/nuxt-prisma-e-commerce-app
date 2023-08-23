@@ -10,6 +10,9 @@ interface interfaceProduct {
   name: String;
   title: String;
   content: String;
+  name_en?: String;
+  title_en?: String;
+  content_en?: String;
   createdAt: Date;
   updatedAt: Date;
   // images:    Image[]

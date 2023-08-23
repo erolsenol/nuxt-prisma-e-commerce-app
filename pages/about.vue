@@ -7,7 +7,7 @@ export default {
 
 import { onMounted } from "vue"
 const { locale } = useI18n()
-
+const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
 

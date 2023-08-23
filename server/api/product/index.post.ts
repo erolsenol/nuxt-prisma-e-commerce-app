@@ -4,27 +4,27 @@ import { postImage } from "../../data/images";
 export default defineEventHandler(async (event) => {
   let response = {
     data: null,
-    status: false
-  }
-  const body = await readBody(event)
+    status: false,
+  };
+  const body = await readBody(event);
 
-  if(!body.name || !body.title || !body.content ) {
-    response.error = "cannot be empty"
-    return response
-  }
-
-  console.log("product post body",body);
-
-  const nameProduct = await getProductByName(body.name)
-  if(nameProduct && nameProduct.id) {
-    response.error = "There is a product with the same name"
-    return response
+  if (!body.name || !body.title || !body.content) {
+    response.error = "cannot be empty";
+    return response;
   }
 
-  const product = await postProduct({ name: body.name, title: body.title, content: body.content })
+  console.log("product post body", body);
+
+  const nameProduct = await getProductByName(body.name);
+  if (nameProduct && nameProduct.id) {
+    response.error = "There is a product with the same name";
+    return response;
+  }
+
+  const product = await postProduct({ ...body });
 
   if (product.id) {
-    product.images = []
+    product.images = [];
     // for (let index = 0; index < body.images.length; index++) {
     //   const file = body.images[index];
     //   console.log("1111111 file",file);
@@ -38,9 +38,9 @@ export default defineEventHandler(async (event) => {
     //     product.images.push(resImage)
     //   }
     // }
-    response.data = product
-    response.status = true
-    return response
+    response.data = product;
+    response.status = true;
+    return response;
   }
-  return response
+  return response;
 });

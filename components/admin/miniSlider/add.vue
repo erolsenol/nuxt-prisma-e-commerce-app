@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "ProductAdd",
+  name: "MiniSliderAdd",
 };
 </script>
 

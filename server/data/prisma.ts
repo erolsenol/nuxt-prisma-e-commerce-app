@@ -8,9 +8,7 @@ declare global {
 let prisma: PrismaClient
 
 const prismaConfig = {
-  rejectOnNotFound: {
-    findUnique: false,
-  },
+
 }
 
 if (process.env.NODE_ENV === 'production') {

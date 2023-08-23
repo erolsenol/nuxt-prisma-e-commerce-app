@@ -49,6 +49,10 @@ const headerItems = [
       text: "communication",
       to: null
    },
+   {
+      text: "admin",
+      to: "admin"
+   },
 ]
 
 let selectedIndex = ref("0")

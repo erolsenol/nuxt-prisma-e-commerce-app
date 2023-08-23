@@ -7,12 +7,12 @@ export default {
 <script setup>
 import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import * as yup from 'yup';
+import { string, object } from 'yup';
 
-const schema = yup.object({
-  name: yup.string().required(),
-  name_en: yup.string().required(),
-  description: yup.string(),
+const schema = object({
+  name: string().required(),
+  name_en: string().required(),
+  description: string(),
 });
 
 const snackbar = useSnackbar();
