@@ -7,10 +7,18 @@ export default {
 <script setup>
 import { ref, computed, toRefs, toRef } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { array, string, object } from 'yup';
 const emit = defineEmits(['update'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
+
+const schema = object().shape({
+    name: string().required(),
+    title: string().required(),
+    content: string().required(),
+    image: array().min(1).required(),
+});
 
 let { type, form } = defineProps({
     type: String,
@@ -163,7 +171,7 @@ async function removeImage(id) {
 
 <template>
     <div class="product-form">
-        <Form @submit="save">
+        <Form @submit="$emit('save', form)" :validation-schema="schema">
             <div class="mb-3">
                 <label for="product-form-name" class="form-label">Ürün Adı</label>
                 <Field name="name" v-model="form.name" type="text" class="form-control" id="product-form-name"

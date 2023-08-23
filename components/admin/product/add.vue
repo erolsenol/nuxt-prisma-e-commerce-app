@@ -24,6 +24,9 @@ const initialProduct = () => ({
   name: null,
   title: null,
   content: null,
+  name_en: null,
+  title_en: null,
+  content_en: null,
   image: [],
 });
 
@@ -40,24 +43,12 @@ async function formClear() {
     product.value.name = null
     product.value.title = null
     product.value.content = null
+    product.value.name_en = null
+    product.value.title_en = null
+    product.value.content_en = null
     product.value.image = []
-    // resetForm({
-    //   errors: {
-    //     name: null,
-    //     title: null,
-    //     content: null,
-    //     image: null
-    //   },
-    //   values: {
-    //     name: null,
-    //     title: null,
-    //     content: null,
-    //     image: null
-    //   }
-    // })
     resolve(true)
   })
-
 }
 
 function onFileChange(e) {

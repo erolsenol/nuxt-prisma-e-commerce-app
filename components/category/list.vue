@@ -9,6 +9,7 @@ import { ref, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 const { $qs } = useNuxtApp()
 
+const formModal = ref(null)
 const rows = ref([])
 const paginate = ref({
   skip: 0,
@@ -19,8 +20,9 @@ const category = ref({
   name: null,
   name_en: null,
   description: null,
+  description_en: null,
   createdAt: null,
-  updatedAt: null 
+  updatedAt: null
 })
 
 onMounted(() => {
@@ -47,11 +49,11 @@ async function getAll() {
     console.log("Kategori Yüklendi");
     rows.value = data.value.data
 
-    if(rows.value.length == 0) {
+    if (rows.value.length == 0) {
       snackbar.add({
-      type: "success",
-      text: "Kategori sayısı 0",
-    });
+        type: "success",
+        text: "Kategori sayısı 0",
+      });
     }
   } else {
     console.log("Kategoriler çekilirken bir sorun oluştu");
@@ -62,7 +64,7 @@ async function getAll() {
   }
 }
 
-async function get(id){
+async function get(id) {
   const config = {
     params: {
       id
@@ -70,14 +72,43 @@ async function get(id){
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
-  const { data } = await useFetch("/api/category/"+id);
+  const { data } = await useFetch("/api/category/" + id);
   if (!data.value) return
 
-  if(data.value.data) {
+  if (data.value.data) {
     category.value = data.value.data
   }
 
-  if(data.value.error) {
+  if (data.value.error) {
+    console.log("Bir hata oluştu");
+    snackbar.add({
+      type: "error",
+      text: "Bir hata oluştu",
+    });
+  }
+}
+
+async function update(body) {
+  console.log("update", body);
+  console.log("formModal", formModal.value);
+  return
+
+  const config = {
+    params: {
+      id
+    },
+    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+  };
+
+  const { data } = await useFetch("/api/image/" + id, {
+    method: "put",
+    body: {
+      ...body.value
+    }
+  });
+  if (!data.value.status) return
+
+  if (data.value.error) {
     console.log("Bir hata oluştu");
     snackbar.add({
       type: "error",
@@ -96,6 +127,7 @@ async function get(id){
           <th scope="col">İsim</th>
           <th scope="col">İngilizce İsim</th>
           <th scope="col">Açıklama</th>
+          <th scope="col">İngilizce Açıklama</th>
           <th scope="col">Aksiyon</th>
         </tr>
       </thead>
@@ -105,6 +137,7 @@ async function get(id){
           <td>{{ row.name }}</td>
           <td>{{ row.name_en }}</td>
           <td>{{ row.description }}</td>
+          <td>{{ row.description_en }}</td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
@@ -112,7 +145,8 @@ async function get(id){
                 İşlemler
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#categoryFormModal">Güncelle</li>
+                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#categoryFormModal">
+                  Güncelle</li>
                 <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#categoryFormModal"> TEST </li>
               </ul>
             </div>
@@ -131,9 +165,9 @@ async function get(id){
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <CategoryForm type="update" :form="category" @update:form="newValue => category = newValue" />
+            <CategoryForm type="update" ref="formModal" :form="category" @save="update" />
           </div>
-         
+
         </div>
       </div>
     </div>
