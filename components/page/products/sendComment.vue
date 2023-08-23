@@ -90,12 +90,9 @@ async function send() {
         } else {
             loading.value = false
         }
-
         formClear()
     }
-
 }
-
 </script>
 
 <template>

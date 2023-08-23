@@ -8,7 +8,7 @@ export default {
 import { ref, computed, toRefs, toRef } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
-const emit = defineEmits(['update'])
+const emit = defineEmits(['update', 'get'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
@@ -20,16 +20,16 @@ const schema = object().shape({
     image: array().min(1).required(),
 });
 
-let { type, form } = defineProps({
+const props = defineProps({
     type: String,
-    form: Object,
-    value: Object,
+    form: {
+        type: [Object, Boolean], default: () => { }
+    }
 })
+let { type } = toRefs(props, 'type')
+let { form } = toRefs(props, 'form')
 
-const innerForm = computed({
-    get: () => form,
-    set: value => $emit('update:form', value)
-})
+const innerForm = computed(() => { return { ...form } })
 
 const initialProduct = () => ({
     name: null,
@@ -53,22 +53,37 @@ async function formClear() {
 
 }
 
-function onFileChange(e) {
+async function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve({ name: file.name, image: reader.result });
+        reader.onerror = error => reject(error);
+    })
+}
+
+async function onFileChange(e) {
     let files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
-    createImage(files);
-}
-function createImage(files) {
-    images.value = []
-    imageNames.value = []
-    for (var index = 0; index < files.length; index++) {
-        var reader = new FileReader();
-        imageNames.value.push(files[index].name);
-        reader.onload = (event) => {
-            images.value.push(event.target.result);
-        };
-        reader.readAsDataURL(files[index]);
+
+    const id = form.id
+    for (let index = 0; index < files.length; index++) {
+        const file = files[index];
+        const imageData = await fileToBase64(file)
+        const { data } = await useFetch("/api/image", {
+            method: "post",
+            body: {
+                ownerName: "productId",
+                ownerId: form.value.id,
+                images: [imageData]
+            },
+        }).catch((error) => {
+            console.error(error);
+        });
     }
+    console.log("form", form);
+    console.log("id", form.id);
+    emit('get', form.value.id)
 }
 
 async function save(event) {
@@ -171,27 +186,52 @@ async function removeImage(id) {
 
 <template>
     <div class="product-form">
+        {{ form }}
         <Form @submit="$emit('save', form)" :validation-schema="schema">
             <div class="mb-3">
                 <label for="product-form-name" class="form-label">Ürün Adı</label>
-                <Field name="name" v-model="form.name" type="text" class="form-control" id="product-form-name"
-                    rules="required" />
+                <div class="input-group">
+                    <span class="input-group-text">TR *</span>
+                    <Field name="name" v-model="form.name" type="text" class="form-control" id="product-form-name"
+                        rules="required" />
+                </div>
                 <ErrorMessage class="invalid" name="name" />
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">EN</span>
+                    <Field name="name-en" v-model="form.name_en" type="text" class="form-control" id="product-form-name-en"
+                        rules="" />
+                </div>
             </div>
             <div class="mb-3">
                 <label for="product-form-title" class="form-label">Ürün Başlığı</label>
-                <Field name="title" rules="required" v-model="form.title" type="text" class="form-control"
-                    id="product-form-title" />
+                <div class="input-group">
+                    <span class="input-group-text">TR *</span>
+                    <Field name="title" rules="required" v-model="form.title" type="text" class="form-control"
+                        id="product-form-title" />
+                </div>
                 <ErrorMessage class="invalid" name="title" />
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">EN</span>
+                    <Field name="title-en" v-model="form.title_en" type="text" class="form-control"
+                        id="product-form-title-en" rules="" />
+                </div>
             </div>
             <div class="mb-3">
                 <label for="product-content" class="form-label">Ürün Açıklaması</label>
-                <Field name="content" rules="required" v-model="form.content" type="text" class="form-control"
-                    id="product-content" />
+                <div class="input-group">
+                    <span class="input-group-text">TR *</span>
+                    <Field name="content" rules="required" v-model="form.content" type="text" class="form-control"
+                        id="product-content" />
+                </div>
                 <ErrorMessage class="invalid" name="content" />
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">EN</span>
+                    <Field name="content-en" v-model="form.content_en" type="text" class="form-control"
+                        id="product-form-content-en" rules="" />
+                </div>
             </div>
             <div class="product-form-slide mb-3">
-
+                <span class="">Görsel Sayısı {{ form.images?.length }}</span>
                 <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
                     :effect="'creative'" :autoplay="{ delay: 5000, disableOnInteraction: true, }" :creative-effect="{
                         prev: { shadow: false, translate: ['-20%', 0, -1], },
@@ -206,7 +246,7 @@ async function removeImage(id) {
                                     Sil
                                 </button>
                             </div>
-                            <nuxt-img :src="`/images/${image.name}`" class="card-img-top img-fluid" style="width: 100%" />
+                            <nuxt-img :src="`/images/${image.name}`" class="card-img-top img-fluid" style="width: 20rem" />
 
                             <div class="card-body">
                                 <h5 class="card-title">
@@ -219,9 +259,9 @@ async function removeImage(id) {
                 </Swiper>
             </div>
             <div class="mb-3">
-                <label for="product-image" class="form-label">Ürün Görselli</label>
-                <Field name="image" rules="required" v-model="form.images" @change="onFileChange" class="form-control"
-                    type="file" id="product-image" accept="image/png, image/jpeg" multiple />
+                <label for="product-image" class="form-label">Görsel Yükle</label>
+                <Field name="image" rules="" @change="onFileChange" class="form-control" type="file" id="product-image"
+                    accept="image/png, image/jpeg" multiple />
                 <ErrorMessage class="invalid" name="image" />
             </div>
             <hr class="hr" />

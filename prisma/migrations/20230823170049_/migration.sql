@@ -24,9 +24,9 @@ CREATE TABLE `Product` (
     `name` VARCHAR(255) NOT NULL,
     `title` VARCHAR(255) NOT NULL,
     `content` VARCHAR(255) NOT NULL,
-    `name_en` VARCHAR(255) NOT NULL,
-    `title_en` VARCHAR(255) NOT NULL,
-    `content_en` VARCHAR(255) NOT NULL,
+    `name_en` VARCHAR(255) NULL,
+    `title_en` VARCHAR(255) NULL,
+    `content_en` VARCHAR(255) NULL,
     `otherLangs` JSON NULL,
     `deleted` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -67,15 +67,15 @@ CREATE TABLE `Question` (
 CREATE TABLE `Category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `name_en` VARCHAR(255) NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
+    `name_en` VARCHAR(255) NULL,
+    `description` VARCHAR(255) NULL,
+    `description_en` VARCHAR(255) NULL,
     `deleted` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Category_id_key`(`id`),
     UNIQUE INDEX `Category_name_key`(`name`),
-    UNIQUE INDEX `Category_name_en_key`(`name_en`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

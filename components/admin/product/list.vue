@@ -5,8 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { Field, Form, ErrorMessage } from 'vee-validate';
+import { ref, reactive, onMounted } from "vue";
 const { $qs, $helper } = useNuxtApp()
 
 const rows = ref([])
@@ -20,7 +19,7 @@ const total = ref({
   page: 0
 })
 const goPage = ref(1)
-const product = ref({
+let product = ref({
   id: null,
   name: null,
   title: null,
@@ -28,6 +27,7 @@ const product = ref({
   createdAt: null,
   updatedAt: null
 })
+let formData = reactive({})
 
 onMounted(() => {
   setTimeout(() => {
@@ -84,18 +84,16 @@ async function getAll() {
 }
 
 async function get(id) {
-  const config = {
-    params: {
-      id
-    },
-    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
-  };
+  console.log("gettttt", id);
 
   const { data } = await useFetch("/api/product/" + id);
   if (!data.value) return
 
+  console.log("get id:", data.value.data);
   if (data.value.data) {
-    product.value = data.value.data
+    console.log("data.value.data",data.value.data);
+    formData = data.value.data
+    console.log("form",formData);
   }
 
   if (data.value.error) {
@@ -109,7 +107,7 @@ async function get(id) {
 
 function itemUpdate(val) {
   console.log("itemUpdate", val);
-  product.value = val
+  formData.value = val
 }
 
 </script>
@@ -189,9 +187,8 @@ function itemUpdate(val) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <AdminProductForm type="update" @update="itemUpdate" :form="product" />
+            <AdminProductForm type="update" @update="itemUpdate" @get="get" :form="formData" />
           </div>
-
         </div>
       </div>
     </div>

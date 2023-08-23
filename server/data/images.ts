@@ -19,7 +19,7 @@ export async function getImage(id: Number) {
     },
     include: {
       product: true,
-      pageabout: true,
+      pageContent: true,
     },
   });
   return response;

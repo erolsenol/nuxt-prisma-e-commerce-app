@@ -43,6 +43,8 @@ export default defineEventHandler(async (event) => {
     status: false,
   };
 
+  console.log("id",id);
+
   if (!id) {
     response.error = "id cannot be empty";
     return response;
