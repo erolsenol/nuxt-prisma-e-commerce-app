@@ -80,6 +80,12 @@ export async function updateProduct(id: String, data: interfaceProduct) {
       id: id,
     },
     data: data,
+    include: {
+      images: true,
+      comments: true,
+      star: true,
+      question: true,
+    },
   });
 
   return response;

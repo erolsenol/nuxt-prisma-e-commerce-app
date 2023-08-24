@@ -28,6 +28,7 @@ let product = ref({
   updatedAt: null
 })
 let formData = reactive({})
+let formId = ref(-1)
 
 onMounted(() => {
   setTimeout(() => {
@@ -41,6 +42,7 @@ const snackbar = useSnackbar();
 // const { $hello, $readFileSync } =  useNuxtApp()
 
 function getPage(page) {
+  if (page < 1) return
   goPage.value = page
   paginate.value.skip = (paginate.value.take * page) - paginate.value.take
   getAll()
@@ -91,9 +93,9 @@ async function get(id) {
 
   console.log("get id:", data.value.data);
   if (data.value.data) {
-    console.log("data.value.data",data.value.data);
+    console.log("data.value.data", data.value.data);
     formData = data.value.data
-    console.log("form",formData);
+    console.log("form", formData);
   }
 
   if (data.value.error) {
@@ -137,7 +139,8 @@ function itemUpdate(val) {
                 İşlemler
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#productFormModal">
+                <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
+                  data-bs-target="#productFormModal">
                   Güncelle</li>
                 <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productFormModal"> TEST </li>
               </ul>
@@ -187,7 +190,7 @@ function itemUpdate(val) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <AdminProductForm type="update" @update="itemUpdate" @get="get" :form="formData" />
+            <AdminProductForm type="update" @update="itemUpdate" @get="get" :form="formData" :formId="formId" />
           </div>
         </div>
       </div>

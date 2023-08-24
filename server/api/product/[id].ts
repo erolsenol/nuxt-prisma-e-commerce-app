@@ -12,9 +12,9 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  console.log("prodcut [id]");
+  
   const product = await getProduct(id);
-  console.log("product", product);
+  
   if (product && product.id) {
 
     response.data = product;

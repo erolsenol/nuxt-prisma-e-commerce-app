@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, toRefs, toRef } from "vue";
+import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
 const emit = defineEmits(['update', 'get'])
@@ -17,27 +17,22 @@ const schema = object().shape({
     name: string().required(),
     title: string().required(),
     content: string().required(),
-    image: array().min(1).required(),
+    image: array().min(0),
 });
 
 const props = defineProps({
     type: String,
-    form: {
-        type: [Object, Boolean], default: () => { }
+    formId: Number,
+})
+let formData = ref({})
+
+watch(() => props.formId, async (newVal) => {
+    if (newVal > -1) {
+        console.log("watch formId:", newVal);
+        await get(newVal)
     }
 })
-let { type } = toRefs(props, 'type')
-let { form } = toRefs(props, 'form')
 
-const innerForm = computed(() => { return { ...form } })
-
-const initialProduct = () => ({
-    name: null,
-    title: null,
-    content: null,
-});
-
-const product = ref(initialProduct());
 const imageNames = ref([])
 const images = ref([])
 
@@ -66,7 +61,11 @@ async function onFileChange(e) {
     let files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
 
-    const id = form.id
+    let id = null
+    if (props.type == 'update') {
+        id = formData.value.id
+    }
+
     for (let index = 0; index < files.length; index++) {
         const file = files[index];
         const imageData = await fileToBase64(file)
@@ -74,70 +73,46 @@ async function onFileChange(e) {
             method: "post",
             body: {
                 ownerName: "productId",
-                ownerId: form.value.id,
+                ownerId: id,
                 images: [imageData]
             },
         }).catch((error) => {
             console.error(error);
         });
     }
-    console.log("form", form);
-    console.log("id", form.id);
-    emit('get', form.value.id)
+
+    if (props.type == 'update') {
+        get(id)
+    }
+
 }
 
 async function save(event) {
     console.log("save");
-    return
-    const imageData = []
 
-    images.value.forEach((img, index) => {
-        imageData.push({ name: imageNames.value[index], image: img })
-    });
+    const bodyData = { ...formData.value }
 
-    console.log("send producttt 12312");
+    const keys = Object.keys(bodyData)
+    keys.forEach(key => {
+        if (typeof bodyData[key] === "object") {
+            delete bodyData[key]
+        }
+    })
     const { data, pending, error, refresh } = await useFetch("/api/product", {
-        method: "post",
-        body: product,
+        method: "put",
+        body: bodyData,
     }).catch((error) => {
         console.error(error);
     });
-    if (data.value.status) {
-        console.log(data.value.data.id);
-        const response = await useFetch("/api/image", {
-            method: "post",
-            body: {
-                ownerName: "productId",
-                ownerId: data.value.data.id,
-                images: imageData
-            },
-        }).catch((error) => {
-            console.error(error);
-        });
-
-        console.log("response", response);
-
-        if (response.data.value.status) {
-            console.log("Görsel Yüklendi");
-            snackbar.add({
-                type: "success",
-                text: "Görsel Yüklendi",
-            });
-            await formClear()
-        } else {
-            console.log("Görsel Kaydedilemedi");
-            snackbar.add({
-                type: "error",
-                text: "Görsel Kaydedilemedi",
-            });
-        }
-    } else {
+    if (!data.value.status) {
         console.log("Ürün Kaydedilemedi");
         snackbar.add({
             type: "error",
             text: "Ürün Kaydedilemedi",
         });
+        return
     }
+    formData.value = data.value.data
 }
 
 async function get(id) {
@@ -145,9 +120,7 @@ async function get(id) {
     if (!data.value) return
 
     if (data.value.status) {
-        console.log("data.value.data", data.value.data);
-        emit('update', data.value.data)
-        console.log("emit update");
+        formData.value = data.value.data
     }
 }
 
@@ -174,7 +147,11 @@ async function removeImage(id) {
         });
         return
     }
-    get(id)
+
+    if (props.type == 'update') {
+        get(formData.value.id)
+    }
+
 
     console.log("Görsel Silindi");
     snackbar.add({
@@ -186,33 +163,32 @@ async function removeImage(id) {
 
 <template>
     <div class="product-form">
-        {{ form }}
-        <Form @submit="$emit('save', form)" :validation-schema="schema">
+        <Form @submit="save" :validation-schema="schema">
             <div class="mb-3">
                 <label for="product-form-name" class="form-label">Ürün Adı</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="name" v-model="form.name" type="text" class="form-control" id="product-form-name"
+                    <Field name="name" v-model="formData.name" type="text" class="form-control" id="product-form-name"
                         rules="required" />
                 </div>
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="name-en" v-model="form.name_en" type="text" class="form-control" id="product-form-name-en"
-                        rules="" />
+                    <Field name="name-en" v-model="formData.name_en" type="text" class="form-control"
+                        id="product-form-name-en" rules="" />
                 </div>
             </div>
             <div class="mb-3">
                 <label for="product-form-title" class="form-label">Ürün Başlığı</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="title" rules="required" v-model="form.title" type="text" class="form-control"
+                    <Field name="title" rules="required" v-model="formData.title" type="text" class="form-control"
                         id="product-form-title" />
                 </div>
                 <ErrorMessage class="invalid" name="title" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="title-en" v-model="form.title_en" type="text" class="form-control"
+                    <Field name="title-en" v-model="formData.title_en" type="text" class="form-control"
                         id="product-form-title-en" rules="" />
                 </div>
             </div>
@@ -220,24 +196,24 @@ async function removeImage(id) {
                 <label for="product-content" class="form-label">Ürün Açıklaması</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="content" rules="required" v-model="form.content" type="text" class="form-control"
+                    <Field name="content" rules="required" v-model="formData.content" type="text" class="form-control"
                         id="product-content" />
                 </div>
                 <ErrorMessage class="invalid" name="content" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="content-en" v-model="form.content_en" type="text" class="form-control"
+                    <Field name="content-en" v-model="formData.content_en" type="text" class="form-control"
                         id="product-form-content-en" rules="" />
                 </div>
             </div>
             <div class="product-form-slide mb-3">
-                <span class="">Görsel Sayısı {{ form.images?.length }}</span>
+                <span class="">Görsel Sayısı {{ formData.images?.length }}</span>
                 <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
                     :effect="'creative'" :autoplay="{ delay: 5000, disableOnInteraction: true, }" :creative-effect="{
                         prev: { shadow: false, translate: ['-20%', 0, -1], },
                         next: { translate: ['100%', 0, 0], },
                     }">
-                    <SwiperSlide v-for="(image, index) in form.images" :key="`img-${index}`">
+                    <SwiperSlide v-for="(image, index) in formData.images" :key="`img-${index}`">
                         <div class="card" style="width: 28rem">
                             <div class="card-header">
                                 <button type="button" @click="removeImage(image.id)"
