@@ -5,7 +5,7 @@ export default {
 </script>
 <script setup>
 
-import { onMounted } from "vue"
+import { onMounted, watch } from "vue"
 const { locale } = useI18n()
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
@@ -14,7 +14,12 @@ const { $qs } = useNuxtApp()
 const items = ref([])
 const loading = ref(true)
 
+watch(() => locale.value, async () => {
+  getAll()
+})
+
 async function getAll() {
+  console.log("getall locale:", locale);
   const config = {
     params: {
       pageName: "about",

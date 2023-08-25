@@ -47,7 +47,7 @@ const headerItems = [
    },
    {
       text: "communication",
-      to: null
+      to: "contact"
    },
    {
       text: "admin",

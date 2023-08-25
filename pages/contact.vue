@@ -1,20 +1,25 @@
 <script>
 export default {
-    name: "PageContact",
+  name: "PageAbout",
 };
 </script>
 <script setup>
-import { ref, onMounted } from "vue"
 
+import { onMounted, watch } from "vue"
+const { locale } = useI18n()
+const snackbar = useSnackbar();
+const { $qs } = useNuxtApp()
 
-const { locale, locales } = useI18n()
-
-const { $qs, $helper } = useNuxtApp()
 
 const items = ref([])
 const loading = ref(true)
 
+watch(() => locale.value, async () => {
+  getAll()
+})
+
 async function getAll() {
+  console.log("getall locale:", locale);
   const config = {
     params: {
       pageName: "contact",
@@ -49,9 +54,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="contact-content">
+  <div class="about-content">
     <div class="container">
-   
+      <HomeSwiper />
+      <template v-for="(item, index) in items" :key="index">
+        <PageDesing :index="index" :hasImage="item.images && item.images.length > 0"
+          :hasContent="typeof item.content == 'string'" :hasTitle="typeof item.title == 'string'">
+          <template v-slot:content>
+            <p class="fs-4 text-capitalize fw-bold">{{ item.title }}</p>
+            <p class="fs-6 ">{{ item.content }}</p>
+          </template>
+          <template v-slot:image>
+            <template v-if="item.images && item.images.length > 0">
+              <NuxtImg style="width: 26rem;" :src="`images/about-us/${item.images[0].name}`" />
+            </template>
+          </template>
+        </PageDesing>
+        <hr v-if="index < items.length - 1" />
+      </template>
     </div>
   </div>
 </template>

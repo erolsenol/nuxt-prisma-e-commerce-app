@@ -12,11 +12,17 @@ export default defineEventHandler(async (event) => {
 
   const query = getQuery(event);
 
+  console.log("query", query);
+
   const locale: String = (query.locale || "") as string;
+  const pageName: String = (query.pageName || "") as string;
 
-  const items = await pageAbout.geAll({ locale });
+  const items = await pageAbout.geAll({ locale,pageName });
+  console.log("items",items);
 
-  if (items && items.length > 0) {
+  console.log("items", items);
+
+  if (items) {
     response.data = items;
     response.status = true;
   }

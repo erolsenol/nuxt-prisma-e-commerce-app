@@ -3,7 +3,7 @@ export default {
   services: "Services",
   news_and_publications: "News and publications",
   institutional: "Institutional",
-  communication: "Communication",
+  communication: "Contact Us",
   about_us: "About Us",
   title: "Title",
   content: "Content",
