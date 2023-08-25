@@ -23,6 +23,7 @@ const tabs = [
   "users",
   "comments",
   "site_settings",
+  "contactus",
 ]
 </script>
 

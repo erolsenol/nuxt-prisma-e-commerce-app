@@ -16,6 +16,7 @@ export default {
   lastname: "Lastname",
   username: "Username",
   email: "E-mail",
+  phone: "Phone",
   password: "Password",
   password_again: "Password Again",
   age: "Age",

@@ -16,6 +16,7 @@ export default {
   lastname: "Soyisim",
   username: "Kullanıcı Adı",
   email: "E-posta",
+  phone: "Telefon Numarası",
   password: "Şifre",
   password_again: "Şifre Tekrar Girin",
   age: "Yaş",
