@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     "nuxt-snackbar",
     "@vee-validate/nuxt",
     "@pinia/nuxt",
+    "nuxt-bootstrap-icons"
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -37,6 +38,9 @@ export default defineNuxtConfig({
       FieldArray: "VeeFieldArray",
       ErrorMessage: "VeeErrorMessage",
     },
+  },
+  bootstrapIcons: {
+    renderType: "component", // or 'inline' (which is the default)
   },
   // nuxtIcon: {
   //   // size: '24px', // default <Icon> size applied

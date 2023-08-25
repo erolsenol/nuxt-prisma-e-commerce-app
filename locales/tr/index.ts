@@ -36,7 +36,7 @@ export default {
   product_image: "Ürün Görseli",
   product_list: "Ürün Listesi",
   detail:"Detay",
-
+  contact_us:"Bize Yazın",
   products: "Ürünler",
   site_settings: "Site Ayarları",
   comments: "Yorumlar",

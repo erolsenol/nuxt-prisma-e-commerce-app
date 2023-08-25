@@ -89,7 +89,7 @@ onMounted(() => {
           <NuxtImg class="contact-us-content-image" src="/img/contact-us.jpeg" />
         </div>
         <div class="col-12 col-md-6">
-          <p class="fs-4">Bize Yazın</p>
+          <p class="fs-4 text-center">{{$t('contact_us')}}</p>
           <Form @submit="send" :validation-schema="schema">
             <div class="mb-2">
               <label for="contact-name" class="form-label">{{$t('name')}}</label>

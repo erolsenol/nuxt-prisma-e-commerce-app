@@ -36,7 +36,7 @@ export default {
   product_image: "Product Image",
   product_list: "Product List",
   detail:"Detail",
-
+  contact_us:"Contact Us",
   products: "Products",
   site_settings: "Site Settings",
   comments: "Comments",
