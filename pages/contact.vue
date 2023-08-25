@@ -1,15 +1,26 @@
 <script>
 export default {
-  name: "PageAbout",
+  name: "PageContact",
 };
 </script>
 <script setup>
+import { Field, Form, ErrorMessage } from 'vee-validate';
+import { string, object } from 'yup';
+import { onMounted, watch, reactive } from "vue"
 
-import { onMounted, watch } from "vue"
+const schema = object({
+  name: string().required(),
+  surname: string().required(),
+  email: string().email().required(),
+  title: string().required(),
+  content: string().required(),
+});
+
 const { locale } = useI18n()
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
+let form = reactive({})
 
 const items = ref([])
 const loading = ref(true)
@@ -46,6 +57,21 @@ async function getAll() {
   }
 }
 
+function formClear(){
+  form = {}
+}
+
+async function send() {
+  console.log("send");
+
+  const body = { ...form }
+  const { data } = await useFetch('/api/contactus', { method: "post", body })
+
+  if(data.value.status) {
+    formClear()
+  }
+}
+
 onMounted(() => {
   setTimeout(() => {
     getAll()
@@ -54,9 +80,60 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="about-content">
+  <div class="contact-us-content">
     <div class="container">
       <HomeSwiper />
+
+      <div class="row my-5">
+        <div class="col-12 col-md-6 text-center">
+          <NuxtImg class="contact-us-content-image" src="/img/contact-us.jpeg" />
+        </div>
+        <div class="col-12 col-md-6">
+          <p class="fs-4">Bize Yazın</p>
+          <Form @submit="send" :validation-schema="schema">
+            <div class="mb-2">
+              <label for="contact-name" class="form-label">Name</label>
+              <Field name="name" type="text" as="input" v-model="form.name" class="form-control" id="contact-name" />
+              <ErrorMessage class="invalid" name="name" />
+            </div>
+
+            <div class="mb-2">
+              <label for="contact-surname" class="form-label">Surname</label>
+              <Field name="surname" type="text" as="input" v-model="form.surname" class="form-control"
+                id="contact-surname" />
+              <ErrorMessage class="invalid" name="surname" />
+            </div>
+
+            <div class="mb-2">
+              <label for="contact-email" class="form-label">Email address</label>
+              <Field name="email" type="email" as="input" v-model="form.email" class="form-control" id="contact-email" />
+              <ErrorMessage class="invalid" name="email" />
+            </div>
+
+            <div class="mb-2">
+              <label for="contact-phone" class="form-label">Phone</label>
+              <Field name="phone" type="text" as="input" v-model="form.phone" class="form-control" id="contact-phone" />
+              <ErrorMessage class="invalid" name="phone" />
+            </div>
+
+            <div class="mb-2">
+              <label for="contact-title" class="form-label">Title</label>
+              <Field name="title" type="text" as="input" v-model="form.title" class="form-control" id="contact-title" />
+              <ErrorMessage class="invalid" name="title" />
+            </div>
+
+            <div class="mb-2">
+              <label for="contact-content" class="form-label">Content</label>
+              <Field name="content" type="text" as="textarea" rows="3" v-model="form.content" class="form-control"
+                id="contact-content" />
+              <ErrorMessage class="invalid" name="content" />
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3 px-4">Gönder</button>
+          </Form>
+        </div>
+      </div>
+
       <template v-for="(item, index) in items" :key="index">
         <PageDesing :index="index" :hasImage="item.images && item.images.length > 0"
           :hasContent="typeof item.content == 'string'" :hasTitle="typeof item.title == 'string'">
@@ -72,6 +149,17 @@ onMounted(() => {
         </PageDesing>
         <hr v-if="index < items.length - 1" />
       </template>
+
+
     </div>
   </div>
 </template>
+
+
+<style lang="scss" scoped>
+.contact-us-content-image {
+  position: relative;
+  top: 30%;
+  width: 90%;
+}
+</style>

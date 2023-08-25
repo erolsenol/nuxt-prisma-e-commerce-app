@@ -14,7 +14,7 @@ const { index } = defineProps({
 </script>
 
 <template>
-    <div class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row mt-4"
+    <div class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row mt-5"
         :class="index % 2 == 0 ? 'flex-md-row-reverse flex-lg-row-reverse' : ''">
         <div class="w-100">
             <slot name="content"></slot>
