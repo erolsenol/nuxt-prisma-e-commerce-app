@@ -1,24 +1,22 @@
-import { getCategories } from "../../data/categories";
+import categories from "../../data/categories";
 
 export default defineEventHandler(async (event) => {
   let response = {
     status: false
   }
-  
-  const skip = getRouterParam(event, 'skip') || 0
-  const take = getRouterParam(event, 'take') || 20
-  const all = getRouterParam(event, 'all') == "1" || false
 
-  const paginate = {}
-  if(!all) {
-    paginate.skip = Number(skip)
-    paginate.take = Number(take)
-  }
+  const { paginate, all = false, filter } = getQuery(event)
 
-  const categories = await getCategories(paginate)
+  const where = JSON.parse(filter)
+  const paginateObj = JSON.parse(paginate)
 
-  if (categories) {
-    response.data = categories
+  const items = await categories.getAll(paginateObj, where)
+
+  let count = await categories.count(where)
+
+  if (items) {
+    response.data = items
+    response.count = count
     response.status = true
     return response
   }

@@ -1,4 +1,4 @@
-import { updateCategory } from "../../data/categories";
+import categories from "../../data/categories";
 
 interface response {
   data?: Object;
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const data = body;
-  const res = await updateCategory(data.id, data);
+  const res = await categories.update(data.id, data);
 
   if (res.id) {
     response.data = res;

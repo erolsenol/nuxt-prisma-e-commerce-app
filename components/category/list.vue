@@ -5,16 +5,17 @@ export default {
 </script>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, reactive, watch, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 const { $qs } = useNuxtApp()
 
-const formModal = ref(null)
 const rows = ref([])
-const paginate = ref({
+let formId = ref(-1)
+const paginate = reactive({
   skip: 0,
   take: 20
 })
+const filter = reactive({})
 const category = ref({
   id: null,
   name: null,
@@ -25,6 +26,10 @@ const category = ref({
   updatedAt: null
 })
 
+watch(() => filter, async (newVal) => {
+  console.log("filter newVal:", newVal);
+}, { deep: true })
+
 onMounted(() => {
   console.log("onMounted");
   getAll()
@@ -33,11 +38,14 @@ onMounted(() => {
 const snackbar = useSnackbar();
 
 async function getAll() {
+  console.log("filter", filter);
+
   const config = {
     params: {
-      ...paginate.value
+      paginate: { ...paginate },
+      filter: { ...filter }
     },
-    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+    paramsSerializer: (params) => $qs.stringify(params, { encode: true })
   };
 
   const { data } = await useFetch("/api/category", config);
@@ -90,7 +98,6 @@ async function get(id) {
 
 async function update(body) {
   console.log("update", body);
-  console.log("formModal", formModal.value);
   return
 
   const config = {
@@ -120,15 +127,34 @@ async function update(body) {
 
 <template>
   <div class="category-list">
+    <div class="category-list-filter border border-2 border-secondary border-opacity-50 rounded p-2">
+      <div class="d-flex justify-content-between mb-3">
+        <span class="fs-5">{{ $t('filters') }}</span>
+        <div class="filter-item form-switch mx-3">
+          <input class="form-check-input me-2" role="switch" type="checkbox" v-model="filter.deleted" id="filter-deleted">
+          <label class="form-check-label" for="filter-deleted">
+            {{ $t('show_deleted') }}
+          </label>
+        </div>
+      </div>
+
+      <div class="category-list-filter-container d-flex flex-row">
+        <div class="filter-item">
+          <label for="filter-name" class="form-label">{{ $t('name') }}</label>
+          <input type="text" v-model="filter.name" class="form-control" id="filter-name">
+        </div>
+
+      </div>
+    </div>
     <table class="table table-hover table-striped ">
       <thead>
-        <tr class="table-dark">
+        <tr class="table-light">
           <th scope="col">Id</th>
-          <th scope="col">İsim</th>
-          <th scope="col">İngilizce İsim</th>
-          <th scope="col">Açıklama</th>
-          <th scope="col">İngilizce Açıklama</th>
-          <th scope="col">Aksiyon</th>
+          <th scope="col">{{ $t('name') }}</th>
+          <th scope="col">{{ $t('name_en') }}</th>
+          <th scope="col">{{ $t('description') }}</th>
+          <th scope="col">{{ $t('description_en') }}</th>
+          <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -142,30 +168,32 @@ async function update(body) {
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                İşlemler
+                {{ $t('actions') }}
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#categoryFormModal">
-                  Güncelle</li>
-                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#categoryFormModal"> TEST </li>
+                <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
+                  data-bs-target="#categoryFormModal">
+                  {{ $t('update') }}</li>
+                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#categoryFormModal"> {{ $t('delete') }}
+                </li>
               </ul>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-    <button @click="getAll">QWE</button>
+    <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
 
     <div class="modal fade" id="categoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="categoryFormModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="categoryFormModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="categoryFormModalLabel">{{ $t('category') }}</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <CategoryForm type="update" ref="formModal" :form="category" @save="update" />
+            <CategoryForm type="update" closeBtnStatus :formId="formId" />
           </div>
 
         </div>

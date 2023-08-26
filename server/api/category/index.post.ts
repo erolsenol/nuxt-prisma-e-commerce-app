@@ -1,4 +1,4 @@
-import { postCategory, getCategoryByName } from "../../data/categories";
+import categories from "../../data/categories";
 
 export default defineEventHandler(async (event) => {
   let response = {
@@ -12,22 +12,18 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  const nameCategory = await getCategoryByName(body.name);
+  const nameCategory = await categories.getByName(body.name);
   if (nameCategory.length > 0) {
     response.error = "There is a category with the same name";
     return response;
   }
 
-  const category = await postCategory({
-    name: body.name,
-    name_en: body.name_en,
-    description: body.description,
-  });
+  console.log("category create body:",body);
+  const category = await categories.create(body);
 
   if (category?.id) {
     response.data = category;
     response.status = true;
-    return response;
   }
   return response;
 });

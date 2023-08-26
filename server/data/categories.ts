@@ -1,34 +1,38 @@
 import prisma from "./prisma";
 
-interface interfaceGetCategories {
+interface paginate {
   skip: Number;
   take: Number;
 }
 
-interface interfaceCategory {
+interface category {
   id: Number;
   name: String;
   name_en: String;
   description: String;
+  description_en: String;
+  deleted: Boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export async function getCategories({
-  skip = 0,
-  take = 20,
-}): Promise<interfaceGetCategories[]> {
+async function getAll({ skip = 0, take = 20 }, where = {}) {
   const response = await prisma.category.findMany({
     skip,
     take,
+    where: {
+      deleted: false,
+      ...where
+    },
     include: {
       subCategory: true,
     },
   });
+
   return response;
 }
 
-export async function getCategory(id: Number) {
+async function get(id: Number) {
   const response = await prisma.category.findUnique({
     where: {
       id,
@@ -40,16 +44,16 @@ export async function getCategory(id: Number) {
   return response;
 }
 
-export async function getCategoryByName(name: String) {
+async function getByName(name: String) {
   const response = await prisma.category.findMany({
     where: {
-      name:name,
+      name: name,
     },
   });
   return response;
 }
 
-export async function postCategory(data: interfaceCategory) {
+async function create(data: category) {
   const response = await prisma.category.create({
     data: data,
   });
@@ -57,7 +61,7 @@ export async function postCategory(data: interfaceCategory) {
   return response;
 }
 
-export async function updateCategory(id: String, data: interfaceCategory) {
+async function update(id: String, data: category) {
   const response = await prisma.category.update({
     where: {
       id: id,
@@ -68,12 +72,33 @@ export async function updateCategory(id: String, data: interfaceCategory) {
   return response;
 }
 
-export async function deleteCategory(id:Number) {
-  const deleteCategory = await prisma.category.delete({
+async function remove(id: Number) {
+  const item = await prisma.category.update({
     where: {
-        id: id,
+      id: id,
+    },
+    data: {
+      deleted: true
     },
   })
 
-  return deleteCategory
+  return item
+}
+
+async function count(where: Object) {
+  const deleteProduct = await prisma.category.count({
+    where: where,
+  })
+
+  return deleteProduct
+}
+
+export default {
+  getAll,
+  get,
+  getByName,
+  create,
+  update,
+  remove,
+  count
 }

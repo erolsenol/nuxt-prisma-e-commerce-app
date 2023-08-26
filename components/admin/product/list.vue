@@ -136,12 +136,12 @@ function itemUpdate(val) {
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                İşlemler
+                {{ $t('actions') }}
               </button>
               <ul class="dropdown-menu">
                 <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
                   data-bs-target="#productFormModal">
-                  Güncelle</li>
+                  {{ $t('update') }}</li>
                 <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productFormModal"> TEST </li>
               </ul>
             </div>

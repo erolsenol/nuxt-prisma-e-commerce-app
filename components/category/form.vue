@@ -5,10 +5,13 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, toRefs, toRef } from "vue";
+import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { array, string, object } from 'yup';
+const emit = defineEmits(['update', 'get'])
 
-import { string, object } from 'yup';
+const snackbar = useSnackbar();
+const { $qs } = useNuxtApp()
 
 const schema = object().shape({
     name: string().required(),
@@ -17,35 +20,29 @@ const schema = object().shape({
     description_en: string(),
 });
 
-const snackbar = useSnackbar();
-const { $qs } = useNuxtApp()
-
-const { type, form } = defineProps({
+const props = defineProps({
     type: String,
-    form: Object,
-    value: Object,
+    closeBtnStatus: {
+        type: Boolean,
+        default: () => false
+    },
+    formId: Number,
 })
+let formData = ref({})
 
-const btnFormClose = ref("btnFormClose")
-
-const innerForm = computed({
-    get: () => form,
-    set: value => $emit('update:form', value)
+watch(() => props.formId, async (newVal) => {
+    if (newVal > -1) {
+        console.log("watch formId:", newVal);
+        await get(newVal)
+    }
 })
-
-const initialCategory = () => ({
-    name: null,
-    name_en: null,
-    description: null,
-});
-
-const category = ref(initialCategory());
 
 async function formClear() {
     return new Promise((resolve, reject) => {
-        category.value.name = null
-        category.value.name_en = null
-        category.value.description = null
+        formData.value.name = null
+        formData.value.name_en = null
+        formData.value.description = null
+        formData.value.description_en = null
         resolve(true)
     })
 
@@ -53,107 +50,96 @@ async function formClear() {
 
 async function save(event) {
     console.log("save");
-    return
-    const imageData = []
 
-    console.log("send categorytt 12312");
+    const bodyData = { ...formData.value }
+
+    const keys = Object.keys(bodyData)
+    keys.forEach(key => {
+        if (typeof bodyData[key] === "object") {
+            delete bodyData[key]
+        }
+    })
+
+    const method = props.type == "create" ? "post" : props.type == "update" ? 'put' : props.type == "delete" ? 'delete' : ''
+
     const { data, pending, error, refresh } = await useFetch("/api/category", {
-        method: "post",
-        body: category,
+        method: method,
+        body: bodyData,
     }).catch((error) => {
         console.error(error);
     });
+
     if (data.value.status) {
-        console.log("Kategori Yüklendi");
+        formClear()
+    }
+    if (data.value.error === "There is a category with the same name") {
         snackbar.add({
-            type: "success",
-            text: "Kategori Yüklendi",
+            type: "error",
+            text: "Aynı isimle kategori bulunuyor",
         });
-        await formClear()
-    } else {
+        return
+    }
+    if (!data.value.status) {
         console.log("Kategori Kaydedilemedi");
         snackbar.add({
             type: "error",
             text: "Kategori Kaydedilemedi",
         });
-    }
-}
-
-async function remove(id) {
-    const config = {
-        params: {
-            id
-        },
-        paramsSerializer: (params) => $qs.stringify(params, { encode: false })
-    };
-
-    const { data, pending, error, refresh } = await useFetch("/api/category", {
-        ...config,
-        method: "delete",
-    }).catch((error) => {
-        console.error(error);
-    });
-
-    if (!data.value.status) {
-        console.log("Kategori Silinemedi");
-        snackbar.add({
-            type: "error",
-            text: "Kategori Silinemedi",
-        });
         return
     }
 
-    console.log("Kategori Silindi");
-    snackbar.add({
-        type: "success",
-        text: "Kategori Silindi",
-    });
 }
+
+async function get(id) {
+    console.log("qweqweqw");
+    const { data } = await useFetch("/api/category/" + id);
+    if (!data.value) return
+
+    if (data.value.status) {
+        console.log("data.value.data",data.value.data);
+        formData.value = data.value.data
+    }
+}
+
 </script>
 
 <template>
-    <div class="category-form">
-        <div>
-            {{ type }} - {{ form }}
-        </div>
-        <div>
-            innerForm - {{ innerForm }}
-        </div>
-
-        <Form @submit="$emit('save', form)" :validation-schema="schema">
+    <div class="image-form">
+        <Form @submit="save" :validation-schema="schema">
             <div class="mb-3">
-                <label for="category-name" class="form-label">Adı</label>
+                <label for="image-form-name" class="form-label">Kategori Adı</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="name" v-model="form.name" type="text" class="form-control" id="category-name"
+                    <Field name="name" v-model="formData.name" type="text" class="form-control" id="image-form-name"
                         rules="required" />
                 </div>
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="name" v-model="form.name_en" type="text" class="form-control" id="category-name-en"
-                        rules="" />
+                    <Field name="name-en" v-model="formData.name_en" type="text" class="form-control"
+                        id="image-form-name-en" rules="" />
                 </div>
             </div>
             <div class="mb-3">
-                <label for="category-name_en" class="form-label">İngilizce Adı</label>
+                <label for="image-form-description" class="form-label">Kategori Açıklaması</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="description" rules="required" v-model="form.description" type="text" class="form-control"
-                        id="category-description" />
+                    <Field name="description" rules="required" v-model="formData.description" type="text"
+                        class="form-control" id="image-form-description" />
                 </div>
                 <ErrorMessage class="invalid" name="description" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="description_en" rules="" v-model="form.description_en" type="text" class="form-control"
-                        id="category-description_en" />
+                    <Field name="description-en" v-model="formData.description_en" type="text" class="form-control"
+                        id="image-form-description-en" rules="" />
                 </div>
             </div>
             <hr class="hr" />
-            <div class="category-form-footer d-flex justify-content-between">
+            <div class="image-form-footer d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Kaydet</button>
-                <button class="btn btn-secondary" ref="btnFormClose" data-bs-toggle="modal" data-bs-target="#categoryFormModal">Kapat</button>
+                <button v-if="closeBtnStatus" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productFormModal">Kapat</button>
             </div>
+
         </Form>
     </div>
 </template>

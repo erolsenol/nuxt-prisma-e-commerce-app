@@ -1,17 +1,19 @@
 import prisma from "./prisma";
 
-async function getAll() {
-  const comments = await prisma.comment.findMany({
+async function getAll({skip = 0, take = 20}) {
+  const items = await prisma.comment.findMany({
+    skip,
+    take,
     include: {
       product: true,
       user: true,
     },
   });
-  return comments;
+  return items;
 }
 
 async function get(where: Object) {
-  const users = await prisma.comment.findMany(
+  const item = await prisma.comment.findMany(
     {
       where: where,
       include: {
@@ -20,20 +22,29 @@ async function get(where: Object) {
       },
     }
   );
-  return users;
+  return item;
+}
+
+async function count(where: Object) {
+  const item = await prisma.comment.count({
+    where: where,
+  })
+
+  return item
 }
 
 async function post(data: Object) {
-  const user = await prisma.comment.create({
+  const item = await prisma.comment.create({
     data: data,
   });
-  console.log("user 123123", user);
-  return user;
+
+  return item;
 }
 
 
 export default {
   getAll,
   get,
-  post
+  post,
+  count
 }
