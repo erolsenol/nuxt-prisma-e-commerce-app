@@ -72,13 +72,13 @@ async function update(id: String, data: category) {
   return response;
 }
 
-async function remove(id: Number) {
+async function remove(id: Number, deleted) {
   const item = await prisma.category.update({
     where: {
       id: id,
     },
     data: {
-      deleted: true
+      deleted: deleted
     },
   })
 

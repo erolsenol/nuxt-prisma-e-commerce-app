@@ -37,6 +37,10 @@ watch(() => props.formId, async (newVal) => {
     }
 })
 
+const disabled = computed(() => {
+    return ['delete', 'show'].includes(props.type)
+})
+
 async function formClear() {
     return new Promise((resolve, reject) => {
         formData.value.name = null
@@ -48,8 +52,8 @@ async function formClear() {
 
 }
 
-async function save(event) {
-    console.log("save");
+async function save(e) {
+    console.log("save", e);
 
     const bodyData = { ...formData.value }
 
@@ -71,6 +75,10 @@ async function save(event) {
 
     if (data.value.status) {
         formClear()
+        if (props.type !== "create") {
+            const closeModal = document.querySelector('#close-modal')
+            closeModal?.click()
+        }
     }
     if (data.value.error === "There is a category with the same name") {
         snackbar.add({
@@ -96,7 +104,7 @@ async function get(id) {
     if (!data.value) return
 
     if (data.value.status) {
-        console.log("data.value.data",data.value.data);
+        console.log("data.value.data", data.value.data);
         formData.value = data.value.data
     }
 }
@@ -107,39 +115,41 @@ async function get(id) {
     <div class="image-form">
         <Form @submit="save" :validation-schema="schema">
             <div class="mb-3">
-                <label for="image-form-name" class="form-label">Kategori Adı</label>
+                <label for="image-form-name" class="form-label">{{ $t('category') }} {{ $t('name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="name" v-model="formData.name" type="text" class="form-control" id="image-form-name"
-                        rules="required" />
+                    <Field name="name" v-model="formData.name" :disabled="disabled" type="text" class="form-control"
+                        id="image-form-name" rules="required" />
                 </div>
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="name-en" v-model="formData.name_en" type="text" class="form-control"
+                    <Field name="name-en" v-model="formData.name_en" :disabled="disabled" type="text" class="form-control"
                         id="image-form-name-en" rules="" />
                 </div>
             </div>
             <div class="mb-3">
-                <label for="image-form-description" class="form-label">Kategori Açıklaması</label>
+                <label for="image-form-description" class="form-label">{{ $t('category') }} {{ $t('description') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="description" rules="required" v-model="formData.description" type="text"
-                        class="form-control" id="image-form-description" />
+                    <Field name="description" rules="required" :disabled="disabled" v-model="formData.description"
+                        type="text" class="form-control" id="image-form-description" />
                 </div>
                 <ErrorMessage class="invalid" name="description" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="description-en" v-model="formData.description_en" type="text" class="form-control"
-                        id="image-form-description-en" rules="" />
+                    <Field name="description-en" v-model="formData.description_en" :disabled="disabled" type="text"
+                        class="form-control" id="image-form-description-en" rules="" />
                 </div>
             </div>
             <hr class="hr" />
             <div class="image-form-footer d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
-                <button v-if="closeBtnStatus" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productFormModal">Kapat</button>
+                <button type="submit" class="btn px-4"
+                    :class="`${props.type == 'delete' ? 'btn-danger' : 'btn-primary'}`">{{ props.type == 'delete' ?
+                        formData.deleted ? $t('republish') : $t('delete') : $t('save') }}</button>
+                <button v-if="closeBtnStatus" class="close btn btn-secondary px-4" id="close-modal" data-bs-toggle="modal"
+                    data-bs-target="#productFormModal">{{ $t('close') }}</button>
             </div>
-
         </Form>
     </div>
 </template>

@@ -9,8 +9,10 @@ import { ref, reactive, watch, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 const { $qs } = useNuxtApp()
 
+
 const rows = ref([])
 let formId = ref(-1)
+let formType = ref("")
 const paginate = reactive({
   skip: 0,
   take: 20
@@ -34,6 +36,11 @@ onMounted(() => {
   console.log("onMounted");
   getAll()
 })
+
+function formOpen(type, id) {
+  formType.value = type
+  formId.value = id
+}
 
 const snackbar = useSnackbar();
 
@@ -72,62 +79,12 @@ async function getAll() {
   }
 }
 
-async function get(id) {
-  const config = {
-    params: {
-      id
-    },
-    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
-  };
-
-  const { data } = await useFetch("/api/category/" + id);
-  if (!data.value) return
-
-  if (data.value.data) {
-    category.value = data.value.data
-  }
-
-  if (data.value.error) {
-    console.log("Bir hata oluştu");
-    snackbar.add({
-      type: "error",
-      text: "Bir hata oluştu",
-    });
-  }
-}
-
-async function update(body) {
-  console.log("update", body);
-  return
-
-  const config = {
-    params: {
-      id
-    },
-    paramsSerializer: (params) => $qs.stringify(params, { encode: false })
-  };
-
-  const { data } = await useFetch("/api/image/" + id, {
-    method: "put",
-    body: {
-      ...body.value
-    }
-  });
-  if (!data.value.status) return
-
-  if (data.value.error) {
-    console.log("Bir hata oluştu");
-    snackbar.add({
-      type: "error",
-      text: "Bir hata oluştu",
-    });
-  }
-}
 </script>
 
 <template>
   <div class="category-list">
-    <div class="category-list-filter border border-2 border-secondary border-opacity-50 rounded p-2">
+    <div class="category-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
+      role="alert">
       <div class="d-flex justify-content-between mb-3">
         <span class="fs-5">{{ $t('filters') }}</span>
         <div class="filter-item form-switch mx-3">
@@ -143,8 +100,15 @@ async function update(body) {
           <label for="filter-name" class="form-label">{{ $t('name') }}</label>
           <input type="text" v-model="filter.name" class="form-control" id="filter-name">
         </div>
+        <div class="filter-item">
+          <label for="filter-name" class="form-label">{{ $t('name_en') }}</label>
+          <input type="text" v-model="filter.name_en" class="form-control" id="filter-name">
+        </div>
 
       </div>
+    </div>
+    <div class="filter-item mb-3 text-end">
+      <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
     </div>
     <table class="table table-hover table-striped ">
       <thead>
@@ -171,10 +135,14 @@ async function update(body) {
                 {{ $t('actions') }}
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
+                <li class="dropdown-item" @click="formOpen('update', row.id)" data-bs-toggle="modal"
                   data-bs-target="#categoryFormModal">
                   {{ $t('update') }}</li>
-                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#categoryFormModal"> {{ $t('delete') }}
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li class="dropdown-item" @click="formOpen('delete', row.id, row.deleted)" data-bs-toggle="modal"
+                  data-bs-target="#categoryFormModal"> {{ row.deleted ? $t('republish') : $t('delete') }}
                 </li>
               </ul>
             </div>
@@ -182,7 +150,7 @@ async function update(body) {
         </tr>
       </tbody>
     </table>
-    <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
+    <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('category_get') }}</button>
 
     <div class="modal fade" id="categoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="categoryFormModalLabel" aria-hidden="true">
@@ -193,7 +161,7 @@ async function update(body) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <CategoryForm type="update" closeBtnStatus :formId="formId" />
+            <CategoryForm :type="formType" closeBtnStatus :formId="formId" />
           </div>
 
         </div>
@@ -201,3 +169,8 @@ async function update(body) {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.filter-item {
+  margin-right: 1rem;
+}</style>
