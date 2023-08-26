@@ -75,7 +75,6 @@ const tabs = [
               </div>
             </div>
           </div>
-          <h5 class="ps-1">Kategori List</h5>
           <CategoryList />
         </div>
         <div class="subCategory" v-if="active == 2">

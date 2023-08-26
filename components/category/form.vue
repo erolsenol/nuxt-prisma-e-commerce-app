@@ -8,7 +8,7 @@ export default {
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
-const emit = defineEmits(['update', 'get'])
+const emit = defineEmits(['getAll'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
@@ -78,6 +78,7 @@ async function save(e) {
         if (props.type !== "create") {
             const closeModal = document.querySelector('#close-modal')
             closeModal?.click()
+            emit('getAll')
         }
     }
     if (data.value.error === "There is a category with the same name") {

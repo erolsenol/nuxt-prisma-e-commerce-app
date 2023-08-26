@@ -58,8 +58,6 @@ async function getAll() {
   const { data } = await useFetch("/api/category", config);
   if (!data.value) return
 
-  console.log("response data", data.value);
-
   if (data?.value?.status) {
     console.log("Kategori Yüklendi");
     rows.value = data.value.data
@@ -85,7 +83,7 @@ async function getAll() {
   <div class="category-list">
     <div class="category-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
       role="alert">
-      <div class="d-flex justify-content-between mb-3">
+      <div class="d-flex justify-content-between mb-3" data-bs-toggle="collapse" data-bs-target="#collapseExample">
         <span class="fs-5">{{ $t('filters') }}</span>
         <div class="filter-item form-switch mx-3">
           <input class="form-check-input me-2" role="switch" type="checkbox" v-model="filter.deleted" id="filter-deleted">
@@ -95,19 +93,28 @@ async function getAll() {
         </div>
       </div>
 
-      <div class="category-list-filter-container d-flex flex-row">
+      <div class="category-list-filter-container d-flex flex-row collapse" id="collapseExample">
         <div class="filter-item">
           <label for="filter-name" class="form-label">{{ $t('name') }}</label>
           <input type="text" v-model="filter.name" class="form-control" id="filter-name">
         </div>
         <div class="filter-item">
-          <label for="filter-name" class="form-label">{{ $t('name_en') }}</label>
-          <input type="text" v-model="filter.name_en" class="form-control" id="filter-name">
+          <label for="filter-name-en" class="form-label">{{ $t('name_en') }}</label>
+          <input type="text" v-model="filter.name_en" class="form-control" id="filter-name-en">
+        </div>
+        <div class="filter-item">
+          <label for="filter-description" class="form-label">{{ $t('description') }}</label>
+          <input type="text" v-model="filter.description" class="form-control" id="filter-description">
+        </div>
+        <div class="filter-item">
+          <label for="filter-description-en" class="form-label">{{ $t('description_en') }}</label>
+          <input type="text" v-model="filter.description_en" class="form-control" id="filter-description-en">
         </div>
 
       </div>
     </div>
-    <div class="filter-item mb-3 text-end">
+    <div class="filter-item mb-3 text-end d-flex flex-row justify-content-between">
+      <h5 class="ps-1">Kategori List</h5>
       <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
     </div>
     <table class="table table-hover table-striped ">
@@ -161,9 +168,8 @@ async function getAll() {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <CategoryForm :type="formType" closeBtnStatus :formId="formId" />
+            <CategoryForm @getAll="getAll" :type="formType" closeBtnStatus :formId="formId" />
           </div>
-
         </div>
       </div>
     </div>
