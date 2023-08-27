@@ -39,14 +39,9 @@ function formOpen(type, id) {
 const snackbar = useSnackbar();
 
 async function getAll(page) {
-  console.log("page", page);
-
   if (Number.isInteger(page)) {
     paginate.skip = paginate.take * (page - 1)
-
-    console.log("integer");
   }
-  console.log("paginate", paginate);
 
   const config = {
     params: {
