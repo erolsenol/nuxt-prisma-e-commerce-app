@@ -31,13 +31,18 @@ export default defineEventHandler(async (event) => {
   const items = await categories.getAll(paginateObj, where)
 
   let total = await categories.count(where)
+  const currentPage = (paginateObj.skip / paginateObj.take) + 1
 
   if (items) {
     response.data = items
     response.paginate = {
-      totalPage: Math.ceil(total / paginate.take),
-      totalCount: total
+      totalPage: Math.ceil(total / paginateObj.take),
+      currentPage: currentPage,
+      totalCount: total,
+      take: paginateObj.take,
+      skip: paginateObj.skip
     }
+
     response.status = true
     return response
   }

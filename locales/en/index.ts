@@ -39,6 +39,7 @@ export default {
   product_description: "Product Description",
   product_image: "Product Image",
   product_list: "Product List",
+  list: "List",
   detail: "Detail",
   contact_us: "Contact Us",
   products: "Products",
@@ -56,6 +57,10 @@ export default {
   delete: "Delete",
   republish: "Republish",
   close: "Close",
+  add: "Add",
+  first: "First",
+  last: "Last",
+  page:"Page",
 
   page_about: "About Us Page",
   page_contact: "Contact Us Page",

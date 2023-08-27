@@ -87,7 +87,10 @@ async function remove(id: Number, deleted) {
 
 async function count(where: Object) {
   const deleteProduct = await prisma.category.count({
-    where: where,
+    where: {
+      deleted: false,
+      ...where
+    },
   })
 
   return deleteProduct

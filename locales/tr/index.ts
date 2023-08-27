@@ -38,6 +38,7 @@ export default {
   product_description: "Ürün Açıklaması",
   product_image: "Ürün Görseli",
   product_list: "Ürün Listesi",
+  list: "Listesi",
   detail: "Detay",
   contact_us: "Bize Yazın",
   products: "Ürünler",
@@ -55,6 +56,10 @@ export default {
   delete: "Sil",
   republish: "Yeniden yayına al",
   close: "Kapat",
+  add: "Ekle",
+  first: "İlk",
+  last: "Son",
+  page:"Sayfa",
 
   page_about: "Hakkımızda Sayfası",
   page_contact: "İletişim Sayfası",

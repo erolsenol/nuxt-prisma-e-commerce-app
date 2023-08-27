@@ -13,20 +13,14 @@ const { $qs } = useNuxtApp()
 const rows = ref([])
 let formId = ref(-1)
 let formType = ref("")
-const paginate = reactive({
+let paginate = reactive({
   skip: 0,
-  take: 20
+  take: 3,
+  currentPage: 1,
+  totalCount: 0,
+  totalPage: 0,
 })
 const filter = reactive({})
-const category = ref({
-  id: null,
-  name: null,
-  name_en: null,
-  description: null,
-  description_en: null,
-  createdAt: null,
-  updatedAt: null
-})
 
 watch(() => filter, async (newVal) => {
   console.log("filter newVal:", newVal);
@@ -44,8 +38,15 @@ function formOpen(type, id) {
 
 const snackbar = useSnackbar();
 
-async function getAll() {
-  console.log("filter", filter);
+async function getAll(page) {
+  console.log("page", page);
+
+  if (Number.isInteger(page)) {
+    paginate.skip = paginate.take * (page - 1)
+
+    console.log("integer");
+  }
+  console.log("paginate", paginate);
 
   const config = {
     params: {
@@ -61,6 +62,7 @@ async function getAll() {
   if (data?.value?.status) {
     console.log("Kategori Yüklendi");
     rows.value = data.value.data
+    paginate = data.value.paginate
 
     if (rows.value.length == 0) {
       snackbar.add({
@@ -83,7 +85,7 @@ async function getAll() {
   <div class="category-list">
     <div class="category-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
       role="alert">
-      <div class="d-flex justify-content-between mb-3" data-bs-toggle="collapse" data-bs-target="#collapseExample">
+      <div class="d-flex justify-content-between mb-3">
         <span class="fs-5">{{ $t('filters') }}</span>
         <div class="filter-item form-switch mx-3">
           <input class="form-check-input me-2" role="switch" type="checkbox" v-model="filter.deleted" id="filter-deleted">
@@ -93,7 +95,7 @@ async function getAll() {
         </div>
       </div>
 
-      <div class="category-list-filter-container d-flex flex-row collapse" id="collapseExample">
+      <div class="category-list-filter-container d-flex flex-row collapse">
         <div class="filter-item">
           <label for="filter-name" class="form-label">{{ $t('name') }}</label>
           <input type="text" v-model="filter.name" class="form-control" id="filter-name">
@@ -114,7 +116,7 @@ async function getAll() {
       </div>
     </div>
     <div class="filter-item mb-3 text-end d-flex flex-row justify-content-between">
-      <h5 class="ps-1">Kategori List</h5>
+      <h5 class="ps-1">{{ $t('category') }} {{ $t('list') }}</h5>
       <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
     </div>
     <table class="table table-hover table-striped ">
@@ -157,7 +159,10 @@ async function getAll() {
         </tr>
       </tbody>
     </table>
-    <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('category_get') }}</button>
+    <div class="d-flex flex-row justify-content-between">
+      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('category_get') }}</button>
+      <Pagination :paginate="paginate" @page="getAll" />
+    </div>
 
     <div class="modal fade" id="categoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="categoryFormModalLabel" aria-hidden="true">
@@ -179,4 +184,5 @@ async function getAll() {
 <style lang="scss" scoped>
 .filter-item {
   margin-right: 1rem;
-}</style>
+}
+</style>

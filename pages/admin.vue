@@ -65,7 +65,7 @@ const tabs = [
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                   data-bs-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">
-                  Kategori Ekle
+                  {{$t('category')}} {{$t('add')}}
                 </button>
               </h2>
               <div id="collapseCategory" class="accordion-collapse collapse" data-bs-parent="#accordionCategory">

@@ -38,11 +38,12 @@ export function remove(name: string) {
 }
 
 export function paginationCondition(index: number, current: number, total: number) {
+  console.log("index:", index, "current:", current, "total:", total);
   if (total < 7) {
     return true;
   }
 
-  if (current == index || current == index + 1 || current == index - 1) {
+  if (current == index || current == index + 1 || current == index + 2 || current == index - 1 || current == index - 2) {
     return true;
   }
 
