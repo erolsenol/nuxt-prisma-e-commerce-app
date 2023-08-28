@@ -48,6 +48,7 @@ export default {
   sub_categories: "Alt Kategoriler",
   categories: "Kategoriler",
   category: "Kategori",
+  top_category: "Üst Kategori",
   sub_category: "Alt Kategori",
   category_get: "Kategori Getir",
   update: "Güncelle",

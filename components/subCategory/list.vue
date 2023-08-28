@@ -15,7 +15,7 @@ let formId = ref(-1)
 let formType = ref("")
 let paginate = reactive({
   skip: 0,
-  take: 3,
+  take: 120,
   currentPage: 1,
   totalCount: 0,
   totalPage: 0,
@@ -78,7 +78,8 @@ async function getAll(page) {
 
 <template>
   <div class="sub-category-list">
-    <div class="sub-category-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
+    <div
+      class="sub-category-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
       role="alert">
       <div class="d-flex justify-content-between mb-3">
         <span class="fs-5">{{ $t('filters') }}</span>
@@ -117,21 +118,37 @@ async function getAll(page) {
     <table class="table table-hover table-striped ">
       <thead>
         <tr class="table-light">
+          <th scope="col">{{ $t('order') }}</th>
           <th scope="col">Id</th>
           <th scope="col">{{ $t('name') }}</th>
           <th scope="col">{{ $t('name_en') }}</th>
           <th scope="col">{{ $t('description') }}</th>
           <th scope="col">{{ $t('description_en') }}</th>
+          <th scope="col">{{ $t('top_category') }}</th>
+          <th scope="col">{{ $t('sub_category') }}</th>
           <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
         <tr class="table-light" v-for="(row, index) in rows" :key="index">
+          <th>{{ index + 1 }}</th>
           <th scope="row">{{ row.id }}</th>
           <td>{{ row.name }}</td>
           <td>{{ row.name_en }}</td>
           <td>{{ row.description }}</td>
           <td>{{ row.description_en }}</td>
+          <td>{{ row.product?.name }}</td>
+          <td class="text-center">
+            <Tooltip text="123123123">
+              <template v-slot:content>
+                <h6>
+                  <span class="badge bg-secondary">
+                    {{ row.subCategory?.length }}
+                  </span>
+                </h6>
+              </template>
+            </Tooltip>
+          </td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"

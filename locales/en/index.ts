@@ -49,6 +49,7 @@ export default {
   sub_categories: "Sub Categories",
   categories: "Categories",
   category: "Category",
+  top_category: "Top Category",
   sub_category: "Sub Category",
   category_get: "Categories Get",
   update: "Update",
