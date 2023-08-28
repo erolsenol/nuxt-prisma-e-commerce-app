@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <!-- <el-container> -->
-      <TheHeader></TheHeader>
+      <TheHeaderr></TheHeaderr>
       <slot />
       <TheFooter></TheFooter>
-    <!-- </el-container> -->
-  </div>
 </template>

@@ -2,19 +2,22 @@
 import path from "path";
 
 export default defineNuxtConfig({
+  ssr: true,
   devtools: { enabled: true },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
     "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
-    // "nuxt-icon",
+    "nuxt-icon",
     "nuxt-swiper",
     "nuxt-lodash",
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "nuxt-snackbar",
-    "@element-plus/nuxt",
+    "@vee-validate/nuxt",
+    "@pinia/nuxt",
+    "nuxt-bootstrap-icons"
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -25,13 +28,47 @@ export default defineNuxtConfig({
       extensions: [".vue"],
     },
   ],
+  veeValidate: {
+    // disable or enable auto imports
+    autoImports: true,
+    // Use different names for components
+    componentNames: {
+      Form: "VeeForm",
+      Field: "VeeField",
+      FieldArray: "VeeFieldArray",
+      ErrorMessage: "VeeErrorMessage",
+    },
+  },
+  bootstrapIcons: {
+    renderType: "component", // or 'inline' (which is the default)
+  },
+  // nuxtIcon: {
+  //   // size: '24px', // default <Icon> size applied
+  //   class: "icon", // default <Icon> class applied
+  //   aliases: {
+  //     nuxt: "logos:nuxt-icon",
+  //   },
+  // },
+  imports: {
+    autoImport: true,
+    dirs: ["./stores"],
+  },
+  pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      "defineStore", // import { defineStore } from 'pinia'
+      ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
+      "acceptHMRUpdate",
+    ],
+  },
+  nitro: {},
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://example.com",
       siteName: "Awesome Site",
       siteDescription: "Welcome to my awesome site!",
-      language: "en", // prefer more explicit language codes like `en-AU` over `en`
+      language: "tr", // prefer more explicit language codes like `en-AU` over `en`
     },
   },
   $production: {
@@ -42,13 +79,13 @@ export default defineNuxtConfig({
   $development: {
     //
   },
-  css: ["~/assets/_colors.scss", "~/assets/_el_plus.scss", "~/assets/_general.scss"],
-  //global style not working
-  elementPlus: {
-    icon: "ElIcon",
-    importStyle: "scss",
-    themes: ["dark"],
-  },
+  css: [
+    "~/assets/_colors.scss",
+    "~/assets/_variables.scss",
+    "~/assets/_main.scss",
+    "~/assets/_general.scss",
+    "~/assets/_effects.scss",
+  ],
   snackbar: {
     bottom: true,
     right: true,
@@ -56,6 +93,8 @@ export default defineNuxtConfig({
   },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default
+    locales: ["en", "tr"],
+    defaultLocale: "tr",
   },
   image: {
     // Options

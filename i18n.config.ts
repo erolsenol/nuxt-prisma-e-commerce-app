@@ -1,15 +1,10 @@
+import locales from "./locales";
+
 export default defineI18nConfig(() => ({
   legacy: false,
-  locale: "en",
+  locale: "tr",
+  fallbackLocale: 'tr',
   messages: {
-    tr: {
-      welcome: "Hoşgeldiniz",
-    },
-    en: {
-      welcome: "Welcome",
-    },
-    fr: {
-      welcome: "Bienvenue",
-    },
+    ...locales
   },
 }));

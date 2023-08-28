@@ -1,0 +1,51 @@
+version: "3"
+services:
+    #PHP Service
+    nuxt_app:
+        #platform: linux/arm64/v8
+        build:
+            context: .
+            dockerfile: ./docker-files/Dockerfile
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - nuxt_network
+        depends_on:
+            - nuxt_db
+
+    #Nginx Service
+    nuxt_app_webserver:
+        image: nginx:alpine
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "801:80"
+            - "4431:443"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - nuxt_app
+        networks:
+            - nuxt_network
+    nuxt_db:
+        image: mysql:latest
+        container_name: database
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: my_secret_pw
+        volumes:
+            - ./volumes/dbdata:/var/lib/postgresql/data
+        ports:
+            - 3306:3306
+        networks:
+            - nuxt_network
+#Docker Networks
+networks:
+    nuxt_network:
+        driver: bridge
+volumes:
+    nuxt_db:
+        driver: local

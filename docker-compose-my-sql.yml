@@ -1,0 +1,6 @@
+services:
+  some-mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+
