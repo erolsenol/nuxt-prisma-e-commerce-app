@@ -15,7 +15,9 @@ const { $qs } = useNuxtApp()
 
 const schema = object().shape({
     name: string().required(),
-
+    name_en: string().required(),
+    description: string().nullable(true),
+    description_en: string().nullable(true),
 });
 
 const props = defineProps({
@@ -51,6 +53,7 @@ async function formClear() {
 }
 
 async function save(e, { resetForm }) {
+
     const bodyData = { ...formData.value }
 
     const keys = Object.keys(bodyData)
@@ -113,6 +116,7 @@ async function get(id) {
     <div class="image-form">
         <Form @submit="save" :validation-schema="schema">
             <div class="mb-3">
+                {{ formData }}
                 <label for="image-form-name" class="form-label">{{ $t('category') }} {{ $t('name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
@@ -122,9 +126,10 @@ async function get(id) {
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="name-en" v-model="formData.name_en" :disabled="disabled" type="text" class="form-control"
+                    <Field name="name_en" v-model="formData.name_en" :disabled="disabled" type="text" class="form-control"
                         id="image-form-name-en" />
                 </div>
+                <ErrorMessage class="invalid" name="name_en" />
             </div>
             <div class="mb-3">
                 <label for="image-form-description" class="form-label">{{ $t('category') }} {{ $t('description') }}</label>
@@ -136,7 +141,7 @@ async function get(id) {
 
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="description-en" v-model="formData.description_en" :disabled="disabled" type="text"
+                    <Field name="description_en" v-model="formData.description_en" :disabled="disabled" type="text"
                         class="form-control" id="image-form-description-en" />
                 </div>
             </div>
