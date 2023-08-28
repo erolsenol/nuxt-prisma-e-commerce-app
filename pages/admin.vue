@@ -88,7 +88,7 @@ const tabs = [
               </h2>
               <div id="collapseSubCategory" class="accordion-collapse collapse" data-bs-parent="#accordionSubCategory">
                 <div class="accordion-body">
-                  <SubCategoryAdd />
+                  <SubCategoryForm type="create" :formId="-1" />
                 </div>
               </div>
             </div>
