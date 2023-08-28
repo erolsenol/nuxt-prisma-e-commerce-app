@@ -7,6 +7,7 @@ export default {
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+const { locale } = useI18n()
 const { $qs } = useNuxtApp()
 
 
@@ -74,6 +75,10 @@ async function getAll(page) {
   }
 }
 
+function tooltipText(arr) {
+  return arr.subCategory.map(item => item[`name${locale.value !== 'tr' ? `_${locale.value}` : ''}`]).join(', ')
+}
+
 </script>
 
 <template>
@@ -123,6 +128,7 @@ async function getAll(page) {
           <th scope="col">{{ $t('name_en') }}</th>
           <th scope="col">{{ $t('description') }}</th>
           <th scope="col">{{ $t('description_en') }}</th>
+          <th scope="col">{{ $t('sub_category') }}</th>
           <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
@@ -134,6 +140,17 @@ async function getAll(page) {
           <td>{{ row.name_en }}</td>
           <td>{{ row.description }}</td>
           <td>{{ row.description_en }}</td>
+          <td class="text-center">
+            <Tooltip text="123123123">
+              <template v-slot:content>
+                <h6>
+                  <span class="badge bg-secondary">
+                    {{ row.subCategory?.length }}
+                  </span>
+                </h6>
+              </template>
+            </Tooltip>
+          </td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"

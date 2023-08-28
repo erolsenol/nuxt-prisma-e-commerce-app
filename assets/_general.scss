@@ -19,6 +19,34 @@ body {
     width: 100%;
     //transition: width .3s;
   }
+
+  .custom-tooltip {
+    --bs-tooltip-bg: var(--bd-violet-bg);
+    --bs-tooltip-color: var(--bs-white);
+  }
+
+  .my-tooltip {
+    position: relative;
+    display: inline-block;
+
+    &:hover .tooltiptext {
+      visibility: visible;
+    }
+
+    .my-tooltiptext {
+      visibility: hidden;
+      width: 100px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      border-radius: 6px;
+     
+      /* Position the tooltip text - see examples below! */
+      position: absolute;
+      z-index: 1;
+    }
+  }
 }
 
 @media screen and (max-width: 575px) {
