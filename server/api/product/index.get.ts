@@ -1,21 +1,32 @@
-import { getProducts } from "../../data/products";
+import { getProducts, countProduct, getProductByName } from "../../data/products";
 
 export default defineEventHandler(async (event) => {
   let response = {
     status: false
   }
-  const skip = getRouterParam(event, 'skip') || 0
-  const take = getRouterParam(event, 'take') || 20
+  const query = getQuery(event);
+  console.log("query",query);
 
-  console.log("skip", skip)
-  console.log("take", take)
+  const skip: Number = Number(query.skip || 0) as number;
+  const take: Number = Number(query.take || 20) as number;
+  const name: String = query.name || "" as string;
 
-  const products = await getProducts({ skip: Number(skip), take: Number(take) })
+  let products, total: Number
 
-  console.log("products", products);
+  if (!name) {
+    products = await getProducts({ skip: Number(skip), take: Number(take) })
+    total = await countProduct({})
+  } else {
+    products = await getProductByName(name)
+    total = 1
+  }
 
-  if (products && products.length > 0) {
+  if (products) {
     response.data = products
+    response.paginate = {
+      totalPage: Math.ceil(total / take),
+      totalCount: total
+    }
     response.status = true
     return response
   }

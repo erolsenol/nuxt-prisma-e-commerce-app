@@ -1,20 +1,21 @@
 import { PrismaClient } from '@prisma/client'
 
-interface interfacePrisma {
-  comments?: Object;
-  images?: Object;
-  prodcuts?: Object;
-  users?: Object;
+declare global {
+  var prisma: PrismaClient; // This must be a `var` and not a `let / const`
+}
+
+
+let prisma: PrismaClient
+
+const prismaConfig = {
 
 }
 
-let prisma = null
-
 if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient()
+  prisma = new PrismaClient(prismaConfig)
 } else {
   if (!global.prisma) {
-    global.prisma = new PrismaClient()
+    global.prisma = new PrismaClient(prismaConfig)
   }
   prisma = global.prisma
 }

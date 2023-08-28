@@ -10,6 +10,9 @@ interface interfaceProduct {
   name: String;
   title: String;
   content: String;
+  name_en?: String;
+  title_en?: String;
+  content_en?: String;
   createdAt: Date;
   updatedAt: Date;
   // images:    Image[]
@@ -23,14 +26,41 @@ export async function getProducts({
   const response = await prisma.product.findMany({
     skip,
     take,
+    include: {
+      images: true,
+      comments: true,
+      star: true,
+      question: true,
+    },
   });
   return response;
 }
 
-export async function getProduct(id: String) {
+export async function getProduct(id: Number) {
   const response = await prisma.product.findUnique({
     where: {
       id,
+    },
+    include: {
+      images: true,
+      comments: true,
+      star: true,
+      question: true,
+    },
+  });
+  return response;
+}
+
+export async function getProductByName(name: String) {
+  const response = await prisma.product.findUnique({
+    where: {
+      name: name,
+    },
+    include: {
+      images: true,
+      comments: true,
+      star: true,
+      question: true,
     },
   });
   return response;
@@ -50,18 +80,30 @@ export async function updateProduct(id: String, data: interfaceProduct) {
       id: id,
     },
     data: data,
+    include: {
+      images: true,
+      comments: true,
+      star: true,
+      question: true,
+    },
   });
 
   return response;
 }
 
-export async function deleteProduct(id:Number) {
+export async function deleteProduct(id: Number) {
   const deleteProduct = await prisma.product.delete({
     where: {
-      email: {
-        id: id,
-      },
+      id: id,
     },
+  })
+
+  return deleteProduct
+}
+
+export async function countProduct(where: Object) {
+  const deleteProduct = await prisma.product.count({
+    where: where,
   })
 
   return deleteProduct
