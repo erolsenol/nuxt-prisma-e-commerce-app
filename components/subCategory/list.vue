@@ -111,7 +111,7 @@ async function getAll(page) {
       </div>
     </div>
     <div class="filter-item mb-3 text-end d-flex flex-row justify-content-between">
-      <h5 class="ps-1">{{ $t('category') }} {{ $t('list') }}</h5>
+      <h5 class="ps-1">{{ $t('sub_category') }} {{ $t('list') }}</h5>
       <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
     </div>
     <table class="table table-hover table-striped ">

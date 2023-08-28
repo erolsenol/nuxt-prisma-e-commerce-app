@@ -15,10 +15,21 @@ export default defineEventHandler(async (event) => {
     status: false
   }
 
-  const { paginate, all = false, filter } = getQuery(event)
+  const { paginate = "", all = "0", filter = "" } = getQuery(event)
 
-  const filterObj = JSON.parse(filter)
-  const paginateObj = JSON.parse(paginate)
+  let allItems = all == "1"
+
+  let filterObj = {}, paginateObj = {}
+
+  if (filter) {
+    filterObj = JSON.parse(filter)
+  }
+  if (paginate) {
+    paginateObj = JSON.parse(paginate)
+  }
+  if (allItems) {
+    paginateObj.take = 9999
+  }
 
   const where: any = {}
   const keys = Object.keys(filterObj)

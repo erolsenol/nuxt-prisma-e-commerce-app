@@ -15,7 +15,7 @@ let formId = ref(-1)
 let formType = ref("")
 let paginate = reactive({
   skip: 0,
-  take: 3,
+  take: 20,
   currentPage: 1,
   totalCount: 0,
   totalPage: 0,
@@ -117,6 +117,7 @@ async function getAll(page) {
     <table class="table table-hover table-striped ">
       <thead>
         <tr class="table-light">
+          <th scope="col">{{ $t('order') }}</th>
           <th scope="col">Id</th>
           <th scope="col">{{ $t('name') }}</th>
           <th scope="col">{{ $t('name_en') }}</th>
@@ -127,6 +128,7 @@ async function getAll(page) {
       </thead>
       <tbody class="table-group-divider">
         <tr class="table-light" v-for="(row, index) in rows" :key="index">
+          <th>{{ index + 1 }}</th>
           <th scope="row">{{ row.id }}</th>
           <td>{{ row.name }}</td>
           <td>{{ row.name_en }}</td>
@@ -168,7 +170,8 @@ async function getAll(page) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <CategoryForm @getAll="getAll" :type="formType" closeBtnStatus :formId="formId" />
+            <CategoryForm @getAll="getAll" :type="formType" @formId:reset="(e) => formId = e" closeBtnStatus
+              :formId="formId" />
           </div>
         </div>
       </div>

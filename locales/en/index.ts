@@ -49,6 +49,7 @@ export default {
   sub_categories: "Sub Categories",
   categories: "Categories",
   category: "Category",
+  sub_category: "Sub Category",
   category_get: "Categories Get",
   update: "Update",
   actions: "Actions",
@@ -61,6 +62,8 @@ export default {
   first: "First",
   last: "Last",
   page:"Page",
+  select:"Select",
+  order:"Order",
 
   page_about: "About Us Page",
   page_contact: "Contact Us Page",

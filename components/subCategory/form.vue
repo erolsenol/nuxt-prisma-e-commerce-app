@@ -7,14 +7,15 @@ export default {
 <script setup>
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import { array, string, object } from 'yup';
-const emit = defineEmits(['getAll'])
+import { array, string, number, object } from 'yup';
+const emit = defineEmits(['getAll', 'formId:reset'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
 const schema = object().shape({
     name: string().required(),
+    categoryId: number(),
     name_en: string(),
     description: string(),
     description_en: string(),
@@ -51,7 +52,7 @@ async function formClear() {
     })
 }
 
-async function save(e) {
+async function save(e, { resetForm }) {
     const bodyData = { ...formData.value }
 
     const keys = Object.keys(bodyData)
@@ -71,11 +72,12 @@ async function save(e) {
     });
 
     if (data.value.status) {
-        formClear()
+        resetForm()
         if (props.type !== "create") {
             const closeModal = document.querySelector('#close-modal')
             closeModal?.click()
             emit('getAll')
+            emit('formId:reset', -1)
         }
     }
     if (data.value.error === "There is a category with the same name") {
@@ -111,8 +113,11 @@ async function get(id) {
 <template>
     <div class="image-form">
         <Form @submit="save" :validation-schema="schema">
+            <SelectCategory :value="formData.categoryId" @value:update="(e) => formData.categoryId = e" />
+            <SelectSubCategory :value="formData.lowerSubCategoryId"
+                @value:update="(e) => formData.lowerSubCategoryId = e" />
             <div class="mb-3">
-                <label for="image-form-name" class="form-label">{{ $t('category') }} {{ $t('name') }}</label>
+                <label for="image-form-name" class="form-label">{{ $t('sub_category') }} {{ $t('name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="name" v-model="formData.name" :disabled="disabled" type="text" class="form-control"
@@ -126,7 +131,8 @@ async function get(id) {
                 </div>
             </div>
             <div class="mb-3">
-                <label for="image-form-description" class="form-label">{{ $t('category') }} {{ $t('description') }}</label>
+                <label for="image-form-description" class="form-label">{{ $t('sub_category') }} {{ $t('description')
+                }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="description" rules="required" :disabled="disabled" v-model="formData.description"

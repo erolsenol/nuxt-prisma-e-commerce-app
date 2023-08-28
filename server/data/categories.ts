@@ -26,6 +26,7 @@ async function getAll({ skip = 0, take = 20 }, where = {}) {
     },
     include: {
       subCategory: true,
+      product: true,
     },
   });
 
@@ -39,6 +40,7 @@ async function get(id: Number) {
     },
     include: {
       subCategory: true,
+      product: true,
     },
   });
   return response;
