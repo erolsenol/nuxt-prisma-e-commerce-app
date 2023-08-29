@@ -32,6 +32,7 @@ CREATE TABLE `Product` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `subCategoryId` INTEGER NULL,
+    `categoryId` INTEGER NULL,
     `tags` JSON NULL,
 
     UNIQUE INDEX `Product_id_key`(`id`),
@@ -83,16 +84,17 @@ CREATE TABLE `Category` (
 CREATE TABLE `SubCategory` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `name_en` VARCHAR(255) NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
+    `name_en` VARCHAR(255) NULL,
+    `description` VARCHAR(255) NULL,
+    `description_en` VARCHAR(255) NULL,
     `deleted` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `categoryId` INTEGER NOT NULL,
+    `categoryId` INTEGER NULL,
+    `lowerSubCategoryId` INTEGER NULL,
 
     UNIQUE INDEX `SubCategory_id_key`(`id`),
     UNIQUE INDEX `SubCategory_name_key`(`name`),
-    UNIQUE INDEX `SubCategory_name_en_key`(`name_en`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -156,12 +158,15 @@ CREATE TABLE `ContactUs` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NULL,
     `surname` VARCHAR(255) NULL,
-    `mail` VARCHAR(255) NULL,
+    `email` VARCHAR(255) NULL,
     `phone` VARCHAR(255) NULL,
+    `title` VARCHAR(255) NULL,
+    `content` VARCHAR(255) NULL,
     `readed` BOOLEAN NULL DEFAULT false,
     `deleted` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
+    `userId` INTEGER NULL,
 
     UNIQUE INDEX `ContactUs_id_key`(`id`),
     PRIMARY KEY (`id`)
@@ -220,6 +225,9 @@ CREATE TABLE `Site` (
 ALTER TABLE `Product` ADD CONSTRAINT `Product_subCategoryId_fkey` FOREIGN KEY (`subCategoryId`) REFERENCES `SubCategory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Product` ADD CONSTRAINT `Product_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Star` ADD CONSTRAINT `Star_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -232,7 +240,10 @@ ALTER TABLE `Question` ADD CONSTRAINT `Question_productId_fkey` FOREIGN KEY (`pr
 ALTER TABLE `Question` ADD CONSTRAINT `Question_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `SubCategory` ADD CONSTRAINT `SubCategory_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `SubCategory` ADD CONSTRAINT `SubCategory_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `SubCategory` ADD CONSTRAINT `SubCategory_lowerSubCategoryId_fkey` FOREIGN KEY (`lowerSubCategoryId`) REFERENCES `SubCategory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Image` ADD CONSTRAINT `Image_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `Product`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -254,3 +265,6 @@ ALTER TABLE `Comment` ADD CONSTRAINT `Comment_productId_fkey` FOREIGN KEY (`prod
 
 -- AddForeignKey
 ALTER TABLE `Comment` ADD CONSTRAINT `Comment_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ContactUs` ADD CONSTRAINT `ContactUs_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

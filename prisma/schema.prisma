@@ -96,9 +96,9 @@ model SubCategory {
   updatedAt          DateTime      @updatedAt
   category           Category?     @relation(fields: [categoryId], references: [id])
   categoryId         Int?
-  lowerSubCategory   SubCategory?  @relation("lowerSubCategories", fields: [lowerSubCategoryId], references: [id])
-  lowerSubCategoryId Int?          @unique
-  lowerSubCategories SubCategory[] @relation("lowerSubCategories")
+  lowerSubCategoryId   Int?
+  topSubCategory     SubCategory?  @relation("topLowSubCategories", fields: [lowerSubCategoryId], references: [id])
+  lowerSubCategories SubCategory[] @relation("topLowSubCategories")
   product            Product[]
 }
 
