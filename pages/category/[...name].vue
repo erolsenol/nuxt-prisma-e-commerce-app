@@ -4,6 +4,15 @@ export default {
 };
 </script>
 <script setup>
+import { reactive, onMounted } from "vue"
+
+
+
+
+
+
+
+
 
 </script>
 
@@ -14,11 +23,9 @@ export default {
     </div>
   </div>
 
-  {{$route.params.name}}
-
   <div class="content">
     <div class="container">
-     <PageCategories />
+      <PageCategories />
     </div>
   </div>
 </template>

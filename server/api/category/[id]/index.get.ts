@@ -1,4 +1,4 @@
-import categories from "../../data/categories";
+import categories from "../../../data/categories";
 
 export default defineEventHandler(
   async (event) => {
@@ -6,7 +6,6 @@ export default defineEventHandler(
       status: false
     }
 
-    console.log("event.context",event.context);
     const id: Number = parseInt(event.context.params.id) as number
 
     if (!id) {
@@ -14,7 +13,7 @@ export default defineEventHandler(
       return response
     }
 
-    const category = await categories.remove(id)
+    const category = await categories.get(id)
 
     if (category && category.id) {
       response.data = category

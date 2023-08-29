@@ -7,7 +7,6 @@ const { $qs } = useNuxtApp()
 const { locale, locales } = useI18n()
 const router = useRouter()
 const storeUser = useUser()
-const switchLocalePath = useSwitchLocalePath()
 
 function langChange(lang) {
    const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
@@ -17,7 +16,7 @@ function langChange(lang) {
 function pageChange(to, route = "", item) {
    console.log("router", router);
    if (route && item) {
-      router.push({ path: `/${route}/${to}`, params: { name: item } })
+      router.push({ path: `/${route}/${to}`, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
