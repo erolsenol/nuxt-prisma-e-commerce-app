@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "ProductAdd",
+  name: "ProductUpdate",
 };
 </script>
 
@@ -69,7 +69,8 @@ async function save(event) {
     const response = await useFetch("/api/image", {
       method: "post",
       body: {
-        productId: data.value.data.id,
+        ownerName: "productId",
+        ownerId: data.value.data.id,
         images: imageData
       },
     }).catch((error) => {
@@ -103,16 +104,16 @@ async function save(event) {
 </script>
 
 <template>
-  <div class="product-add">
+  <div class="product-update">
     <Form @submit="save">
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Adı</label>
-        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-name" rules="required" />
+        <label for="product-update-name" class="form-label">Ürün Adı</label>
+        <Field name="name" v-model="product.name" type="text" class="form-control" id="product-update-name" rules="required" />
         <ErrorMessage class="invalid" name="name" />
       </div>
       <div class="mb-3">
-        <label for="product-name" class="form-label">Ürün Başlığı</label>
-        <Field name="title" rules="required" v-model="product.title" type="text" class="form-control" id="product-name" />
+        <label for="product-update-title" class="form-label">Ürün Başlığı</label>
+        <Field name="title" rules="required" v-model="product.title" type="text" class="form-control" id="product-update-title" />
         <ErrorMessage class="invalid" name="title" />
       </div>
       <div class="mb-3">
@@ -123,7 +124,7 @@ async function save(event) {
       </div>
       <div class="product-add-slide mb-3">
         <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true" :effect="'creative'"
-          :autoplay="{ delay: 8000, disableOnInteraction: true, }" :creative-effect="{
+          :autoplay="{ delay: 5000, disableOnInteraction: true, }" :creative-effect="{
             prev: { shadow: false, translate: ['-20%', 0, -1], },
             next: { translate: ['100%', 0, 0], },
           }">
@@ -132,7 +133,7 @@ async function save(event) {
               <nuxt-img :src="image" class="card-img-top img-fluid" style="width: 100%" />
               <div class="card-body">
                 <h5 class="card-title">
-                  Görsel Adı: {{ product.imageNames[index] }}
+                  {{ $t('image_name') }}: {{ product.imageNames[index] }}
                 </h5>
               </div>
             </div>
