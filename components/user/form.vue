@@ -1,25 +1,29 @@
 <script>
 export default {
-    name: "SubCategoryForm",
+    name: "UserForm",
 };
 </script>
 
 <script setup>
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import { array, string, number, object } from 'yup';
+import { array, string, boolean, number, object } from 'yup';
 const emit = defineEmits(['getAll', 'formId:reset'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
+const { t } = useI18n();
 
 const schema = object().shape({
-    name: string().required(),
-    name_en: string().required(),
-    description: string().nullable(true),
-    description_en: string().nullable(true),
-    categoryId: number().nullable(true),
-    lowerSubCategoryId: number().nullable(true),
+    firstname: string().nullable(true),
+    lastname: string().nullable(true),
+    username: string().required(),
+    password: string().required(),
+    email: string().required(),
+    phone: string().nullable(true),
+    age: number().nullable(true),
+    verify: boolean().nullable(true),
+    deleted: boolean().nullable(true),
 });
 
 const props = defineProps({
@@ -51,9 +55,11 @@ async function formClear() {
         formData.value.description_en = null
         resolve(true)
     })
+
 }
 
 async function save(e, { resetForm }) {
+
     const bodyData = { ...formData.value }
 
     const keys = Object.keys(bodyData)
@@ -65,7 +71,7 @@ async function save(e, { resetForm }) {
 
     const method = props.type == "create" ? "post" : props.type == "update" ? 'put' : props.type == "delete" ? 'delete' : ''
 
-    const { data, pending, error, refresh } = await useFetch("/api/subCategory", {
+    const { data, pending, error, refresh } = await useFetch("/api/category", {
         method: method,
         body: bodyData,
     }).catch((error) => {
@@ -83,21 +89,21 @@ async function save(e, { resetForm }) {
 
         snackbar.add({
             type: "success",
-            text: t('api.created', [t('sub_category')]),
+            text: t('api.created', [t('category')]),
         });
         return
     }
     if (data.value.error === "same_name") {
         snackbar.add({
             type: "error",
-            text: t('api.error.same_name', [t('sub_category')]),
+            text: t('api.error.same_name', [t('category')]),
         });
         return
     }
     if (!data.value.status) {
         snackbar.add({
             type: "error",
-            text: t('api.error.same_error', [t('sub_category')]),
+            text: t('api.error.same_error', [t('category')]),
         });
         return
     }
@@ -105,7 +111,7 @@ async function save(e, { resetForm }) {
 }
 
 async function get(id) {
-    const { data } = await useFetch("/api/subCategory/" + id);
+    const { data } = await useFetch("/api/category/" + id);
     if (!data.value) return
 
     if (data.value.status) {
@@ -113,43 +119,38 @@ async function get(id) {
         formData.value = data.value.data
     }
 }
-
 </script>
 
 <template>
     <div class="image-form">
         <Form @submit="save" :validation-schema="schema">
-            <SelectCategory :value="formData.categoryId" @value:update="(e) => formData.categoryId = e" />
-            <SelectSubCategory :value="formData.lowerSubCategoryId"
-                @value:update="(e) => formData.lowerSubCategoryId = e" />
             <div class="mb-3">
-                <label for="image-form-name" class="form-label">{{ $t('sub_category') }} {{ $t('name') }}</label>
+                <label for="image-form-name" class="form-label">{{ $t('category') }} {{ $t('name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="name" v-model="formData.name" :disabled="disabled" type="text" class="form-control"
-                        id="image-form-name" rules="required" />
+                        id="image-form-name" />
                 </div>
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
                     <Field name="name_en" v-model="formData.name_en" :disabled="disabled" type="text" class="form-control"
-                        id="image-form-name-en" rules="" />
+                        id="image-form-name-en" />
                 </div>
                 <ErrorMessage class="invalid" name="name_en" />
             </div>
             <div class="mb-3">
-                <label for="image-form-description" class="form-label">{{ $t('sub_category') }} {{ $t('description')
-                }}</label>
+                <label for="image-form-description" class="form-label">{{ $t('category') }} {{ $t('description') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="description" rules="required" :disabled="disabled" v-model="formData.description"
-                        type="text" class="form-control" id="image-form-description" />
+                    <Field name="description" :disabled="disabled" v-model="formData.description" type="text"
+                        class="form-control" id="image-form-description" />
                 </div>
-                <ErrorMessage class="invalid" name="description" />
+
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="description-en" v-model="formData.description_en" :disabled="disabled" type="text"
-                        class="form-control" id="image-form-description-en" rules="" />
+                    <Field name="description_en" v-model="formData.description_en" :disabled="disabled" type="text"
+                        class="form-control" id="image-form-description-en" />
                 </div>
             </div>
             <hr class="hr" />

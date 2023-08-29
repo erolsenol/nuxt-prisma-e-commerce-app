@@ -45,12 +45,14 @@ export default {
   site_settings: "Site Ayarları",
   comments: "Yorumlar",
   users: "Kullanıcılar",
+  user: "Kullanıcı",
   sub_categories: "Alt Kategoriler",
   categories: "Kategoriler",
   category: "Kategori",
   top_category: "Üst Kategori",
   sub_category: "Alt Kategori",
   category_get: "Kategori Getir",
+  get: "Getir",
   update: "Güncelle",
   actions: "İşlemler",
   filters: "Filtreler",
@@ -61,9 +63,9 @@ export default {
   add: "Ekle",
   first: "İlk",
   last: "Son",
-  page:"Sayfa",
-  select:"Seçiniz",
-  order:"Sıra",
+  page: "Sayfa",
+  select: "Seçiniz",
+  order: "Sıra",
 
   page_about: "Hakkımızda Sayfası",
   page_contact: "İletişim Sayfası",
@@ -87,5 +89,18 @@ export default {
   },
   success: {
     user_created: "Kayıt başarılı",
+  },
+
+  api: {
+    created: "{0} Kaydedildi",
+    updated: "{0} Güncellendi",
+    deleted: "{0} Silindi",
+    republish: "{0} yayına alındı",
+    count_zero: "There are 0 {0}",
+
+    error: {
+      same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
+      same_name: "Aynı isimle {0} bulunuyor farklı bir isim deneyin",
+    },
   },
 };

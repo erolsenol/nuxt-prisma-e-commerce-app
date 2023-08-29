@@ -12,6 +12,7 @@ const emit = defineEmits(['getAll', 'formId:reset'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
+const { t } = useI18n();
 
 const schema = object().shape({
     name: string().required(),
@@ -58,7 +59,7 @@ async function save(e, { resetForm }) {
 
     const keys = Object.keys(bodyData)
     keys.forEach(key => {
-        if (typeof bodyData[key] === "object") {
+        if (typeof bodyData[key] === "object" || bodyData[key] === -1) {
             delete bodyData[key]
         }
     })
@@ -81,19 +82,23 @@ async function save(e, { resetForm }) {
             emit('formId:reset', -1)
         }
 
+        snackbar.add({
+            type: "success",
+            text: t('api.created', [t('category')]),
+        });
+        return
     }
-    if (data.value.error === "There is a category with the same name") {
+    if (data.value.error === "same_name") {
         snackbar.add({
             type: "error",
-            text: "Aynı isimle kategori bulunuyor",
+            text: t('api.error.same_name', [t('category')]),
         });
         return
     }
     if (!data.value.status) {
-        console.log("Kategori Kaydedilemedi");
         snackbar.add({
             type: "error",
-            text: "Kategori Kaydedilemedi",
+            text: t('api.error.same_error', [t('category')]),
         });
         return
     }
@@ -101,7 +106,6 @@ async function save(e, { resetForm }) {
 }
 
 async function get(id) {
-    console.log("qweqweqw");
     const { data } = await useFetch("/api/category/" + id);
     if (!data.value) return
 
@@ -116,7 +120,6 @@ async function get(id) {
     <div class="image-form">
         <Form @submit="save" :validation-schema="schema">
             <div class="mb-3">
-                {{ formData }}
                 <label for="image-form-name" class="form-label">{{ $t('category') }} {{ $t('name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
