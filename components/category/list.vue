@@ -141,15 +141,7 @@ function tooltipText(arr) {
           <td>{{ row.description }}</td>
           <td>{{ row.description_en }}</td>
           <td class="text-center">
-            <Tooltip text="123123123">
-              <template v-slot:content>
-                <h6>
-                  <span class="badge bg-secondary">
-                    {{ row.subCategory?.length }}
-                  </span>
-                </h6>
-              </template>
-            </Tooltip>
+            <TableItemsCountBadge :count="row.subCategory?.length" />
           </td>
           <td>
             <div class="btn-group dropstart">
