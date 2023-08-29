@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
   const nameProduct = await getProductByName(body.name);
   if (nameProduct && nameProduct.id) {
-    response.error = "There is a product with the same name";
+    response.error = "same_name";
     return response;
   }
 

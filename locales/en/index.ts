@@ -52,6 +52,7 @@ export default {
   top_category: "Top Category",
   sub_category: "Sub Category",
   category_get: "Categories Get",
+  get: "Get",
   update: "Update",
   actions: "Actions",
   filters: "Filters",
@@ -88,5 +89,17 @@ export default {
   },
   success: {
     user_created: "Registration successful",
+  },
+
+  api: {
+    created: "{0} Created",
+    updated: "{0} Updated",
+    deleted: "{0} Deleted",
+    republish: "{0} republish",
+
+    error: {
+      same_error:"Error occurred while performing {0} operation",
+      same_name:"There is a {0} with the same name, try a different name"
+    }
   },
 };
