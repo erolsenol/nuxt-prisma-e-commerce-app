@@ -48,6 +48,8 @@ export default {
   sub_categories: "Alt Kategoriler",
   categories: "Kategoriler",
   category: "Kategori",
+  top_category: "Üst Kategori",
+  sub_category: "Alt Kategori",
   category_get: "Kategori Getir",
   update: "Güncelle",
   actions: "İşlemler",
@@ -60,6 +62,8 @@ export default {
   first: "İlk",
   last: "Son",
   page:"Sayfa",
+  select:"Seçiniz",
+  order:"Sıra",
 
   page_about: "Hakkımızda Sayfası",
   page_contact: "İletişim Sayfası",

@@ -30,7 +30,7 @@ const tabs = [
 <template>
   <div class="container admin">
     <div class="row">
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-md-2">
         <div class="list-group">
           <button type="button" class="list-group-item list-group-item-action" @click="active = index"
             :class="`${active == index ? 'active' : ''}`" :aria-current="`${active == index ? 'true' : ''}`"
@@ -39,7 +39,7 @@ const tabs = [
           </button>
         </div>
       </div>
-      <div class="col-12 col-md-9">
+      <div class="col-12 col-md-10">
         <div class="products" v-if="active == 0">
           <div class="accordion mb-3" id="accordionProduct">
             <div class="accordion-item">
@@ -88,7 +88,7 @@ const tabs = [
               </h2>
               <div id="collapseSubCategory" class="accordion-collapse collapse" data-bs-parent="#accordionSubCategory">
                 <div class="accordion-body">
-                  <SubCategoryAdd />
+                  <SubCategoryForm type="create" :formId="-1" />
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ export default {
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+const { locale } = useI18n()
 const { $qs } = useNuxtApp()
 
 
@@ -15,7 +16,7 @@ let formId = ref(-1)
 let formType = ref("")
 let paginate = reactive({
   skip: 0,
-  take: 3,
+  take: 20,
   currentPage: 1,
   totalCount: 0,
   totalPage: 0,
@@ -74,6 +75,10 @@ async function getAll(page) {
   }
 }
 
+function tooltipText(arr) {
+  return arr.subCategory.map(item => item[`name${locale.value !== 'tr' ? `_${locale.value}` : ''}`]).join(', ')
+}
+
 </script>
 
 <template>
@@ -117,21 +122,35 @@ async function getAll(page) {
     <table class="table table-hover table-striped ">
       <thead>
         <tr class="table-light">
+          <th scope="col">{{ $t('order') }}</th>
           <th scope="col">Id</th>
           <th scope="col">{{ $t('name') }}</th>
           <th scope="col">{{ $t('name_en') }}</th>
           <th scope="col">{{ $t('description') }}</th>
           <th scope="col">{{ $t('description_en') }}</th>
+          <th scope="col">{{ $t('sub_category') }}</th>
           <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
         <tr class="table-light" v-for="(row, index) in rows" :key="index">
+          <th>{{ index + 1 }}</th>
           <th scope="row">{{ row.id }}</th>
           <td>{{ row.name }}</td>
           <td>{{ row.name_en }}</td>
           <td>{{ row.description }}</td>
           <td>{{ row.description_en }}</td>
+          <td class="text-center">
+            <Tooltip text="123123123">
+              <template v-slot:content>
+                <h6>
+                  <span class="badge bg-secondary">
+                    {{ row.subCategory?.length }}
+                  </span>
+                </h6>
+              </template>
+            </Tooltip>
+          </td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
@@ -168,7 +187,8 @@ async function getAll(page) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <CategoryForm @getAll="getAll" :type="formType" closeBtnStatus :formId="formId" />
+            <CategoryForm @getAll="getAll" :type="formType" @formId:reset="(e) => formId = e" closeBtnStatus
+              :formId="formId" />
           </div>
         </div>
       </div>
