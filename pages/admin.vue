@@ -65,7 +65,7 @@ const tabs = [
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                   data-bs-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">
-                  {{$t('category')}} {{$t('add')}}
+                  {{ $t('category') }} {{ $t('add') }}
                 </button>
               </h2>
               <div id="collapseCategory" class="accordion-collapse collapse" data-bs-parent="#accordionCategory">
@@ -93,11 +93,11 @@ const tabs = [
               </div>
             </div>
           </div>
-          <h5 class="ps-1">Alt kategori listesi</h5>
+          <h5 class="ps-1">{{ $t('sub_category') }} {{ $t('list') }}</h5>
           <SubCategoryList />
         </div>
         <div class="user" v-if="active == 3">
-          user
+          <UserList />
         </div>
         <div class="comment" v-if="active == 4">
           comment
@@ -152,7 +152,7 @@ const tabs = [
               <div id="collapsePageContact" class="accordion-collapse collapse" data-bs-parent="#accordionSiteSettings">
                 <div class="accordion-body">
                   <AdminContactus />
-                  
+
                 </div>
               </div>
             </div>

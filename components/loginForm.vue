@@ -20,7 +20,7 @@ const schema = object().shape({
     email: string(),
     password0: string().min(8).required(),
     password1: string()
-        .oneOf([ref('password0'), null], 'Passwords must match')
+        .oneOf([ref('password0'), null], t('validation.passwords_must_match'))
 });
 
 const storeUser = useUser()
@@ -53,7 +53,7 @@ function formClear() {
     form.value.password1 = null
 }
 
-async function submit() {
+async function submit(e,{ resetForm }) {
     console.log("type", type.value);
     if (type.value == 'login') {
         if (!form.value.email) {
@@ -91,7 +91,7 @@ async function submit() {
             storeUser.login(data.value.data)
             console.log("loginModal", loginModal);
             loginModal.value.click()
-            formClear()
+            resetForm()
             return
         } else {
             if (data.value.error === "your password is wrong") {

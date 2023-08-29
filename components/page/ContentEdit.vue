@@ -120,7 +120,7 @@ async function save() {
             });
         }
     } else {
-        if (data.value.error === "There is a product with the same name") {
+        if (data.value.error === "same_name") {
             snackbar.add({
                 type: "error",
                 text: "Aynı İsimle Ürün bulunuyor",

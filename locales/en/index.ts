@@ -46,12 +46,14 @@ export default {
   site_settings: "Site Settings",
   comments: "Comments",
   users: "Users",
+  user: "User",
   sub_categories: "Sub Categories",
   categories: "Categories",
   category: "Category",
   top_category: "Top Category",
   sub_category: "Sub Category",
   category_get: "Categories Get",
+  get: "Get",
   update: "Update",
   actions: "Actions",
   filters: "Filters",
@@ -62,9 +64,9 @@ export default {
   add: "Add",
   first: "First",
   last: "Last",
-  page:"Page",
-  select:"Select",
-  order:"Order",
+  page: "Page",
+  select: "Select",
+  order: "Order",
 
   page_about: "About Us Page",
   page_contact: "Contact Us Page",
@@ -88,5 +90,21 @@ export default {
   },
   success: {
     user_created: "Registration successful",
+  },
+
+  validation: {
+    passwords_must_match: "Passwords must match",
+  },
+
+  api: {
+    created: "{0} Created",
+    updated: "{0} Updated",
+    deleted: "{0} Deleted",
+    republish: "{0} republish",
+
+    error: {
+      same_error: "Error occurred while performing {0} operation",
+      same_name: "There is a {0} with the same name, try a different name"
+    }
   },
 };
