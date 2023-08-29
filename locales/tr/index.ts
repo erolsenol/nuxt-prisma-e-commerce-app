@@ -42,6 +42,7 @@ export default {
   detail: "Detay",
   contact_us: "Bize Yazın",
   products: "Ürünler",
+  product: "Ürün",
   site_settings: "Site Ayarları",
   comments: "Yorumlar",
   users: "Kullanıcılar",

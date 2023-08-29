@@ -43,6 +43,7 @@ export default {
   detail: "Detail",
   contact_us: "Contact Us",
   products: "Products",
+  product: "Product",
   site_settings: "Site Settings",
   comments: "Comments",
   users: "Users",

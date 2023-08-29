@@ -34,11 +34,12 @@ const headerItems = [
       to: "index"
    },
    {
-      text: "services",
-      to: null
+      text: "categories",
+      to: "categories",
+      dropdown: true
    },
    {
-      text: "news_and_publications",
+      text: "services",
       to: null
    },
    {
@@ -69,11 +70,20 @@ let loginFormType = ref("login")
             </a>
          </div>
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li class="" v-for="(item, index) in headerItems" :key="index">
-               <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2">
-                  {{ $t(item.text) }}
-               </NuxtLink>
-            </li>
+            <template v-for="(item, index) in headerItems" :key="index">
+               <li class="" :class="`${item.dropdown ? 'dropdown-toggle' :''}`" :data-bs-toggle="`${item.dropdown ? 'dropdown' :''}`" >
+                  <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2">
+                     {{ $t(item.text) }}
+                  </NuxtLink>
+                  <template v-if="item.dropdown">
+                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
+                        <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
+                        <li><a class="dropdown-item" href="#"> Submenu item 3 </a></li>
+                     </ul>
+                  </template>
+               </li>
+            </template>
          </ul>
          <div
             class="d-flex flex-row align-items-center justify-content-lg-end col-lg-4 col-md-5 col-sm-6 text-xl-end text-lg-start mt-xl-0 mt-lg-3 mt-md-3 me-0">

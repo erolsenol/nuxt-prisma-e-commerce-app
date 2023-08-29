@@ -51,7 +51,7 @@ const tabs = [
               </h2>
               <div id="collapseProduct" class="accordion-collapse collapse" data-bs-parent="#accordionProduct">
                 <div class="accordion-body">
-                  <AdminProductAdd />
+                  <AdminProductForm type="create" :formId="-1" />
                 </div>
               </div>
             </div>

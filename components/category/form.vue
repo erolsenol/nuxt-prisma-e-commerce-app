@@ -7,7 +7,7 @@ export default {
 <script setup>
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import { array, string, object } from 'yup';
+import { array, string,number, object } from 'yup';
 const emit = defineEmits(['getAll', 'formId:reset'])
 
 const snackbar = useSnackbar();
@@ -18,15 +18,17 @@ const schema = object().shape({
     name_en: string().required(),
     description: string().nullable(true),
     description_en: string().nullable(true),
+    subCategoryId: number().nullable(true),
+    categoryId: number().nullable(true),
 });
 
 const props = defineProps({
     type: String,
+    formId: Number,
     closeBtnStatus: {
         type: Boolean,
         default: () => false
     },
-    formId: Number,
 })
 let formData = ref({})
 
@@ -80,7 +82,6 @@ async function save(e, { resetForm }) {
             emit('getAll')
             emit('formId:reset', -1)
         }
-
     }
     if (data.value.error === "There is a category with the same name") {
         snackbar.add({
@@ -116,7 +117,6 @@ async function get(id) {
     <div class="image-form">
         <Form @submit="save" :validation-schema="schema">
             <div class="mb-3">
-                {{ formData }}
                 <label for="image-form-name" class="form-label">{{ $t('category') }} {{ $t('name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>

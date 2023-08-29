@@ -15,7 +15,7 @@ let formId = ref(-1)
 let formType = ref("")
 let paginate = reactive({
   skip: 0,
-  take: 120,
+  take: 20,
   currentPage: 1,
   totalCount: 0,
   totalPage: 0,
@@ -166,7 +166,7 @@ async function getAll(page) {
       </tbody>
     </table>
     <div class="d-flex flex-row justify-content-between">
-      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{   {{ $t('sub_category') }} {{ $t('get') }} }}</button>
+      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('sub_category') }} {{ $t('get') }}</button>
       <Pagination :paginate="paginate" @page="getAll" />
     </div>
 
