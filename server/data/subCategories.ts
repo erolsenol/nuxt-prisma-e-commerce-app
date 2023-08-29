@@ -26,6 +26,7 @@ async function getAll({ skip = 0, take = 20 }, where = {}) {
     },
     include: {
       category: true,
+      lowerSubCategories: true,
       product: true,
     },
   });

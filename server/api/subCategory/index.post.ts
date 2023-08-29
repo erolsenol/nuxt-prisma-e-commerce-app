@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   const nameCategory = await subCategories.getByName(body.name);
   if (nameCategory.length > 0) {
-    response.error = "There is a category with the same name";
+    response.error = "same_name";
     return response;
   }
 

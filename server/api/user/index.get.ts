@@ -1,40 +1,59 @@
-import { getUserByEmail, getUsers, countUser } from "../../data/users";
+import users from "../../data/users";
+
+interface response {
+  data: Object[],
+  paginate: Object,
+  status: Boolean
+}
+interface paginate {
+  take: Number,
+  skip: Number
+}
 
 export default defineEventHandler(async (event) => {
-  console.log("@@@@@");
-  let response = {
+  let response: response = {
     status: false
   }
-  const query = getQuery(event);
 
-  const skip: Number = Number(query.skip || 0) as number;
-  const take: Number = Number(query.take || 20) as number;
-  const email: String = query.email || "" as string;
-  const password: String = query.password || "" as string;
+  const { paginate = "", all = "0", filter = "" } = getQuery(event)
 
-  let users, total: Number
+  let allItems = all == "1"
 
-  console.log("1");
-  if (!email) {
-    users = await getUsers({ skip: Number(skip), take: Number(take) })
-    total = await countUser({})
-  } else {
-    console.log("2");
-    users = await getUserByEmail(email)
-    console.log("users", users);
-    if (users && users?.password !== password) {
-      response.error = "your password is wrong"
-      return response
-    }
-    total = 1
+  let filterObj = {}, paginateObj = {}
+
+  if (filter) {
+    filterObj = JSON.parse(filter)
+  }
+  if (paginate) {
+    paginateObj = JSON.parse(paginate)
+  }
+  if (allItems) {
+    paginateObj.take = 9999
   }
 
-  if (users) {
-    response.data = users
-    response.paginate = {
-      totalPage: Math.ceil(total / take),
-      totalCount: total
+  const where: any = {}
+  const keys = Object.keys(filterObj)
+  keys.forEach(key => {
+    if (filterObj[key]) {
+      where[key] = filterObj[key]
     }
+  })
+
+  const items = await users.getAll(paginateObj, where)
+
+  let total = await users.count(where)
+  const currentPage = (paginateObj.skip / paginateObj.take) + 1
+
+  if (items) {
+    response.data = items
+    response.paginate = {
+      totalPage: Math.ceil(total / paginateObj.take),
+      currentPage: currentPage,
+      totalCount: total,
+      take: paginateObj.take,
+      skip: paginateObj.skip
+    }
+
     response.status = true
     return response
   }
