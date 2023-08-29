@@ -68,6 +68,7 @@ export default {
   page: "Page",
   select: "Select",
   order: "Order",
+  admin: "Admin",
 
   page_about: "About Us Page",
   page_contact: "Contact Us Page",

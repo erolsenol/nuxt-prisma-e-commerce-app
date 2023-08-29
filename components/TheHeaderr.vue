@@ -3,6 +3,7 @@ import { ref } from "vue"
 import { useI18n, useLocalePath } from '#imports'
 import { setLocale } from '@vee-validate/i18n';
 
+const { $qs } = useNuxtApp()
 const { locale, locales } = useI18n()
 const router = useRouter()
 const storeUser = useUser()
@@ -13,8 +14,15 @@ function langChange(lang) {
    router.push(({ name: `${pathName}${lang}` }))
 }
 
-function pageChange(to) {
-   router.push({ name: `${to}___${locale.value}` })
+function pageChange(to, route = "", item) {
+   console.log("router", router);
+   if (route && item) {
+      router.push({ path: `/${route}/${to}`, params: { name: item } })
+      // router.push({ name: `${route}-${to}___${locale.value}` })
+   }
+   else if (to) {
+      router.push({ name: `${to}___${locale.value}` })
+   }
 }
 
 const availableLocales = computed(() => {
@@ -28,6 +36,34 @@ function logout() {
    storeUser.logout()
 }
 
+const categories = ref([])
+
+async function getCategory() {
+   const config = {
+      params: {
+         all: "1"
+      },
+      paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+   };
+   const { data, pending, error, refresh } = await useFetch("/api/category").catch((error) => {
+      console.error(error);
+   });
+
+   console.log("data", data);
+
+   if (data.value.status) {
+      categories.value = data.value.data
+      console.log("categories.value", categories.value);
+   }
+}
+
+onMounted(() => {
+   setTimeout(() => {
+      getCategory()
+   }, 100);
+
+});
+
 const headerItems = [
    {
       text: "products",
@@ -35,7 +71,7 @@ const headerItems = [
    },
    {
       text: "categories",
-      to: "categories",
+      to: null,
       dropdown: true
    },
    {
@@ -62,6 +98,8 @@ let loginFormType = ref("login")
 
 <template>
    <header class="header">
+
+
       <div
          class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
@@ -69,17 +107,24 @@ let loginFormType = ref("login")
                <NuxtImg class="logo" src="neva/logo.svg" />
             </a>
          </div>
+
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <template v-for="(item, index) in headerItems" :key="index">
-               <li class="" :class="`${item.dropdown ? 'dropdown-toggle' :''}`" :data-bs-toggle="`${item.dropdown ? 'dropdown' :''}`" >
-                  <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2">
+               <li class="" :class="`${item.dropdown ? 'dropdown-toggle' : ''}`"
+                  :data-bs-toggle="`${item.dropdown ? 'dropdown' : ''}`">
+                  <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2"
+                     :class="`${router.currentRoute.value.name.includes(item.to) ? 'active' : ''}`">
                      {{ $t(item.text) }}
                   </NuxtLink>
                   <template v-if="item.dropdown">
                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
-                        <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
-                        <li><a class="dropdown-item" href="#"> Submenu item 3 </a></li>
+                        <template v-for="(item, index) in categories" :key="index">
+                           <li>
+                              <NuxtLink class="dropdown-item" @click="pageChange(item.name, 'category', item)">
+                                 {{ item.name.toUpperCase() }}
+                              </NuxtLink>
+                           </li>
+                        </template>
                      </ul>
                   </template>
                </li>

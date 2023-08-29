@@ -14,6 +14,8 @@ export default {
     </div>
   </div>
 
+  {{$route.params.name}}
+
   <div class="content">
     <div class="container">
      <PageCategories />

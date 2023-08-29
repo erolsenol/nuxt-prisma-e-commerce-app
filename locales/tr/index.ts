@@ -67,6 +67,7 @@ export default {
   page: "Sayfa",
   select: "Seçiniz",
   order: "Sıra",
+  admin: "Yönetici",
 
   page_about: "Hakkımızda Sayfası",
   page_contact: "İletişim Sayfası",

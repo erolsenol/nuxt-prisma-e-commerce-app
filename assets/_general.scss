@@ -6,7 +6,7 @@ body {
   .invalid {
     color: var(--bs-danger);
   }
-  .cool-link::after {
+  .cool-link::after, .active::after {
     content: "";
     display: block;
     width: 0;
@@ -15,7 +15,7 @@ body {
     transition: width 0.3s;
   }
 
-  .cool-link:hover::after {
+  .cool-link:hover::after, .active::after {
     width: 100%;
     //transition: width .3s;
   }
