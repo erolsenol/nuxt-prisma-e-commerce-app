@@ -46,6 +46,7 @@ export default {
   site_settings: "Site Settings",
   comments: "Comments",
   users: "Users",
+  user: "User",
   sub_categories: "Sub Categories",
   categories: "Categories",
   category: "Category",

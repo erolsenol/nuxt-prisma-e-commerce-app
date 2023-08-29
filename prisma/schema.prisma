@@ -26,7 +26,7 @@ model User {
   comments  Comment[]
   star      Star[]
   question  Question[]
-  ContactUs ContactUs[]
+  contactUs ContactUs[]
 }
 
 model Product {

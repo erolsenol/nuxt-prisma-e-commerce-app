@@ -45,6 +45,7 @@ export default {
   site_settings: "Site Ayarları",
   comments: "Yorumlar",
   users: "Kullanıcılar",
+  user: "Kullanıcı",
   sub_categories: "Alt Kategoriler",
   categories: "Kategoriler",
   category: "Kategori",
@@ -95,6 +96,7 @@ export default {
     updated: "{0} Güncellendi",
     deleted: "{0} Silindi",
     republish: "{0} yayına alındı",
+    count_zero: "There are 0 {0}",
 
     error: {
       same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
