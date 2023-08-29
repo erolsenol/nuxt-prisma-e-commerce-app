@@ -1,16 +1,13 @@
-<script>
-export default {
-  name: "PageHome",
-};
-</script>
 <script setup>
+const foo = useFoo();
+const { $helper } = useNuxtApp();
 
 
 </script>
 
 <template>
   <div class="slider">
-    <div class="container">
+    <div class="container-fluid">
       <HomeSwiper />
     </div>
   </div>
@@ -18,7 +15,6 @@ export default {
   <div class="content">
     <div class="container">
      <QuickContent />
-     <PageProducts />
     </div>
   </div>
 </template>

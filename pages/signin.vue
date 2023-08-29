@@ -5,8 +5,6 @@ const name = ref('John')
 definePageMeta({
   layout: "auth",
 });
-
-
 </script>
 
 <template>
