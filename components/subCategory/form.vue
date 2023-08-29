@@ -58,7 +58,7 @@ async function save(e, { resetForm }) {
 
     const keys = Object.keys(bodyData)
     keys.forEach(key => {
-        if (typeof bodyData[key] === "object" || bodyData[key] === -1) {
+        if (typeof bodyData[key] === "object") {
             delete bodyData[key]
         }
     })
@@ -80,24 +80,19 @@ async function save(e, { resetForm }) {
             emit('getAll')
             emit('formId:reset', -1)
         }
-
-        snackbar.add({
-            type: "success",
-            text: t('api.created', [t('sub_category')]),
-        });
-        return
     }
-    if (data.value.error === "same_name") {
+    if (data.value.error === "There is a category with the same name") {
         snackbar.add({
             type: "error",
-            text: t('api.error.same_name', [t('sub_category')]),
+            text: "Aynı isimle kategori bulunuyor",
         });
         return
     }
     if (!data.value.status) {
+        console.log("Kategori Kaydedilemedi");
         snackbar.add({
             type: "error",
-            text: t('api.error.same_error', [t('sub_category')]),
+            text: "Kategori Kaydedilemedi",
         });
         return
     }

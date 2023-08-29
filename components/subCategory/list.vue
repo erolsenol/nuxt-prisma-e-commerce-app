@@ -113,9 +113,7 @@ async function getAll(page) {
     </div>
     <div class="filter-item mb-3 text-end d-flex flex-row justify-content-between">
       <h5 class="ps-1">{{ $t('sub_category') }} {{ $t('list') }}</h5>
-      <button @click="getAll" class="btn btn-primary">
-        {{ $t('sub_category') }} {{ $t('get') }}
-      </button>
+      <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
     </div>
     <table class="table table-hover table-striped ">
       <thead>
@@ -139,13 +137,17 @@ async function getAll(page) {
           <td>{{ row.name_en }}</td>
           <td>{{ row.description }}</td>
           <td>{{ row.description_en }}</td>
-          <td class="text-center">{{ row.category?.name }}</td>
+          <td>{{ row.product?.name }}</td>
           <td class="text-center">
-            <!-- <Tooltip text="123123123"> -->
-              <!-- <template v-slot:content> -->
-                <TableItemsCountBadge :count="row.lowerSubCategories?.length" />
-              <!-- </template> -->
-            <!-- </Tooltip> -->
+            <Tooltip text="123123123">
+              <template v-slot:content>
+                <h6>
+                  <span class="badge bg-secondary">
+                    {{ row.subCategory?.length }}
+                  </span>
+                </h6>
+              </template>
+            </Tooltip>
           </td>
           <td>
             <div class="btn-group dropstart">
@@ -170,9 +172,7 @@ async function getAll(page) {
       </tbody>
     </table>
     <div class="d-flex flex-row justify-content-between">
-      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">
-        {{ $t('sub_category') }} {{ $t('get') }}
-      </button>
+      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('category_get') }}</button>
       <Pagination :paginate="paginate" @page="getAll" />
     </div>
 
@@ -185,7 +185,7 @@ async function getAll(page) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <SubCategoryForm @getAll="getAll" :type="formType" closeBtnStatus :formId="formId" />
+            <CategoryForm @getAll="getAll" :type="formType" closeBtnStatus :formId="formId" />
           </div>
         </div>
       </div>
