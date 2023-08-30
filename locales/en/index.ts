@@ -110,7 +110,8 @@ export default {
 
     error: {
       same_error: "Error occurred while performing {0} operation",
-      same_name: "There is a {0} with the same name, try a different name"
+      same_name: "There is a {0} with the same name, try a different name",
+      image_not_found:"image not found"
     }
   },
 };

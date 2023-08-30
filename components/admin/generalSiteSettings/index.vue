@@ -58,7 +58,7 @@ async function onFileChange(e, type) {
     for (let index = 0; index < files.length; index++) {
         const file = files[index];
         const imageData = await fileToBase64(file)
-        image.value[type] = imageData
+        // image.value[type] = imageData
         const body = {
             path: "app/",
             images: [{
@@ -75,10 +75,13 @@ async function onFileChange(e, type) {
         });
 
         if (data.value.status) {
+            image.value[type] = data.value.data[0]
+
             snackbar.add({
                 type: "success",
                 text: t('success.image_saved'),
             });
+            return
         }
     }
 
@@ -199,6 +202,7 @@ async function removeImage(id) {
                         class="form-control" type="file" id="header-logo" accept="image/png, image/jpeg" />
                 </div>
             </div>
+            <hr />
             <div class="row d-flex flex-row align-items-start justify-content-start mt-4" style="min-height: 10rem;">
                 <div class="col-6">
                     <template v-if="image?.footerLogo?.name">

@@ -111,6 +111,7 @@ export default {
     error: {
       same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
       same_name: "Aynı isimle {0} bulunuyor farklı bir isim deneyin",
+      image_not_found:"Görsel bulunamadı"
     },
   },
 };

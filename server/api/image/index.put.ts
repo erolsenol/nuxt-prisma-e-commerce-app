@@ -1,4 +1,4 @@
-import { postImage, getImageWhere, updateImage } from "../../data/images";
+import { postImage, getImageWhere, updateImage, getImageOwnerName } from "../../data/images";
 import fs from "fs";
 import path from "path";
 
@@ -19,6 +19,18 @@ interface errorData {
 interface response {
   data: errorData[];
   status: Boolean;
+}
+
+function fileExists(path: String) {
+  return new Promise<Boolean>((resolve, reject) => {
+    fs.access(path, fs.constants.F_OK, async (err: String) => {
+      if (err) {
+        return resolve(false);
+      } else {
+        return resolve(true);
+      }
+    });
+  });
 }
 
 async function createFolder(path: string) {
@@ -97,6 +109,10 @@ export default defineEventHandler(async (event) => {
 
     let prefix = "";
 
+    while (await fileExists(filePath.replace(".", prefix + "."))) {
+      prefix += "0";
+    }
+
     await createFolder(filePath)
 
     const res = await writeFile(
@@ -108,15 +124,17 @@ export default defineEventHandler(async (event) => {
     if (res.success) {
       const imageData = {
         path: res.path,
+        ownerName: image.ownerName,
         name: res.name,
       };
       if (body.ownerName) {
         imageData[body.ownerName] = body.ownerId;
       }
 
-      const oldImage = await getImageWhere({ name: image.name })
-      if (oldImage) {
-        const update = await updateImage(oldImage.id, imageData)
+      const oldImage = await getImageOwnerName(image.ownerName)
+      if (oldImage && oldImage.length > 0) {
+
+        const update = await updateImage(oldImage[0].id, { ...imageData })
         if (update) {
           response.data.push(update);
         } else {

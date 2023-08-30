@@ -1,3 +1,8 @@
+<script>
+export default {
+   name: "TheHeader",
+};
+</script>
 <script setup>
 import { ref } from "vue"
 import { useI18n, useLocalePath } from '#imports'
@@ -7,6 +12,9 @@ const { $qs } = useNuxtApp()
 const { locale, locales } = useI18n()
 const router = useRouter()
 const storeUser = useUser()
+let headerLogo = ref({})
+
+console.log("headerLogo", headerLogo);
 
 function langChange(lang) {
    const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
@@ -14,7 +22,7 @@ function langChange(lang) {
 }
 
 function pageChange(to, route = "", item) {
-   
+
    if (route && item) {
       router.push({ path: `/${route}/${to}`, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
@@ -56,8 +64,10 @@ async function getCategory() {
    }
 }
 
+
+
 onMounted(() => {
-   setTimeout(() => {
+   setTimeout(async () => {
       getCategory()
    }, 100);
 
@@ -97,10 +107,11 @@ let loginFormType = ref("login")
 
 <template>
    <header class="header">
-
-
-      <div
-         class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+      <div class="container d-flex flex-wrap align-items-center justify-content-center 
+      justify-content-md-between py-3 mb-4">
+         <div class="bg-white">
+            {{ headerLogo }}
+         </div>
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
             <a @click="pageChange('index')" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
                <NuxtImg class="logo" src="neva/logo.svg" />

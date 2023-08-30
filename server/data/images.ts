@@ -36,6 +36,19 @@ export async function getImageWhere(where) {
   return response;
 }
 
+export async function getImageOwnerName(name: string) {
+  const response = await prisma.image.findMany({
+    where: {
+      ownerName: name
+    },
+    include: {
+      product: true,
+      pageContent: true,
+    },
+  });
+  return response;
+}
+
 export async function getImageWithProductId(id) {
   const response = await prisma.image.findMany({
     where: {

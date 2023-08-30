@@ -96,7 +96,7 @@ model SubCategory {
   updatedAt          DateTime      @updatedAt
   category           Category?     @relation(fields: [categoryId], references: [id])
   categoryId         Int?
-  lowerSubCategoryId   Int?
+  lowerSubCategoryId Int?
   topSubCategory     SubCategory?  @relation("topLowSubCategories", fields: [lowerSubCategoryId], references: [id])
   lowerSubCategories SubCategory[] @relation("topLowSubCategories")
   product            Product[]
@@ -106,6 +106,7 @@ model Image {
   id            Int          @id @unique @default(autoincrement())
   path          String       @db.VarChar(255)
   name          String       @unique @db.VarChar(255)
+  ownerName     String?      @db.VarChar(255)
   deleted       Boolean?     @default(false)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
