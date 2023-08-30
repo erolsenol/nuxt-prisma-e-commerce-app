@@ -112,7 +112,7 @@ async function save(e, { resetForm }) {
         console.error(error);
     });
     if (!data.value.status) {
-        
+
         snackbar.add({
             type: "error",
             text: t(`api.error.${data.value.error}`, [t('product')]),
@@ -125,12 +125,18 @@ async function save(e, { resetForm }) {
             closeModal?.click()
             emit('getAll')
             emit('formId:reset', -1)
+
+            snackbar.add({
+                type: "success",
+                text: t('api.success', [t('product')]),
+            });
+            return
         }
 
         snackbar.add({
-                type: "success",
-                text: t('api.created', [t('product')]),
-            });
+            type: "success",
+            text: t('api.created', [t('product')]),
+        });
     }
 }
 

@@ -99,6 +99,7 @@ export default {
   },
 
   api: {
+    success: "{0} operation applied",
     created: "{0} Created",
     updated: "{0} Updated",
     deleted: "{0} Deleted",

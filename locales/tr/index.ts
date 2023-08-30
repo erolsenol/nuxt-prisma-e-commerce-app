@@ -98,6 +98,7 @@ export default {
   },
 
   api: {
+    success: "{0} işlemi yapıldı",
     created: "{0} Kaydedildi",
     updated: "{0} Güncellendi",
     deleted: "{0} Silindi",

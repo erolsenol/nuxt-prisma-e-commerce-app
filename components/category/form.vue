@@ -7,7 +7,7 @@ export default {
 <script setup>
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import { array, string,number, object } from 'yup';
+import { array, string, number, object } from 'yup';
 const emit = defineEmits(['getAll', 'formId:reset'])
 
 const snackbar = useSnackbar();
@@ -81,23 +81,26 @@ async function save(e, { resetForm }) {
             closeModal?.click()
             emit('getAll')
             emit('formId:reset', -1)
+
+            snackbar.add({
+                type: "success",
+                text: t('api.success', [t('category')]),
+            });
+            return
         }
-    }
-    if (data.value.error === "There is a category with the same name") {
+
         snackbar.add({
-            type: "error",
-            text: "Aynı isimle kategori bulunuyor",
+            type: "success",
+            text: t('api.created', [t('category')]),
         });
         return
     }
-    if (!data.value.status) {
-        console.log("Kategori Kaydedilemedi");
-        snackbar.add({
-            type: "error",
-            text: "Kategori Kaydedilemedi",
-        });
-        return
-    }
+
+    snackbar.add({
+        type: "error",
+        text: t(`api.error.${data.value.error}`, [t('category')]),
+    });
+    return
 
 }
 

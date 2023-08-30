@@ -81,23 +81,26 @@ async function save(e, { resetForm }) {
             closeModal?.click()
             emit('getAll')
             emit('formId:reset', -1)
+
+            snackbar.add({
+                type: "success",
+                text: t('api.success', [t('sub_category')]),
+            });
+            return
         }
-    }
-    if (data.value.error === "There is a category with the same name") {
+
         snackbar.add({
-            type: "error",
-            text: t('api.error.same_name', [t('category')]),
+            type: "success",
+            text: t('api.created', [t('sub_category')]),
         });
         return
     }
-    if (!data.value.status) {
-        console.log("Kategori Kaydedilemedi");
-        snackbar.add({
-            type: "error",
-            text: t('api.error.same_error', [t('category')]),
-        });
-        return
-    }
+
+    snackbar.add({
+        type: "error",
+        text: t(`api.error.${data.value.error}`, [t('sub_category')]),
+    });
+    return
 
 }
 
