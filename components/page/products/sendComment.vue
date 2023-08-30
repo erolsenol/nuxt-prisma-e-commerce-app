@@ -99,7 +99,7 @@ async function send() {
     <div class="container product-detail-comment">
         <div class="row mt-3">
             <div class="col-12">
-                {{ productId }}
+                
                 <div class="card">
                     <h5 class="card-header"> {{ $t('write_commet') }}</h5>
                     <div class="card-body">

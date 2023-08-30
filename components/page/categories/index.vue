@@ -10,9 +10,9 @@ const { $qs } = useNuxtApp()
 const route = useRoute()
 
 let loading = ref(true)
-let items = reactive([])
-let category = reactive(null)
-const filter = reactive({})
+let items = ref([])
+let category = ref(null)
+let filter = reactive({})
 let paginate = reactive({
   skip: 0,
   take: 5,
@@ -22,20 +22,31 @@ let paginate = reactive({
 })
 
 async function getCategory() {
+  console.log("route.query.id", route.query.id);
   const { data } = await useFetch("/api/category/" + route.query.id)
 
   if (data.value.status) {
-    category = data.value.data
-    await getAll()
+    category.value = data.value.data
+
   }
 }
 
-async function getAll() {
+watch(() => category.value, async (newVal) => {
+  console.log("new category", newVal)
+  await getAll(1, newVal.id)
+}, { deep: true })
+
+async function getAll(page, categoryId) {
+  if (Number.isInteger(page)) {
+    paginate.skip = paginate.take * (page - 1)
+  }
+
   const config = {
     params: {
       filter: {
         ...filter,
-        categoryId: category.id,
+        categoryId: categoryId,
+        // categoryId: category.id,
       },
       paginate
     },
@@ -46,14 +57,14 @@ async function getAll() {
   const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
 
   if (data.value.status) {
-    items = data.value.data
+    items.value = data.value.data
     paginate = data.value.paginate
-    nextTick(() => {
-      console.log("items", items)
-      console.log("paginate", paginate)
-      items = data.value.data
-      paginate = data.value.paginate
-    })
+    // nextTick(() => {
+    //   console.log("items", items)
+    //   console.log("paginate", paginate)
+    //   items = data.value.data
+    //   paginate = data.value.paginate
+    // })
   }
 
 
@@ -85,8 +96,10 @@ onMounted(() => {
     {{ items }}
     <template v-if="!loading">
       <div class="row">
-        <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content"
-          :name="item.name" v-for="(item, index) in items" :key="index" />
+        <template v-for="(item, index) in items" :key="index">
+          <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content"
+            :name="item.name" />
+        </template>
       </div>
 
       <PaginationPage v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />

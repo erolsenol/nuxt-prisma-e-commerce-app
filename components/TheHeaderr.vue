@@ -14,7 +14,7 @@ function langChange(lang) {
 }
 
 function pageChange(to, route = "", item) {
-   console.log("router", router);
+   
    if (route && item) {
       router.push({ path: `/${route}/${to}`, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
