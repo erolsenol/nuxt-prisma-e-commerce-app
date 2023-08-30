@@ -47,6 +47,14 @@ body {
       z-index: 1;
     }
   }
+
+  .pagination-page {
+    .pagination {
+      li {
+        margin: 0 10px;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 575px) {

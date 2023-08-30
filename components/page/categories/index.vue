@@ -15,7 +15,7 @@ let category = reactive(null)
 const filter = reactive({})
 let paginate = reactive({
   skip: 0,
-  take: 20,
+  take: 5,
   currentPage: 1,
   totalCount: 0,
   totalPage: 0,
@@ -47,7 +47,16 @@ async function getAll() {
 
   if (data.value.status) {
     items = data.value.data
+    paginate = data.value.paginate
+    nextTick(() => {
+      console.log("items", items)
+      console.log("paginate", paginate)
+      items = data.value.data
+      paginate = data.value.paginate
+    })
   }
+
+
 }
 
 watch(() => route.query.id, async (newVal) => {
@@ -74,10 +83,15 @@ onMounted(() => {
       </div>
     </div>
     {{ items }}
-    <div class="row" v-if="!loading">
-      <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content" :name="item.name"
-        v-for="(item, index) in items" :key="index" />
-    </div>
+    <template v-if="!loading">
+      <div class="row">
+        <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content"
+          :name="item.name" v-for="(item, index) in items" :key="index" />
+      </div>
+
+      <PaginationPage v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />
+    </template>
+
     <Loading v-else />
   </div>
 </template>
