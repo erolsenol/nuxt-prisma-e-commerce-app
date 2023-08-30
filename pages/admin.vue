@@ -88,13 +88,13 @@ const tabs = [
               </h2>
               <div id="collapseSubCategory" class="accordion-collapse collapse" data-bs-parent="#accordionSubCategory">
                 <div class="accordion-body">
-                  <SubCategoryForm type="create" :formId="-1" />
+                  <AdminSubCategoryForm type="create" :formId="-1" />
                 </div>
               </div>
             </div>
           </div>
           <h5 class="ps-1">{{ $t('sub_category') }} {{ $t('list') }}</h5>
-          <SubCategoryList />
+          <AdminSubCategoryList />
         </div>
         <div class="user" v-if="active == 3">
           <UserList />

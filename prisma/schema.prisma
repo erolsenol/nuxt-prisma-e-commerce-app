@@ -32,10 +32,10 @@ model User {
 model Product {
   id            Int          @id @unique @default(autoincrement())
   name          String       @unique @db.VarChar(255)
-  title         String       @db.VarChar(255)
-  content       String       @db.VarChar(255)
   name_en       String?      @db.VarChar(255)
+  title         String       @db.VarChar(255)
   title_en      String?      @db.VarChar(255)
+  content       String       @db.VarChar(255)
   content_en    String?      @db.VarChar(255)
   otherLangs    Json?
   deleted       Boolean?     @default(false)

@@ -15,19 +15,22 @@ const { $qs } = useNuxtApp()
 let items = ref([]);
 let innerValue = ref(-1);
 
-let { value } = defineProps({
+let props = defineProps({
     value: Number,
 })
 
 watch(() => innerValue.value, async (newVal) => {
     emit('value:update', newVal)
 }, { deep: true })
-watch(() => value, async (newVal) => {
-    emit('props.value', newVal)
-}, { deep: true })
+
+watch(() => props.value, async (newVal) => {
+    innerValue.value = newVal
+})
 
 onMounted(() => {
-    get()
+    setTimeout(() => {
+        get()
+    }, 150);
 });
 
 async function get() {

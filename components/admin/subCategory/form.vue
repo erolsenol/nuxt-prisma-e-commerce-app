@@ -76,6 +76,8 @@ async function save(e, { resetForm }) {
 
     if (data.value.status) {
         resetForm()
+        formData.value.categoryId = -1
+        formData.value.lowerSubCategoryId = -1
         if (props.type !== "create") {
             const closeModal = document.querySelector('#close-modal')
             closeModal?.click()
@@ -100,7 +102,7 @@ async function save(e, { resetForm }) {
         type: "error",
         text: t(`api.error.${data.value.error}`, [t('sub_category')]),
     });
-    return
+    return  
 
 }
 
@@ -120,7 +122,7 @@ async function get(id) {
     <div class="image-form">
         <Form @submit="save" :validation-schema="schema">
             <SelectCategory :value="formData.categoryId" @value:update="(e) => formData.categoryId = e" />
-            <SelectSubCategory :value="formData.lowerSubCategoryId"
+            <SelectSubCategory :categoryId="formData.categoryId" :value="formData.lowerSubCategoryId"
                 @value:update="(e) => formData.lowerSubCategoryId = e" />
             <div class="mb-3">
                 <label for="image-form-name" class="form-label">{{ $t('sub_category') }} {{ $t('name') }}</label>

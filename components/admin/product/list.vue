@@ -59,7 +59,7 @@ async function getAll(page) {
 
   const config = {
     params: {
-      ...paginate.value
+      paginate
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
@@ -161,7 +161,7 @@ function itemUpdate(val) {
 
     <div class="d-flex flex-row justify-content-between">
       <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('product') }} {{ $t('get') }}</button>
-      <Pagination :paginate="paginate" @page="getAll" />
+      <Pagination v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />
     </div>
 
     <nav v-if="false" class="d-flex flex-row align-items-center justify-content-end position-absolute bottom-10 end-0">

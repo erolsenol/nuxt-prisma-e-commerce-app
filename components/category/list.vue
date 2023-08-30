@@ -167,7 +167,7 @@ function tooltipText(arr) {
     </table>
     <div class="d-flex flex-row justify-content-between">
       <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('category_get') }}</button>
-      <Pagination :paginate="paginate" @page="getAll" />
+      <Pagination v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />
     </div>
 
     <div class="modal fade" id="categoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

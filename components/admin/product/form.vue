@@ -10,6 +10,7 @@ import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
 const emit = defineEmits(['update', 'get'])
 
+const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
@@ -110,7 +111,12 @@ async function save(e, { resetForm }) {
         body: bodyData,
     }).catch((error) => {
         console.error(error);
+        snackbar.add({
+            type: "error",
+            text: t(`api.error.same_error`, [t('product')]),
+        });
     });
+    console.log("data.value.status", data.value.status);
     if (!data.value.status) {
 
         snackbar.add({
@@ -120,6 +126,8 @@ async function save(e, { resetForm }) {
         return
     } else {
         resetForm()
+        formData.value.categoryId = -1
+        formData.value.subCategoryId = -1
         if (props.type !== "create") {
             const closeModal = document.querySelector('#close-modal')
             closeModal?.click()
@@ -189,9 +197,10 @@ async function removeImage(id) {
 <template>
     <div class="product-form">
         <Form @submit="save" :validation-schema="schema">
+            {{ formData.categoryId }}
             <SelectCategory :value="formData.categoryId" @value:update="(e) => formData.categoryId = e" />
-            <SelectSubCategory :value="formData.lowerSubCategoryId"
-                @value:update="(e) => formData.lowerSubCategoryId = e" />
+            <SelectSubCategory :categoryId="formData.categoryId" :value="formData.subCategoryId"
+                @value:update="(e) => formData.subCategoryId = e" />
             <div class="mb-3">
                 <label for="product-form-name" class="form-label">Ürün Adı</label>
                 <div class="input-group">
