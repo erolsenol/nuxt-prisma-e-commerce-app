@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "PageContact",
+  name: "PageAdmin",
   components: {
     pageEditAbout,
     pageEditContact,
@@ -124,6 +124,22 @@ const tabs = [
               </div>
             </template>
 
+            <div class="accordion-item mt-3">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                     data-bs-target="#collapsePageSiteGeneralSetting" aria-expanded="true"
+                    aria-controls="collapsePageSiteGeneralSetting">
+                    {{ $t(`page_general_setting`) }}
+                  </button>
+                </h2>
+                <div id="collapsePageSiteGeneralSetting" class="accordion-collapse collapse"
+                  data-bs-parent="#collapsePageSiteGeneralSetting">
+                  <div class="accordion-body">
+                   <AdminGeneralSiteSettings />
+                  </div>
+                </div>
+              </div>
+
             <!-- <div class="accordion-item mt-3">
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -152,7 +168,6 @@ const tabs = [
               <div id="collapsePageContact" class="accordion-collapse collapse" data-bs-parent="#accordionSiteSettings">
                 <div class="accordion-body">
                   <AdminContactus />
-
                 </div>
               </div>
             </div>

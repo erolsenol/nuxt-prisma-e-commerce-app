@@ -191,6 +191,8 @@ model Site {
   id          Int      @id @unique @default(autoincrement())
   headerLogo  String?  @db.VarChar(255)
   footerLogo  String?  @db.VarChar(255)
+  headerColor String?  @db.VarChar(255)
+  footerColor String?  @db.VarChar(255)
   mail        String?  @db.VarChar(255)
   phone       String?  @db.VarChar(255)
   address     String?  @db.VarChar(255)

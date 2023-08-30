@@ -69,11 +69,13 @@ export default {
   order: "Sıra",
   admin: "Yönetici",
 
+  page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",
   page_contact: "İletişim Sayfası",
-
-  page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_language: "Sayfa dili",
+  page_general_setting: "Genel Site Ayarları",
+  header_logo: "Üst logo",
+  footer_logo: "Alt logo",
 
   password_hint:
     "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
@@ -91,6 +93,7 @@ export default {
   },
   success: {
     user_created: "Kayıt başarılı",
+    image_saved:"Görsel Kaydedildi",
   },
 
   validation: {

@@ -70,11 +70,13 @@ export default {
   order: "Order",
   admin: "Admin",
 
+  page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",
   page_contact: "Contact Us Page",
-
-  page_valid_for_language: "This page is valid for english({0}) language",
   page_language: "Page Language",
+  page_general_setting: "Genel Site Ayarları",
+  header_logo: "Header logo",
+  footer_logo: "Footer logo",
 
   password_hint:
     "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.",
@@ -92,6 +94,7 @@ export default {
   },
   success: {
     user_created: "Registration successful",
+    image_saved: "Image Saved",
   },
 
   validation: {

@@ -25,6 +25,17 @@ export async function getImage(id: Number) {
   return response;
 }
 
+export async function getImageWhere(where) {
+  const response = await prisma.image.findUnique({
+    where: where,
+    include: {
+      product: true,
+      pageContent: true,
+    },
+  });
+  return response;
+}
+
 export async function getImageWithProductId(id) {
   const response = await prisma.image.findMany({
     where: {
