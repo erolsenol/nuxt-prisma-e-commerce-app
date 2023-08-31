@@ -42,13 +42,18 @@ export default {
   detail: "Detay",
   contact_us: "Bize Yazın",
   products: "Ürünler",
+  product: "Ürün",
   site_settings: "Site Ayarları",
   comments: "Yorumlar",
   users: "Kullanıcılar",
+  user: "Kullanıcı",
   sub_categories: "Alt Kategoriler",
   categories: "Kategoriler",
   category: "Kategori",
+  top_category: "Üst Kategori",
+  sub_category: "Alt Kategori",
   category_get: "Kategori Getir",
+  get: "Getir",
   update: "Güncelle",
   actions: "İşlemler",
   filters: "Filtreler",
@@ -59,13 +64,21 @@ export default {
   add: "Ekle",
   first: "İlk",
   last: "Son",
-  page:"Sayfa",
-
-  page_about: "Hakkımızda Sayfası",
-  page_contact: "İletişim Sayfası",
+  page: "Sayfa",
+  select: "Seçiniz",
+  order: "Sıra",
+  admin: "Yönetici",
+  site_phone: "Site Telefonu",
+  site_mail: "Site E-posta",
+  site_address: "Site Adres",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
+  page_about: "Hakkımızda Sayfası",
+  page_contact: "İletişim Sayfası",
   page_language: "Sayfa dili",
+  page_general_setting: "Genel Site Ayarları",
+  header_logo: "Üst logo",
+  footer_logo: "Alt logo",
 
   password_hint:
     "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
@@ -83,5 +96,25 @@ export default {
   },
   success: {
     user_created: "Kayıt başarılı",
+    image_saved: "Görsel Kaydedildi",
+  },
+
+  validation: {
+    passwords_must_match: "Şifreler aynı olmalıdır",
+  },
+
+  api: {
+    success: "{0} işlemi yapıldı",
+    created: "{0} Kaydedildi",
+    updated: "{0} Güncellendi",
+    deleted: "{0} Silindi",
+    republish: "{0} yayına alındı",
+    count_zero: "There are 0 {0}",
+
+    error: {
+      same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
+      same_name: "Aynı isimle {0} bulunuyor farklı bir isim deneyin",
+      image_not_found: "Görsel bulunamadı",
+    },
   },
 };

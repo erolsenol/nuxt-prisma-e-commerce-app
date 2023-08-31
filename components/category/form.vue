@@ -7,26 +7,28 @@ export default {
 <script setup>
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import { array, string, object } from 'yup';
-const emit = defineEmits(['getAll'])
+import { array, string, number, object } from 'yup';
+const emit = defineEmits(['getAll', 'formId:reset'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
 const schema = object().shape({
     name: string().required(),
-    name_en: string(),
-    description: string(),
-    description_en: string(),
+    name_en: string().required(),
+    description: string().nullable(true),
+    description_en: string().nullable(true),
+    subCategoryId: number().nullable(true),
+    categoryId: number().nullable(true),
 });
 
 const props = defineProps({
     type: String,
+    formId: Number,
     closeBtnStatus: {
         type: Boolean,
         default: () => false
     },
-    formId: Number,
 })
 let formData = ref({})
 
@@ -52,14 +54,13 @@ async function formClear() {
 
 }
 
-async function save(e) {
-    console.log("save", e);
+async function save(e, { resetForm }) {
 
     const bodyData = { ...formData.value }
 
     const keys = Object.keys(bodyData)
     keys.forEach(key => {
-        if (typeof bodyData[key] === "object") {
+        if (typeof bodyData[key] === "object" || bodyData[key] === -1) {
             delete bodyData[key]
         }
     })
@@ -74,28 +75,32 @@ async function save(e) {
     });
 
     if (data.value.status) {
-        formClear()
+        resetForm()
         if (props.type !== "create") {
             const closeModal = document.querySelector('#close-modal')
             closeModal?.click()
             emit('getAll')
+            emit('formId:reset', -1)
+
+            snackbar.add({
+                type: "success",
+                text: t('api.success', [t('category')]),
+            });
+            return
         }
-    }
-    if (data.value.error === "There is a category with the same name") {
+
         snackbar.add({
-            type: "error",
-            text: "Aynı isimle kategori bulunuyor",
+            type: "success",
+            text: t('api.created', [t('category')]),
         });
         return
     }
-    if (!data.value.status) {
-        console.log("Kategori Kaydedilemedi");
-        snackbar.add({
-            type: "error",
-            text: "Kategori Kaydedilemedi",
-        });
-        return
-    }
+
+    snackbar.add({
+        type: "error",
+        text: t(`api.error.${data.value.error}`, [t('category')]),
+    });
+    return
 
 }
 
@@ -109,7 +114,6 @@ async function get(id) {
         formData.value = data.value.data
     }
 }
-
 </script>
 
 <template>
@@ -120,27 +124,28 @@ async function get(id) {
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="name" v-model="formData.name" :disabled="disabled" type="text" class="form-control"
-                        id="image-form-name" rules="required" />
+                        id="image-form-name" />
                 </div>
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="name-en" v-model="formData.name_en" :disabled="disabled" type="text" class="form-control"
-                        id="image-form-name-en" rules="" />
+                    <Field name="name_en" v-model="formData.name_en" :disabled="disabled" type="text" class="form-control"
+                        id="image-form-name-en" />
                 </div>
+                <ErrorMessage class="invalid" name="name_en" />
             </div>
             <div class="mb-3">
                 <label for="image-form-description" class="form-label">{{ $t('category') }} {{ $t('description') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="description" rules="required" :disabled="disabled" v-model="formData.description"
-                        type="text" class="form-control" id="image-form-description" />
+                    <Field name="description" :disabled="disabled" v-model="formData.description" type="text"
+                        class="form-control" id="image-form-description" />
                 </div>
-                <ErrorMessage class="invalid" name="description" />
+
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
-                    <Field name="description-en" v-model="formData.description_en" :disabled="disabled" type="text"
-                        class="form-control" id="image-form-description-en" rules="" />
+                    <Field name="description_en" v-model="formData.description_en" :disabled="disabled" type="text"
+                        class="form-control" id="image-form-description-en" />
                 </div>
             </div>
             <hr class="hr" />

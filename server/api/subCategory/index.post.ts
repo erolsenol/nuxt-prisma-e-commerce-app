@@ -1,4 +1,4 @@
-import { postSubCategory, getSubCategoryByName } from "../../data/subCategories";
+import subCategories from "../../data/subCategories";
 
 export default defineEventHandler(async (event) => {
   let response = {
@@ -7,28 +7,23 @@ export default defineEventHandler(async (event) => {
   };
   const body = await readBody(event);
 
-  if (!body.name || !body.name_en || !body.categoryId) {
+  if (!body.name || !body.name_en) {
     response.error = "cannot be empty";
     return response;
   }
 
-  const nameCategory = await getSubCategoryByName(body.name);
+  const nameCategory = await subCategories.getByName(body.name);
   if (nameCategory.length > 0) {
-    response.error = "There is a category with the same name";
+    response.error = "same_name";
     return response;
   }
 
-  const subCategory = await postSubCategory({
-    name: body.name,
-    name_en: body.name_en,
-    categoryId: body.categoryId,
-    description: body.description,
-  });
+  console.log("category create body:",body);
+  const category = await subCategories.create(body);
 
-  if (subCategory?.id) {
-    response.data = subCategory;
+  if (category?.id) {
+    response.data = category;
     response.status = true;
-    return response;
   }
   return response;
 });

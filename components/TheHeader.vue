@@ -29,6 +29,10 @@ const headerItems = [
       to: null
    },
    {
+      text: "categories",
+      to: "categories"
+   },
+   {
       text: "services",
       to: null
    },

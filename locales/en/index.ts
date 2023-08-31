@@ -43,13 +43,18 @@ export default {
   detail: "Detail",
   contact_us: "Contact Us",
   products: "Products",
+  product: "Product",
   site_settings: "Site Settings",
   comments: "Comments",
   users: "Users",
+  user: "User",
   sub_categories: "Sub Categories",
   categories: "Categories",
   category: "Category",
+  top_category: "Top Category",
+  sub_category: "Sub Category",
   category_get: "Categories Get",
+  get: "Get",
   update: "Update",
   actions: "Actions",
   filters: "Filters",
@@ -60,13 +65,21 @@ export default {
   add: "Add",
   first: "First",
   last: "Last",
-  page:"Page",
-
-  page_about: "About Us Page",
-  page_contact: "Contact Us Page",
+  page: "Page",
+  select: "Select",
+  order: "Order",
+  admin: "Admin",
+  site_phone: "Site Phone",
+  site_mail: "Site E-mail",
+  site_address: "Site Address",
 
   page_valid_for_language: "This page is valid for english({0}) language",
+  page_about: "About Us Page",
+  page_contact: "Contact Us Page",
   page_language: "Page Language",
+  page_general_setting: "Genel Site Ayarları",
+  header_logo: "Header logo",
+  footer_logo: "Footer logo",
 
   password_hint:
     "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.",
@@ -84,5 +97,24 @@ export default {
   },
   success: {
     user_created: "Registration successful",
+    image_saved: "Image Saved",
+  },
+
+  validation: {
+    passwords_must_match: "Passwords must match",
+  },
+
+  api: {
+    success: "{0} operation applied",
+    created: "{0} Created",
+    updated: "{0} Updated",
+    deleted: "{0} Deleted",
+    republish: "{0} republish",
+
+    error: {
+      same_error: "Error occurred while performing {0} operation",
+      same_name: "There is a {0} with the same name, try a different name",
+      image_not_found: "image not found",
+    },
   },
 };

@@ -1,29 +1,28 @@
-import { postUser, getUserByEmail } from "../../data/users";
+import users from "../../data/users";
 
 export default defineEventHandler(async (event) => {
   let response = {
     data: null,
-    status: false
-  }
-  const body = await readBody(event)
+    status: false,
+  };
+  const body = await readBody(event);
 
   if (!body.username || !body.password || !body.email) {
-    response.error = "cannot be empty"
-    return response
+    response.error = "cannot be empty";
+    return response;
   }
 
-  const userEmail = await getUserByEmail(body.email)
-  if (userEmail && userEmail.id) {
-    response.error = "email address is already registered"
-    return response
+  const userEmail = await users.getByEmail(body.email);
+  if (userEmail) {
+    response.error = "same_name";
+    return response;
   }
+  
+  const user = await users.create(body);
 
-  const user = await postUser(body)
-
-  if (user.id) {
-    response.data = user
-    response.status = true
+  if (user?.id) {
+    response.data = user;
+    response.status = true;
   }
-
-  return response
+  return response;
 });

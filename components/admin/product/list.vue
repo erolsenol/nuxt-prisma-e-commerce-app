@@ -10,9 +10,12 @@ const { $qs, $helper } = useNuxtApp()
 
 const rows = ref([])
 const loading = ref(true)
-const paginate = ref({
+let paginate = reactive({
   skip: 0,
-  take: 4,
+  take: 20,
+  currentPage: 1,
+  totalCount: 0,
+  totalPage: 0,
 })
 const total = ref({
   count: 0,
@@ -49,10 +52,14 @@ function getPage(page) {
 }
 
 
-async function getAll() {
+async function getAll(page) {
+  if (Number.isInteger(page)) {
+    paginate.skip = paginate.take * (page - 1)
+  }
+
   const config = {
     params: {
-      ...paginate.value
+      paginate
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
@@ -116,14 +123,15 @@ function itemUpdate(val) {
 
 <template>
   <div class="product-list position-relative mb-5">
+    <button @click="getAll" class="btn btn-primary" >{{ $t('product') }} {{ $t('get') }}</button>
     <table class="table table-hover table-striped" v-if="!loading">
       <thead>
         <tr class="table-light">
           <th scope="col">Id</th>
-          <th scope="col">İsim</th>
-          <th scope="col">Başlık</th>
-          <th scope="col">İçerik</th>
-          <th scope="col">Aksiyon</th>
+          <th scope="col">{{ $t('name') }}</th>
+          <th scope="col">{{ $t('title') }}</th>
+          <th scope="col">{{ $t('content') }}</th>
+          <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -150,7 +158,13 @@ function itemUpdate(val) {
       </tbody>
     </table>
     <Loading v-else />
-    <nav class="d-flex flex-row align-items-center justify-content-end position-absolute bottom-10 end-0">
+
+    <div class="d-flex flex-row justify-content-between">
+      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('product') }} {{ $t('get') }}</button>
+      <Pagination v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />
+    </div>
+
+    <nav v-if="false" class="d-flex flex-row align-items-center justify-content-end position-absolute bottom-10 end-0">
       <ul class="pagination mb-0 me-5">
         <li class="page-item">
           <a class="page-link" aria-label="Previous" @click="getPage(1)">
@@ -190,7 +204,8 @@ function itemUpdate(val) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <AdminProductForm type="update" @update="itemUpdate" @get="get" :form="formData" :formId="formId" />
+            <AdminProductForm type="update" @update="itemUpdate" @getAll="getAll" @get="get" :form="formData" :formId="formId"
+            @formId:reset="(e) => formId = e" />
           </div>
         </div>
       </div>

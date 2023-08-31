@@ -1,3 +1,5 @@
+
+
 export const useFoo = () => {
   const nuxtApp = useNuxtApp();
 
@@ -6,3 +8,4 @@ export const useFoo = () => {
   };
   // return useState('foo', () => 'bar 111')
 };
+

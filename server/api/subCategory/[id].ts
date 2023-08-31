@@ -1,10 +1,12 @@
-import { getSubCategory } from "../../data/subCategories";
+import subCategories from "../../data/subCategories";
 
 export default defineEventHandler(
   async (event) => {
     let response = {
       status: false
     }
+
+    console.log("event.context",event.context);
     const id: Number = parseInt(event.context.params.id) as number
 
     if (!id) {
@@ -12,10 +14,10 @@ export default defineEventHandler(
       return response
     }
 
-    const subCategory = await getSubCategory(id)
+    const category = await subCategories.remove(id)
 
-    if (subCategory && subCategory.id) {
-      response.data = subCategory
+    if (category && category.id) {
+      response.data = category
       response.status = true
       return response
     }

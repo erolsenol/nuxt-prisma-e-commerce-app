@@ -26,16 +26,16 @@ model User {
   comments  Comment[]
   star      Star[]
   question  Question[]
-  ContactUs ContactUs[]
+  contactUs ContactUs[]
 }
 
 model Product {
   id            Int          @id @unique @default(autoincrement())
   name          String       @unique @db.VarChar(255)
-  title         String       @db.VarChar(255)
-  content       String       @db.VarChar(255)
   name_en       String?      @db.VarChar(255)
+  title         String       @db.VarChar(255)
   title_en      String?      @db.VarChar(255)
+  content       String       @db.VarChar(255)
   content_en    String?      @db.VarChar(255)
   otherLangs    Json?
   deleted       Boolean?     @default(false)
@@ -43,6 +43,8 @@ model Product {
   updatedAt     DateTime     @updatedAt
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
   subCategoryId Int?
+  category      Category?    @relation(fields: [categoryId], references: [id])
+  categoryId    Int?
   tags          Json?
   images        Image[]
   comments      Comment[]
@@ -80,25 +82,31 @@ model Category {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   subCategory    SubCategory[]
+  product        Product[]
 }
 
 model SubCategory {
-  id          Int       @id @unique @default(autoincrement())
-  name        String    @unique @db.VarChar(255)
-  name_en     String    @unique @db.VarChar(255)
-  description String    @db.VarChar(255)
-  deleted     Boolean?  @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  category    Category  @relation(fields: [categoryId], references: [id])
-  categoryId  Int
-  product     Product[]
+  id                 Int           @id @unique @default(autoincrement())
+  name               String        @unique @db.VarChar(255)
+  name_en            String?       @db.VarChar(255)
+  description        String?       @db.VarChar(255)
+  description_en     String?       @db.VarChar(255)
+  deleted            Boolean?      @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  category           Category?     @relation(fields: [categoryId], references: [id])
+  categoryId         Int?
+  lowerSubCategoryId Int?
+  topSubCategory     SubCategory?  @relation("topLowSubCategories", fields: [lowerSubCategoryId], references: [id])
+  lowerSubCategories SubCategory[] @relation("topLowSubCategories")
+  product            Product[]
 }
 
 model Image {
   id            Int          @id @unique @default(autoincrement())
   path          String       @db.VarChar(255)
   name          String       @unique @db.VarChar(255)
+  ownerName     String?      @db.VarChar(255)
   deleted       Boolean?     @default(false)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -181,19 +189,26 @@ model Minislider {
 }
 
 model Site {
-  id          Int      @id @unique @default(autoincrement())
-  headerLogo  String?  @db.VarChar(255)
-  footerLogo  String?  @db.VarChar(255)
-  mail        String?  @db.VarChar(255)
-  phone       String?  @db.VarChar(255)
-  address     String?  @db.VarChar(255)
-  footerText  String?  @db.VarChar(255)
-  aboutUsText String?  @db.VarChar(1500)
-  footerJson  Json?
-  headerJson  Json?
-  point       Int?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              Int      @id @unique @default(autoincrement())
+  headerLogo      String?  @db.VarChar(255)
+  footerLogo      String?  @db.VarChar(255)
+  headerBgColor   String?  @db.VarChar(255)
+  footerBgColor   String?  @db.VarChar(255)
+  headerFontColor String?  @db.VarChar(255)
+  footerFontColor String?  @db.VarChar(255)
+  mail            String?  @db.VarChar(255)
+  mail_en         String?  @db.VarChar(255)
+  phone           String?  @db.VarChar(255)
+  phone_en        String?  @db.VarChar(255)
+  address         String?  @db.VarChar(255)
+  address_en      String?  @db.VarChar(255)
+  footerText      String?  @db.VarChar(255)
+  aboutUsText     String?  @db.VarChar(1500)
+  footerJson      Json?
+  headerJson      Json?
+  point           Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   pageAbout Json?
 }

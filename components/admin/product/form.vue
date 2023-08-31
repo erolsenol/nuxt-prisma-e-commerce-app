@@ -10,6 +10,7 @@ import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
 const emit = defineEmits(['update', 'get'])
 
+const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
@@ -31,6 +32,10 @@ watch(() => props.formId, async (newVal) => {
         console.log("watch formId:", newVal);
         await get(newVal)
     }
+})
+
+const disabled = computed(() => {
+    return ['delete', 'show'].includes(props.type)
 })
 
 const imageNames = ref([])
@@ -87,32 +92,60 @@ async function onFileChange(e) {
 
 }
 
-async function save(event) {
+async function save(e, { resetForm }) {
     console.log("save");
 
     const bodyData = { ...formData.value }
 
     const keys = Object.keys(bodyData)
     keys.forEach(key => {
-        if (typeof bodyData[key] === "object") {
+        if (typeof bodyData[key] === "object" || bodyData[key] === -1) {
             delete bodyData[key]
         }
     })
+
+    const method = props.type == "create" ? "post" : props.type == "update" ? 'put' : props.type == "delete" ? 'delete' : ''
+
     const { data, pending, error, refresh } = await useFetch("/api/product", {
-        method: "put",
+        method: method,
         body: bodyData,
     }).catch((error) => {
         console.error(error);
-    });
-    if (!data.value.status) {
-        console.log("Ürün Kaydedilemedi");
         snackbar.add({
             type: "error",
-            text: "Ürün Kaydedilemedi",
+            text: t(`api.error.same_error`, [t('product')]),
+        });
+    });
+    console.log("data.value.status", data.value.status);
+    if (!data.value.status) {
+
+        snackbar.add({
+            type: "error",
+            text: t(`api.error.${data.value.error}`, [t('product')]),
         });
         return
+    } else {
+        resetForm()
+        formData.value.categoryId = -1
+        formData.value.subCategoryId = -1
+        if (props.type !== "create") {
+            const closeModal = document.querySelector('#close-modal')
+            closeModal?.click()
+            emit('getAll')
+            emit('formId:reset', -1)
+
+            snackbar.add({
+                type: "success",
+                text: t('api.success', [t('product')]),
+            });
+            return
+        }
+
+        snackbar.add({
+            type: "success",
+            text: t('api.created', [t('product')]),
+        });
     }
-    formData.value = data.value.data
 }
 
 async function get(id) {
@@ -164,6 +197,10 @@ async function removeImage(id) {
 <template>
     <div class="product-form">
         <Form @submit="save" :validation-schema="schema">
+            {{ formData.categoryId }}
+            <SelectCategory :value="formData.categoryId" @value:update="(e) => formData.categoryId = e" />
+            <SelectSubCategory :categoryId="formData.categoryId" :value="formData.subCategoryId"
+                @value:update="(e) => formData.subCategoryId = e" />
             <div class="mb-3">
                 <label for="product-form-name" class="form-label">Ürün Adı</label>
                 <div class="input-group">
@@ -243,7 +280,8 @@ async function removeImage(id) {
             <hr class="hr" />
             <div class="product-form-footer d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Kaydet</button>
-                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productFormModal">Kapat</button>
+                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal"
+                    data-bs-target="#productFormModal">{{ $t('close') }}</button>
             </div>
 
         </Form>

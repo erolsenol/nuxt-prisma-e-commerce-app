@@ -19,13 +19,14 @@ interface interfaceProduct {
   // comments:  Comment[]
 }
 
-export async function getProducts({
-  skip = 0,
-  take = 20,
-}): Promise<interfaceGetProducts[]> {
+export async function getProducts({ skip = 0, take = 20 }, where = {}): Promise<interfaceGetProducts[]> {
   const response = await prisma.product.findMany({
     skip,
     take,
+    where: {
+      deleted: false,
+      ...where
+    },
     include: {
       images: true,
       comments: true,
@@ -109,13 +110,19 @@ export async function countProduct(where: Object) {
   return deleteProduct
 }
 
-export async function createManyProduct() {
-  return await prisma.product.createMany({
-    data: [
-      { firstName: "test1", lastName: "last1" },
-      { firstName: "test2", lastName: "last2" },
-      { firstName: "test3", lastName: "last3" },
-    ],
-    skipDuplicates: true, // Skip 'Bobo'
+export async function getProductsByCategory({
+  skip = 0,
+  take = 20,
+}): Promise<interfaceGetProducts[]> {
+  const response = await prisma.product.findMany({
+    skip,
+    take,
+    include: {
+      images: true,
+      comments: true,
+      star: true,
+      question: true,
+    },
   });
+  return response;
 }
