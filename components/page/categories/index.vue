@@ -93,13 +93,16 @@ onMounted(() => {
         <!-- filter -->
       </div>
     </div>
-    {{ items }}
     <template v-if="!loading">
       <div class="row">
         <template v-for="(item, index) in items" :key="index">
           <PageProductsItem :id="item.id" :images="item.images" :title="item.title" :content="item.content"
             :name="item.name" />
         </template>
+      </div>
+
+      <div class="text-center fs-5 my-5" v-if="items.length == 0">
+        {{ $t('no_found_products_this_category') }}
       </div>
 
       <PaginationPage v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />

@@ -7,7 +7,9 @@ const { $bootstrap } = useNuxtApp()
 <template>
   <!-- <el-config-provider :size="elConfig.size" :z-index="elConfig.zIndex" :locale="locale"> -->
   <NuxtLayout>
+
     <router-view></router-view>
+    
     <NuxtSnackbar />
     <SeoKit />
   </NuxtLayout>

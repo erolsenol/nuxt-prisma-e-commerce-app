@@ -70,24 +70,13 @@ async function onFileChange(e) {
     if (props.type == 'update') {
         id = formData.value.id
     }
+    images.value = []
 
     for (let index = 0; index < files.length; index++) {
         const file = files[index];
         const imageData = await fileToBase64(file)
-        const { data } = await useFetch("/api/image", {
-            method: "post",
-            body: {
-                ownerName: "productId",
-                ownerId: id,
-                images: [imageData]
-            },
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
+        images.value.push(imageData)
 
-    if (props.type == 'update') {
-        get(id)
     }
 
 }
@@ -125,26 +114,49 @@ async function save(e, { resetForm }) {
         });
         return
     } else {
-        resetForm()
-        formData.value.categoryId = -1
-        formData.value.subCategoryId = -1
-        if (props.type !== "create") {
-            const closeModal = document.querySelector('#close-modal')
-            closeModal?.click()
-            emit('getAll')
-            emit('formId:reset', -1)
+
+        const { imageData = data } = await useFetch("/api/image", {
+            method: "post",
+            body: {
+                ownerName: "productId",
+                ownerId: data.value.data.id,
+                images: images.value
+            },
+        }).catch((error) => {
+            console.error(error);
+        });
+
+        if (imageData.value.status) {
+            if (props.type == 'update') {
+                get(id)
+            }
+
+            resetForm()
+            formData.value.categoryId = -1
+            formData.value.subCategoryId = -1
+            if (props.type !== "create") {
+                const closeModal = document.querySelector('#close-modal')
+                closeModal?.click()
+                emit('getAll')
+                emit('formId:reset', -1)
+
+                snackbar.add({
+                    type: "success",
+                    text: t('api.success', [t('product')]),
+                });
+                return
+            }
 
             snackbar.add({
                 type: "success",
-                text: t('api.success', [t('product')]),
+                text: t('api.created', [t('product')]),
             });
-            return
+        } else {
+            snackbar.add({
+                type: "error",
+                text: t('api.error.same_error', [t('image')]),
+            });
         }
-
-        snackbar.add({
-            type: "success",
-            text: t('api.created', [t('product')]),
-        });
     }
 }
 

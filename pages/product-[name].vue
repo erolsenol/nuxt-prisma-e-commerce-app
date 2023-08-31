@@ -169,9 +169,9 @@ async function getStar() {
 .product-detail-image {
   img {
     display: block;
-    max-width: 40rem;
-    max-height: 30rem;
-    width: auto;
+    // max-width: 40rem;
+    // max-height: 30rem;
+    width: 100%;
     height: auto;
   }
 }

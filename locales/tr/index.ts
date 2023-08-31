@@ -30,6 +30,7 @@ export default {
   write_commet: "Yorum yaz",
   upload: "Yükle",
   image_name: "Görsel adı",
+  image:"Görsel",
   fill_form_completely: "Formu eksiksiz doldurunuz",
   product_add: "Ürün Ekle",
   product_name: "Ürün Adı",
@@ -71,6 +72,9 @@ export default {
   site_phone: "Site Telefonu",
   site_mail: "Site E-posta",
   site_address: "Site Adres",
+  search: "Arama",
+  search_btn: "Ara",
+  search_product_brand_category:"Ürün, Marka ve Kategori Ara",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",
@@ -79,6 +83,7 @@ export default {
   page_general_setting: "Genel Site Ayarları",
   header_logo: "Üst logo",
   footer_logo: "Alt logo",
+  no_found_products_this_category: "Bu kategoride ürün bulunamadı",
 
   password_hint:
     "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",

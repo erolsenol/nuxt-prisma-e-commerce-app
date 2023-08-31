@@ -31,6 +31,7 @@ export default {
   write_commet: "Write a comment",
   upload: "Upload",
   image_name: "Image name",
+  image: "Image",
   fill_form_completely: "Fill out the form completely",
   product_add: "Product Add",
   product_name: "Product Name",
@@ -72,6 +73,9 @@ export default {
   site_phone: "Site Phone",
   site_mail: "Site E-mail",
   site_address: "Site Address",
+  search: "Search",
+  search_btn: "Search",
+  search_product_brand_category: "Search by Product, Brand and Category",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",
@@ -80,6 +84,7 @@ export default {
   page_general_setting: "Genel Site Ayarları",
   header_logo: "Header logo",
   footer_logo: "Footer logo",
+  no_found_products_this_category: "No products found in this category",
 
   password_hint:
     "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.",

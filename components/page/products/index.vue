@@ -12,7 +12,7 @@ const { $qs } = useNuxtApp()
 // the name must match template ref value
 let paginate = reactive({
   skip: 0,
-  take: 5,
+  take: 20,
   currentPage: 1,
   totalCount: 0,
   totalPage: 0,
@@ -57,10 +57,17 @@ async function getAll(page) {
 
 <template>
   <div class="product">
-    <div class="row">
+    <div class="row mt-3 mb-2">
       <div class="col product-filter p-2 px-3 mb-2">
-        <!-- filter -->
-      </div>  
+        <div class="input-group input-search mb-3">
+          <span class="input-group-text p-2" id="product-search">
+            <Icon name="el:search" size="26" />
+          </span>
+          <input type="text" class="form-control" :placeholder="$t('search_product_brand_category')" aria-label="Search"
+            aria-describedby="product-search">
+            <button class="input-group-text btn btn-secondary px-4">{{$t('search_btn')}}</button>
+        </div>
+      </div>
     </div>
 
     <template v-if="!loading">
@@ -75,3 +82,12 @@ async function getAll(page) {
     <Loading v-else />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.input-search {
+  width: 32rem;
+  @media screen and (max-width: 575px) {
+    width: 28rem;
+}
+}
+</style>
