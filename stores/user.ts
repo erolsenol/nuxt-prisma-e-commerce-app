@@ -19,8 +19,8 @@ export const useUser = defineStore('user', {
         getHasLogin: (state) => state.has_login,
     },
     actions: {
-        login(user: Object) {
-            this.user = user
+        login(data: Object) {
+            this.user = data
             this.has_login = true
             // set("user", this.user)
             // set("has_login", this.has_login)
