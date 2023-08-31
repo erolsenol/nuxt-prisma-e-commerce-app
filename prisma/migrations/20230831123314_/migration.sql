@@ -15,6 +15,7 @@ CREATE TABLE `User` (
 
     UNIQUE INDEX `User_id_key`(`id`),
     UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_email_username_key`(`email`, `username`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -22,10 +23,10 @@ CREATE TABLE `User` (
 CREATE TABLE `Product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `title` VARCHAR(255) NOT NULL,
-    `content` VARCHAR(255) NOT NULL,
     `name_en` VARCHAR(255) NULL,
+    `title` VARCHAR(255) NOT NULL,
     `title_en` VARCHAR(255) NULL,
+    `content` VARCHAR(255) NOT NULL,
     `content_en` VARCHAR(255) NULL,
     `otherLangs` JSON NULL,
     `deleted` BOOLEAN NULL DEFAULT false,
@@ -37,6 +38,7 @@ CREATE TABLE `Product` (
 
     UNIQUE INDEX `Product_id_key`(`id`),
     UNIQUE INDEX `Product_name_key`(`name`),
+    INDEX `Product_categoryId_subCategoryId_idx`(`categoryId`, `subCategoryId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -103,6 +105,7 @@ CREATE TABLE `Image` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `path` VARCHAR(255) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
+    `ownerName` VARCHAR(255) NULL,
     `deleted` BOOLEAN NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -205,9 +208,16 @@ CREATE TABLE `Site` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `headerLogo` VARCHAR(255) NULL,
     `footerLogo` VARCHAR(255) NULL,
+    `headerBgColor` VARCHAR(255) NULL,
+    `footerBgColor` VARCHAR(255) NULL,
+    `headerFontColor` VARCHAR(255) NULL,
+    `footerFontColor` VARCHAR(255) NULL,
     `mail` VARCHAR(255) NULL,
+    `mail_en` VARCHAR(255) NULL,
     `phone` VARCHAR(255) NULL,
+    `phone_en` VARCHAR(255) NULL,
     `address` VARCHAR(255) NULL,
+    `address_en` VARCHAR(255) NULL,
     `footerText` VARCHAR(255) NULL,
     `aboutUsText` VARCHAR(1500) NULL,
     `footerJson` JSON NULL,

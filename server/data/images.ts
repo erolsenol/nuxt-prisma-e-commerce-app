@@ -101,14 +101,3 @@ export async function deleteImage(id) {
 
   return deleteImage
 }
-
-export async function createManyImage() {
-  return await prisma.image.createMany({
-    data: [
-      { firstName: "test1", lastName: "last1" },
-      { firstName: "test2", lastName: "last2" },
-      { firstName: "test3", lastName: "last3" },
-    ],
-    skipDuplicates: true, // Skip 'Bobo'
-  });
-}

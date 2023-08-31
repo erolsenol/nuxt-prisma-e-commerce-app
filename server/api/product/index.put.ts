@@ -1,5 +1,4 @@
 import { updateProduct, getProduct } from "../../data/products";
-import { postImage } from "../../data/images";
 
 export default defineEventHandler(async (event) => {
   let response = {
