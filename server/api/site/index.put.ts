@@ -1,4 +1,4 @@
-import categories from "../../data/categories";
+import sites from "../../data/sites";
 
 interface response {
   data?: Object;
@@ -13,17 +13,27 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody(event);
 
-  if (!body.id || !body.name) {
-    response.error = "cannot be empty";
-    return response;
-  }
-
-  const data = body;
-  const res = await categories.update(data.id, data);
-
-  if (res.id) {
-    response.data = res;
-    response.status = true;
+  if (!body.id) {
+    const site = await sites.create(body);
+    if (site && site.id) {
+      response.data = site;
+      response.status = true;
+    } else {
+      response.error = "site_info_not_created";
+    }
+  } else {
+    const oldSite = await sites.get(body.id);
+    if (oldSite && oldSite.id) {
+      const update = await sites.update(oldSite.id, { ...oldSite, ...body });
+      if (update && update.id) {
+        response.data = update;
+        response.status = true;
+      } else {
+        response.error = "site_info_update_error";
+      }
+    } else {
+      response.error = "site_info_get_error";
+    }
   }
 
   return response;

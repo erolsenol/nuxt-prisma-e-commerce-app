@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  // relationMode = "prisma"
 }
 
 model User {
@@ -27,6 +28,13 @@ model User {
   star      Star[]
   question  Question[]
   contactUs ContactUs[]
+
+  @@unique([email, username])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Product {
@@ -50,6 +58,8 @@ model Product {
   comments      Comment[]
   star          Star[]
   question      Question[]
+
+  @@index([categoryId, subCategoryId])
 }
 
 model Star {

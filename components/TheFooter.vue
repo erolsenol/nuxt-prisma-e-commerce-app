@@ -9,11 +9,22 @@ const { locale } = useI18n()
 const router = useRouter()
 
 let footerLogo = ref({})
-const categories = ref([])
+let site = ref({})
+let categories = ref([])
 
 function pageChange(to) {
    router.push({ name: `${to}___${locale.value}` })
 }
+
+// const phone = computed(() => {
+//     return site.value[`phone${locale.value !== 'tr' ? `_${locale.value}` : ''}`]
+// })
+// const mail = computed(() => {
+//     return site.value[`mail${locale.value !== 'tr' ? `_${locale.value}` : ''}`]
+// })
+// const address = computed(() => {
+//     return site.value[`address${locale.value !== 'tr' ? `_${locale.value}` : ''}`]
+// })
 
 async function getFooterLogo() {
    const config = {
@@ -21,12 +32,26 @@ async function getFooterLogo() {
       params: {
          ownerName: "footerLogo"
       },
-      paramsSerializer: (params) => qs.stringify(params, { encode: false })
+      paramsSerializer: (params) => $qs.stringify(params, { encode: false })
    };
    const { data } = await useFetch("/api/image", config)
    if (data.value.status) {
       footerLogo.value = data.value.data
    }
+}
+async function getFooterText(){
+   const config = {
+        method: "get",
+        params: {
+          id: "1",
+        },
+        paramsSerializer: (params) => $qs.stringify(params, { encode: false }),
+      };
+
+      const response = await useFetch("/api/site", config);
+      if(response.data.status) {
+         site.value = response.data.data
+      }
 }
 async function getCategory() {
    const config = {
@@ -48,6 +73,7 @@ onMounted(() => {
    setTimeout(async () => {
       getCategory()
       getFooterLogo()
+      getFooterText()
    }, 100);
 });
 

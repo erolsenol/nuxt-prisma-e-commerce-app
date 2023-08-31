@@ -1,4 +1,4 @@
-import categories from "../../data/categories";
+import sites from "../../data/sites";
 
 export default defineEventHandler(async (event) => {
   let response: response = {
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  const res = await categories.remove(body.id, !body.deleted);
+  const res = await sites.remove(body.id, !body.deleted);
 
   if (res) {
     response.data = res;

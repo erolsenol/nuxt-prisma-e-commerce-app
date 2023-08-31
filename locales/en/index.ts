@@ -115,6 +115,9 @@ export default {
       same_error: "Error occurred while performing {0} operation",
       same_name: "There is a {0} with the same name, try a different name",
       image_not_found: "image not found",
+      site_info_not_created: "Error creating site information",
+      site_info_get_error: "Error fetching site information",
+      site_info_update_error: "Error updating site information",
     },
   },
 };

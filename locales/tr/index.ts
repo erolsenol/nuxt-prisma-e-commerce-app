@@ -115,6 +115,9 @@ export default {
       same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
       same_name: "Aynı isimle {0} bulunuyor farklı bir isim deneyin",
       image_not_found: "Görsel bulunamadı",
+      site_info_not_created: "Site bilgileri oluşturulurken hata oluştu",
+      site_info_get_error: "Site bilgileri getirilirken hata oluştu",
+      site_info_update_error: "Site bilgileri güncellenirken hata oluştu",
     },
   },
 };

@@ -1,61 +1,34 @@
-import categories from "../../data/categories";
+import sites from "../../data/sites";
 
 interface response {
-  data: Object[],
-  paginate: Object,
-  status: Boolean
+  data: Object[];
+  paginate: Object;
+  status: Boolean;
 }
 interface paginate {
-  take: Number,
-  skip: Number
+  take: Number;
+  skip: Number;
 }
 
 export default defineEventHandler(async (event) => {
   let response: response = {
-    status: false
-  }
+    status: false,
+  };
 
-  const { paginate = "", all = "0", filter = "" } = getQuery(event)
+  const query = getQuery(event);
 
-  let allItems = all == "1"
+  const id = Number(query.id);
 
-  let filterObj = {}, paginateObj = {}
+  console.log("query", query);
+  console.log("id", id);
 
-  if (filter) {
-    filterObj = JSON.parse(filter)
-  }
-  if (paginate) {
-    paginateObj = JSON.parse(paginate)
-  }
-  if (allItems) {
-    paginateObj.take = 9999
-  }
-
-  const where: any = {}
-  const keys = Object.keys(filterObj)
-  keys.forEach(key => {
-    if (filterObj[key]) {
-      where[key] = filterObj[key]
+  if (id) {
+    const site = await sites.getAll({}, { id });
+    if (site && site.length > 0) {
+      response.data = site[0];
+      response.status = true;
     }
-  })
-
-  const items = await categories.getAll(paginateObj, where)
-
-  let total = await categories.count(where)
-  const currentPage = (paginateObj.skip / paginateObj.take) + 1
-
-  if (items) {
-    response.data = items
-    response.paginate = {
-      totalPage: Math.ceil(total / paginateObj.take),
-      currentPage: currentPage,
-      totalCount: total,
-      take: paginateObj.take,
-      skip: paginateObj.skip
-    }
-
-    response.status = true
-    return response
   }
-  return response
+
+  return response;
 });

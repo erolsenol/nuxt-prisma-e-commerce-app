@@ -1,4 +1,4 @@
-import categories from "../../data/categories";
+import sites from "../../data/sites";
 
 export default defineEventHandler(async (event) => {
   let response = {
@@ -12,14 +12,14 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  const nameCategory = await categories.getByName(body.name);
+  const nameCategory = await sites.getByName(body.name);
   if (nameCategory.length > 0) {
     response.error = "same_name";
     return response;
   }
 
   console.log("category create body:",body);
-  const category = await categories.create(body);
+  const category = await sites.create(body);
 
   if (category?.id) {
     response.data = category;

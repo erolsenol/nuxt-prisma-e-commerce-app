@@ -15,8 +15,8 @@ const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
 const schema = object().shape({
-    mail: string().required(),
-    mail_en: string().nullable(true),
+    mail: string().email().required(),
+    mail_en: string().email().nullable(true),
     phone: string().required(),
     phone_en: string().nullable(true),
     address: string().required(),
@@ -49,6 +49,7 @@ async function getLogos() {
 onMounted(() => {
     setTimeout(async () => {
         getLogos()
+        get()
     }, 100);
 });
 
@@ -103,53 +104,40 @@ async function save(e, { resetForm }) {
 
     const bodyData = { ...formData.value }
 
-    const keys = Object.keys(bodyData)
-    keys.forEach(key => {
-        if (typeof bodyData[key] === "object" || bodyData[key] === -1) {
-            delete bodyData[key]
-        }
-    })
-
-    const { data, pending, error, refresh } = await useFetch("/api/product", {
+    const { data, pending, error, refresh } = await useFetch("/api/site", {
         method: "put",
         body: bodyData,
     }).catch((error) => {
         console.error(error);
         snackbar.add({
             type: "error",
-            text: t(`api.error.same_error`, [t('product')]),
+            text: t(`api.error.same_error`, [t('site_settings')]),
         });
     });
-    console.log("data.value.status", data.value.status);
-    if (!data.value.status) {
 
+    if (data.value.status) {
         snackbar.add({
-            type: "error",
-            text: t(`api.error.${data.value.error}`, [t('page_general_setting')]),
+            type: "success",
+            text: t('api.success', [t('site_settings')]),
         });
         return
     } else {
-        resetForm()
-        formData.value.categoryId = -1
-        formData.value.subCategoryId = -1
-        if (props.type !== "create") {
-
-            snackbar.add({
-                type: "success",
-                text: t('api.success', [t('page_general_setting')]),
-            });
-            return
-        }
-
         snackbar.add({
             type: "success",
-            text: t('api.created', [t('page_general_setting')]),
+            text: t(`api.error.${data.value.error}`, [t('site_settings')]),
         });
     }
 }
 
 async function get(id) {
-    const { data } = await useFetch("/api/product/" + id);
+    const config = {
+        params: {
+            id: "1"
+        },
+        paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+    };
+
+    const { data } = await useFetch("/api/site", config);
     if (!data.value) return
 
     if (data.value.status) {
@@ -191,13 +179,13 @@ async function get(id) {
             </div>
             <hr class="hr" />
             <div class="mb-3">
-                <label for="site-mail" class="form-label">{{ $t('site_phone') }}</label>
+                <label for="site-mail" class="form-label">{{ $t('site_mail') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="site-mail" rules="required" v-model="formData.mail" type="text" class="form-control"
+                    <Field name="mail" rules="required" v-model="formData.mail" type="text" class="form-control"
                         id="site-mail" />
                 </div>
-                <ErrorMessage class="invalid" name="site-mail" />
+                <ErrorMessage class="invalid" name="mail" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
                     <Field name="site-mail-en" v-model="formData.mail_en" type="text" class="form-control"
@@ -209,10 +197,10 @@ async function get(id) {
                 <label for="site-phone" class="form-label">{{ $t('site_phone') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="site-phone" rules="required" v-model="formData.phone" type="text" class="form-control"
+                    <Field name="phone" rules="required" v-model="formData.phone" type="text" class="form-control"
                         id="site-phone" />
                 </div>
-                <ErrorMessage class="invalid" name="site-phone" />
+                <ErrorMessage class="invalid" name="phone" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
                     <Field name="site-phone-en" v-model="formData.phone_en" type="text" class="form-control"
@@ -221,13 +209,13 @@ async function get(id) {
             </div>
             <hr class="hr" />
             <div class="mb-3">
-                <label for="site-address" class="form-label">{{ $t('site_phone') }}</label>
+                <label for="site-address" class="form-label">{{ $t('site_address') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
-                    <Field name="site-address" rules="required" v-model="formData.address" type="text" class="form-control"
+                    <Field name="address" rules="required" v-model="formData.address" type="text" class="form-control"
                         id="site-address" />
                 </div>
-                <ErrorMessage class="invalid" name="site-address" />
+                <ErrorMessage class="invalid" name="address" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
                     <Field name="site-address-en" v-model="formData.address_en" type="text" class="form-control"
@@ -235,10 +223,8 @@ async function get(id) {
                 </div>
             </div>
 
-
             <div class="product-form-footer d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
-
+                <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
             </div>
 
         </Form>
