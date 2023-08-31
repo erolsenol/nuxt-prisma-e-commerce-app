@@ -99,17 +99,14 @@ body {
 
 .header {
   .logo {
-    width: 100px;
+    width: 7rem;
+    max-height: 5rem;
   }
 
   .nav {
     // background-color: rgba(183, 183, 183, 0.7);
     display: flex;
     align-content: stretch;
-
-    .logo {
-      min-width: 13rem;
-    }
 
     .nav-link {
       color: var(--bs-light);
@@ -195,6 +192,10 @@ body {
 
     span {
       cursor: pointer;
+    }
+    .logo {
+      width: 7rem;
+      max-height: 5rem;
     }
   }
 }

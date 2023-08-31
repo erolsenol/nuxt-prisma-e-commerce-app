@@ -189,21 +189,26 @@ model Minislider {
 }
 
 model Site {
-  id          Int      @id @unique @default(autoincrement())
-  headerLogo  String?  @db.VarChar(255)
-  footerLogo  String?  @db.VarChar(255)
-  headerColor String?  @db.VarChar(255)
-  footerColor String?  @db.VarChar(255)
-  mail        String?  @db.VarChar(255)
-  phone       String?  @db.VarChar(255)
-  address     String?  @db.VarChar(255)
-  footerText  String?  @db.VarChar(255)
-  aboutUsText String?  @db.VarChar(1500)
-  footerJson  Json?
-  headerJson  Json?
-  point       Int?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              Int      @id @unique @default(autoincrement())
+  headerLogo      String?  @db.VarChar(255)
+  footerLogo      String?  @db.VarChar(255)
+  headerBgColor   String?  @db.VarChar(255)
+  footerBgColor   String?  @db.VarChar(255)
+  headerFontColor String?  @db.VarChar(255)
+  footerFontColor String?  @db.VarChar(255)
+  mail            String?  @db.VarChar(255)
+  mail_en         String?  @db.VarChar(255)
+  phone           String?  @db.VarChar(255)
+  phone_en        String?  @db.VarChar(255)
+  address         String?  @db.VarChar(255)
+  address_en      String?  @db.VarChar(255)
+  footerText      String?  @db.VarChar(255)
+  aboutUsText     String?  @db.VarChar(1500)
+  footerJson      Json?
+  headerJson      Json?
+  point           Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   pageAbout Json?
 }

@@ -68,6 +68,9 @@ export default {
   select: "Seçiniz",
   order: "Sıra",
   admin: "Yönetici",
+  site_phone: "Site Telefonu",
+  site_mail: "Site E-posta",
+  site_address: "Site Adres",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",
@@ -93,7 +96,7 @@ export default {
   },
   success: {
     user_created: "Kayıt başarılı",
-    image_saved:"Görsel Kaydedildi",
+    image_saved: "Görsel Kaydedildi",
   },
 
   validation: {
@@ -111,7 +114,7 @@ export default {
     error: {
       same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
       same_name: "Aynı isimle {0} bulunuyor farklı bir isim deneyin",
-      image_not_found:"Görsel bulunamadı"
+      image_not_found: "Görsel bulunamadı",
     },
   },
 };

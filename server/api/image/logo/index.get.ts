@@ -1,4 +1,4 @@
-import { getImageWhere, getImageOwnerName } from "../../data/images";
+import { getImageWhere, getImageOwnerName } from "../../../data/images";
 
 interface fileRes {
   success: Boolean;
@@ -18,14 +18,17 @@ interface response {
 
 export default defineEventHandler(async (event) => {
   let response: response = {
-    data: [],
+    data: null,
     status: false,
   };
-  console.log("image getttt requestttttttttt");
+
+  console.log("image logo requestttttttttt");
+  const body = await readBody(event);
 
   const query = getQuery(event);
 
-  console.log("image gettttt image gettttt", query);
+  console.log("image gettttt image gettttt");
+  console.log("query", query);
 
   if (!query.id && query.ownerName && query.name) {
     response.error = "cannot be empty";

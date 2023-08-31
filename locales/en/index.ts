@@ -69,6 +69,9 @@ export default {
   select: "Select",
   order: "Order",
   admin: "Admin",
+  site_phone: "Site Phone",
+  site_mail: "Site E-mail",
+  site_address: "Site Address",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",
@@ -111,7 +114,7 @@ export default {
     error: {
       same_error: "Error occurred while performing {0} operation",
       same_name: "There is a {0} with the same name, try a different name",
-      image_not_found:"image not found"
-    }
+      image_not_found: "image not found",
+    },
   },
 };
