@@ -1,10 +1,81 @@
+<script>
+export default {
+   name: "TheFooter",
+};
+</script>
 <script setup>
+const { $qs } = useNuxtApp()
 const { locale } = useI18n()
 const router = useRouter()
+
+let footerLogo = ref({})
+let site = ref({})
+let categories = ref([])
 
 function pageChange(to) {
    router.push({ name: `${to}___${locale.value}` })
 }
+
+// const phone = computed(() => {
+//     return site.value[`phone${locale.value !== 'tr' ? `_${locale.value}` : ''}`]
+// })
+// const mail = computed(() => {
+//     return site.value[`mail${locale.value !== 'tr' ? `_${locale.value}` : ''}`]
+// })
+// const address = computed(() => {
+//     return site.value[`address${locale.value !== 'tr' ? `_${locale.value}` : ''}`]
+// })
+
+async function getFooterLogo() {
+   const config = {
+      method: "get",
+      params: {
+         ownerName: "footerLogo"
+      },
+      paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+   };
+   const { data } = await useFetch("/api/image", config)
+   if (data.value.status) {
+      footerLogo.value = data.value.data
+   }
+}
+async function getFooterText(){
+   const config = {
+        method: "get",
+        params: {
+          id: "1",
+        },
+        paramsSerializer: (params) => $qs.stringify(params, { encode: false }),
+      };
+
+      const response = await useFetch("/api/site", config);
+      if(response.data.status) {
+         site.value = response.data.data
+      }
+}
+async function getCategory() {
+   const config = {
+      params: {
+         all: "1"
+      },
+      paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+   };
+   const { data, pending, error, refresh } = await useFetch("/api/category").catch((error) => {
+      console.error(error);
+   });
+
+   if (data.value.status) {
+      categories.value = data.value.data
+   }
+}
+
+onMounted(() => {
+   setTimeout(async () => {
+      getCategory()
+      getFooterLogo()
+      getFooterText()
+   }, 100);
+});
 
 const headerItems = [
    {
@@ -37,7 +108,10 @@ const headerItems = [
             <div class="col-12 col-sm-6  mb-3">
                <ul class="list-group list-group-vertical">
                   <li class="list-group-item">
-                     LOGO
+                     <template v-if="footerLogo.name">
+                        <NuxtImg class="logo" :src="`images/app/${footerLogo.name}`" />
+                     </template>
+                     <SpinnerGrow v-else color="secondary" size="1" />
                   </li>
                   <li class="list-group-item">
                      <Icon name="material-symbols:call-sharp" color="white" size="30" />

@@ -15,12 +15,12 @@ const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
 const schema = object().shape({
-    headerLogo: string().nullable(true),
-    footerLogo: string().nullable(true),
-    mail: string().nullable(true),
-    phone: string().nullable(true),
-    address: string().nullable(true),
-    footerText: string().nullable(true),
+    mail: string().email().required(),
+    mail_en: string().email().nullable(true),
+    phone: string().required(),
+    phone_en: string().nullable(true),
+    address: string().required(),
+    address_en: string().nullable(true),
 });
 
 let formData = ref({})
@@ -28,18 +28,30 @@ let file = ref({})
 let image = ref({})
 
 
-
-
-async function formClear() {
-    return new Promise((resolve, reject) => {
-
-        product.value.name = null
-        product.value.title = null
-        product.value.content = null
-        resolve(true)
-    })
-
+async function getLogos() {
+    const logos = ["headerLogo", "footerLogo"]
+    for (let index = 0; index < logos.length; index++) {
+        const logo = logos[index];
+        const config = {
+            method: "get",
+            params: {
+                ownerName: logo
+            },
+            paramsSerializer: (params) => qs.stringify(params, { encode: false })
+        };
+        const { data } = await useFetch("/api/image", config)
+        if (data.value.status) {
+            image.value[logo] = data.value.data
+        }
+    }
 }
+
+onMounted(() => {
+    setTimeout(async () => {
+        getLogos()
+        get()
+    }, 100);
+});
 
 async function fileToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -92,53 +104,40 @@ async function save(e, { resetForm }) {
 
     const bodyData = { ...formData.value }
 
-    const keys = Object.keys(bodyData)
-    keys.forEach(key => {
-        if (typeof bodyData[key] === "object" || bodyData[key] === -1) {
-            delete bodyData[key]
-        }
-    })
-
-    const { data, pending, error, refresh } = await useFetch("/api/product", {
+    const { data, pending, error, refresh } = await useFetch("/api/site", {
         method: "put",
         body: bodyData,
     }).catch((error) => {
         console.error(error);
         snackbar.add({
             type: "error",
-            text: t(`api.error.same_error`, [t('product')]),
+            text: t(`api.error.same_error`, [t('site_settings')]),
         });
     });
-    console.log("data.value.status", data.value.status);
-    if (!data.value.status) {
 
+    if (data.value.status) {
         snackbar.add({
-            type: "error",
-            text: t(`api.error.${data.value.error}`, [t('page_general_setting')]),
+            type: "success",
+            text: t('api.success', [t('site_settings')]),
         });
         return
     } else {
-        resetForm()
-        formData.value.categoryId = -1
-        formData.value.subCategoryId = -1
-        if (props.type !== "create") {
-
-            snackbar.add({
-                type: "success",
-                text: t('api.success', [t('page_general_setting')]),
-            });
-            return
-        }
-
         snackbar.add({
             type: "success",
-            text: t('api.created', [t('page_general_setting')]),
+            text: t(`api.error.${data.value.error}`, [t('site_settings')]),
         });
     }
 }
 
 async function get(id) {
-    const { data } = await useFetch("/api/product/" + id);
+    const config = {
+        params: {
+            id: "1"
+        },
+        paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+    };
+
+    const { data } = await useFetch("/api/site", config);
     if (!data.value) return
 
     if (data.value.status) {
@@ -146,49 +145,11 @@ async function get(id) {
     }
 }
 
-async function removeImage(id) {
-    const config = {
-        params: {
-            id
-        },
-        paramsSerializer: (params) => $qs.stringify(params, { encode: false })
-    };
-
-    const { data, pending, error, refresh } = await useFetch("/api/image", {
-        ...config,
-        method: "delete",
-    }).catch((error) => {
-        console.error(error);
-    });
-
-    if (!data.value.status) {
-        console.log("Görsel Silinemedi");
-        snackbar.add({
-            type: "error",
-            text: "Görsel Silinemedi",
-        });
-        return
-    }
-
-    if (props.type == 'update') {
-        get(formData.value.id)
-    }
-
-
-    console.log("Görsel Silindi");
-    snackbar.add({
-        type: "success",
-        text: "Görsel Silindi",
-    });
-}
 </script>
 
 <template>
     <div class="product-form">
         <Form @submit="save" :validation-schema="schema">
-            <div>
-                {{ image }}
-            </div>
             <div class="row d-flex flex-row align-items-start justify-content-start" style="min-height: 10rem;">
                 <div class="col-6">
                     <template v-if="image?.headerLogo?.name">
@@ -197,8 +158,8 @@ async function removeImage(id) {
                     </template>
                 </div>
                 <div class="col-6">
-                    <label for="header-logo" class="form-label">{{ $t('header_logo') }}</label>
-                    <Field name="image" rules="" v-model="file.headerLogo" @change="onFileChange($event, 'headerLogo')"
+                    <label for="header-logo" class="form-label fs-5">{{ $t('header_logo') }}</label>
+                    <Field name="image" v-model="file.headerLogo" @change="onFileChange($event, 'headerLogo')"
                         class="form-control" type="file" id="header-logo" accept="image/png, image/jpeg" />
                 </div>
             </div>
@@ -211,53 +172,59 @@ async function removeImage(id) {
                     </template>
                 </div>
                 <div class="col-6">
-                    <label for="footer-logo" class="form-label">{{ $t('footer_logo') }}</label>
-                    <Field name="image" rules="" v-model="file.footerLogo" @change="onFileChange($event, 'footerLogo')"
+                    <label for="footer-logo" class="form-label fs-5">{{ $t('footer_logo') }}</label>
+                    <Field name="image" v-model="file.footerLogo" @change="onFileChange($event, 'footerLogo')"
                         class="form-control" type="file" id="footer-logo" accept="image/png, image/jpeg" />
                 </div>
             </div>
-
-
-            qwe
-            <div class="product-form-slide mb-3">
-
-                <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
-                    :effect="'creative'" :autoplay="{ delay: 5000, disableOnInteraction: true, }" :creative-effect="{
-                        prev: { shadow: false, translate: ['-20%', 0, -1], },
-                        next: { translate: ['100%', 0, 0], },
-                    }">
-                    <SwiperSlide v-for="(image, index) in formData.images" :key="`img-${index}`">
-                        <div class="card" style="width: 28rem">
-                            <div class="card-header">
-                                <button type="button" @click="removeImage(image.id)"
-                                    class="btn btn-danger float-end px-3 d-flex align-items-center justify-content-center">
-                                    <Icon name="material-symbols:delete-outline" color="white" size="22" class="me-2" />
-                                    Sil
-                                </button>
-                            </div>
-                            <nuxt-img :src="`/images/${image.name}`" class="card-img-top img-fluid" style="width: 20rem" />
-
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    {{ $t('image_name') }}: {{ image.name }}
-                                </h5>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-
-                </Swiper>
-            </div>
+            <hr class="hr" />
             <div class="mb-3">
-                <label for="product-image" class="form-label">Görsel Yükle</label>
-                <Field name="image" rules="" @change="onFileChange" class="form-control" type="file" id="product-image"
-                    accept="image/png, image/jpeg" multiple />
-                <ErrorMessage class="invalid" name="image" />
+                <label for="site-mail" class="form-label">{{ $t('site_mail') }}</label>
+                <div class="input-group">
+                    <span class="input-group-text">TR *</span>
+                    <Field name="mail" rules="required" v-model="formData.mail" type="text" class="form-control"
+                        id="site-mail" />
+                </div>
+                <ErrorMessage class="invalid" name="mail" />
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">EN</span>
+                    <Field name="site-mail-en" v-model="formData.mail_en" type="text" class="form-control"
+                        id="site-mail-en" />
+                </div>
             </div>
             <hr class="hr" />
+            <div class="mb-3">
+                <label for="site-phone" class="form-label">{{ $t('site_phone') }}</label>
+                <div class="input-group">
+                    <span class="input-group-text">TR *</span>
+                    <Field name="phone" rules="required" v-model="formData.phone" type="text" class="form-control"
+                        id="site-phone" />
+                </div>
+                <ErrorMessage class="invalid" name="phone" />
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">EN</span>
+                    <Field name="site-phone-en" v-model="formData.phone_en" type="text" class="form-control"
+                        id="site-phone-en" />
+                </div>
+            </div>
+            <hr class="hr" />
+            <div class="mb-3">
+                <label for="site-address" class="form-label">{{ $t('site_address') }}</label>
+                <div class="input-group">
+                    <span class="input-group-text">TR *</span>
+                    <Field name="address" rules="required" v-model="formData.address" type="text" class="form-control"
+                        id="site-address" />
+                </div>
+                <ErrorMessage class="invalid" name="address" />
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">EN</span>
+                    <Field name="site-address-en" v-model="formData.address_en" type="text" class="form-control"
+                        id="site-address-en" rules="" />
+                </div>
+            </div>
+
             <div class="product-form-footer d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
-                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal"
-                    data-bs-target="#productFormModal">{{ $t('close') }}</button>
+                <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
             </div>
 
         </Form>

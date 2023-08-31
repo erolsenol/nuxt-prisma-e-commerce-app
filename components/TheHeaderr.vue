@@ -14,11 +14,23 @@ const router = useRouter()
 const storeUser = useUser()
 let headerLogo = ref({})
 
-console.log("headerLogo", headerLogo);
-
 function langChange(lang) {
    const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
    router.push(({ name: `${pathName}${lang}` }))
+}
+
+async function getHeaderLogo() {
+   const config = {
+      method: "get",
+      params: {
+         ownerName: "headerLogo"
+      },
+      paramsSerializer: (params) => qs.stringify(params, { encode: false })
+   };
+   const { data } = await useFetch("/api/image", config)
+   if (data.value.status) {
+      headerLogo.value = data.value.data
+   }
 }
 
 function pageChange(to, route = "", item) {
@@ -56,21 +68,17 @@ async function getCategory() {
       console.error(error);
    });
 
-   console.log("data", data);
-
    if (data.value.status) {
       categories.value = data.value.data
-      console.log("categories.value", categories.value);
    }
 }
-
 
 
 onMounted(() => {
    setTimeout(async () => {
       getCategory()
+      getHeaderLogo()
    }, 100);
-
 });
 
 const headerItems = [
@@ -110,11 +118,13 @@ let loginFormType = ref("login")
       <div class="container d-flex flex-wrap align-items-center justify-content-center 
       justify-content-md-between py-3 mb-4">
          <div class="bg-white">
-            {{ headerLogo }}
          </div>
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
-            <a @click="pageChange('index')" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
-               <NuxtImg class="logo" src="neva/logo.svg" />
+            <a @click="pageChange('index')" class="d-inline-flex link-body-emphasis text-decoration-none">
+               <template v-if="headerLogo.name" >
+                  <NuxtImg class="logo" :src="`images/app/${headerLogo.name}`" />
+               </template> 
+               <SpinnerGrow v-else color="secondary" size="1" />
             </a>
          </div>
 
