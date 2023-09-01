@@ -20,12 +20,38 @@ onMounted(() => {
   //fix
   setTimeout(() => {
     get()
-  }, 500);
+  }, 100);
 
 })
 
+// async function sendComment() {
+//   const body = {}
+//   const config = {
+//     methos: "post",
+//     body
+//   };
+
+//   const { data } = await useFetch("/api/comment",config)
+
+//   if (data.value.status) {
+
+//     snackbar.add({
+//       type: "success",
+//       text: t('api.comment_send'),
+//     });
+//     return
+//   } else {
+//     snackbar.add({
+//       type: "error",
+//       text: t('api.error.comment_post'),
+//     });
+//     return
+//   }
+// }
+
 async function get() {
   let productName = route.params.name
+  console.log("productName",productName);
   if (!productName) {
     setTimeout(() => {
       const pathname = window.location.pathname
@@ -95,7 +121,6 @@ async function sendStar() {
 
 async function getStar() {
 
-
   const config = {
     params: {
       productId: item.id
@@ -115,13 +140,13 @@ async function getStar() {
 <template>
   <div class="container product-detail" style="min-height: 40vw;">
     <div class="row" v-if="!loading">
-      <div class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
+      <div
+        class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
         style=" min-height: 20rem;">
         <template v-if="item.images && item.images.length > 0">
-          <NuxtImg class="rounded-2" placeholder="./images/no-image.jpeg" :src="'images/' + item.images[0].name"
-             />
+          <NuxtImg class="rounded-2" placeholder="./images/no-image.jpeg" :src="'images/' + item.images[0].name" />
         </template>
-        <NuxtImg class="" v-else :src="'images/no-image.jpeg'"  />
+        <NuxtImg class="" v-else :src="'images/no-image.jpeg'" />
       </div>
       <div class="col-12 col-md-5 col-lg-6 product-detail-content border border-end-0 border-start-0 p-2 py-3">
         <div class="product-detail-content-title">

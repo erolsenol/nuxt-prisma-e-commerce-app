@@ -38,7 +38,7 @@ const paginate = ref({ skip: 0, take: 20 })
           style="height: 15rem;" />
         <NuxtImg class="border-bottom border-secondary-subtle" v-else :src="'images/no-image.jpeg'"
           style="height: 15rem;" />
-        <div class="card-body p-2 overflow-scroll position-relative">
+        <div class="card-body p-2 overflow-y-auto position-relative scrollbar-light">
           <h6 class="card-title text-capitalize mb-2">{{ title }}</h6>
           <div class="product-item-name text-break">
             <p class="fs-6 card-subtitle text-body-secondary  text-capitalize  mb-2">{{ name }} qweqweqwqweqweqweqw</p>

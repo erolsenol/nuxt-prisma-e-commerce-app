@@ -49,8 +49,6 @@ async function getAll(page) {
     paginate = data.value.paginate
     console.log("paginate", paginate);
   }
-
-
 }
 
 </script>
@@ -59,7 +57,7 @@ async function getAll(page) {
   <div class="product">
     <div class="row mt-3 mb-2">
       <div class="col product-filter p-2 px-3 mb-2">
-        <div class="input-group input-search mb-3">
+        <div class="input-group input-search mb-3" v-if="items.length > 0">
           <span class="input-group-text p-2" id="product-search">
             <Icon name="el:search" size="26" />
           </span>
@@ -76,7 +74,10 @@ async function getAll(page) {
           :name="item.name" v-for="(item, index) in items" :key="index" />
       </div>
 
-      <PaginationPage :paginate="paginate" @page="getAll" />
+      <PaginationPage v-if="items.length > 0" :paginate="paginate" @page="getAll" />
+        <template v-else>
+          <p class="text-center fs-5 mb-5">{{ $t('no_found_products') }}</p>
+        </template>
     </template>
 
     <Loading v-else />

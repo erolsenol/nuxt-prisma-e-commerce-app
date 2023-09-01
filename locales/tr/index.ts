@@ -30,7 +30,7 @@ export default {
   write_commet: "Yorum yaz",
   upload: "Yükle",
   image_name: "Görsel adı",
-  image:"Görsel",
+  image: "Görsel",
   fill_form_completely: "Formu eksiksiz doldurunuz",
   product_add: "Ürün Ekle",
   product_name: "Ürün Adı",
@@ -55,6 +55,7 @@ export default {
   sub_category: "Alt Kategori",
   category_get: "Kategori Getir",
   get: "Getir",
+  get_products: "Ürünleri Getir",
   update: "Güncelle",
   actions: "İşlemler",
   filters: "Filtreler",
@@ -74,7 +75,7 @@ export default {
   site_address: "Site Adres",
   search: "Arama",
   search_btn: "Ara",
-  search_product_brand_category:"Ürün, Marka ve Kategori Ara",
+  search_product_brand_category: "Ürün, Marka ve Kategori Ara",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",
@@ -83,6 +84,7 @@ export default {
   page_general_setting: "Genel Site Ayarları",
   header_logo: "Üst logo",
   footer_logo: "Alt logo",
+  no_found_products:"Ürün Bulunamadı",
   no_found_products_this_category: "Bu kategoride ürün bulunamadı",
 
   password_hint:
@@ -115,8 +117,10 @@ export default {
     deleted: "{0} Silindi",
     republish: "{0} yayına alındı",
     count_zero: "There are 0 {0}",
+    comment_send: "Yorum gönderildi",
 
     error: {
+      comment_post: "Yorum gönderilirken hata oluştu",
       same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
       same_name: "Aynı isimle {0} bulunuyor farklı bir isim deneyin",
       image_not_found: "Görsel bulunamadı",

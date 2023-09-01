@@ -21,7 +21,7 @@ const product = ref({
   title: null,
   content: null,
   createdAt: null,
-  updatedAt: null 
+  updatedAt: null
 })
 
 onMounted(() => {
@@ -52,11 +52,11 @@ async function getAll() {
     console.log("Görsel Yüklendi");
     rows.value = data.value.data
 
-    if(rows.value.length == 0) {
+    if (rows.value.length == 0) {
       snackbar.add({
-      type: "success",
-      text: "Ürün sayısı 0",
-    });
+        type: "success",
+        text: "Ürün sayısı 0",
+      });
     }
   } else {
     console.log("Görseller çekilirken bir sorun oluştu");
@@ -67,7 +67,7 @@ async function getAll() {
   }
 }
 
-async function get(id){
+async function get(id) {
   const config = {
     params: {
       id
@@ -75,14 +75,14 @@ async function get(id){
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
-  const { data } = await useFetch("/api/product/"+id);
+  const { data } = await useFetch("/api/product/" + id);
   if (!data.value) return
 
-  if(data.value.data) {
+  if (data.value.data) {
     product.value = data.value.data
   }
 
-  if(data.value.error) {
+  if (data.value.error) {
     console.log("Bir hata oluştu");
     snackbar.add({
       type: "error",
@@ -98,10 +98,10 @@ async function get(id){
       <thead>
         <tr class="table-dark">
           <th scope="col">Id</th>
-          <th scope="col">İsim</th>
-          <th scope="col">Başlık</th>
-          <th scope="col">İçerik</th>
-          <th scope="col">Aksiyon</th>
+          <th scope="col">{{ $t('name') }}</th>
+          <th scope="col">{{ $t('title') }}</th>
+          <th scope="col">{{ $t('content') }}</th>
+          <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -114,10 +114,11 @@ async function get(id){
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                İşlemler
+                {{ $t('actions') }}
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#productFormModal">Güncelle</li>
+                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#productFormModal">
+                  {{ $t('update') }}</li>
                 <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productFormModal"> TEST </li>
               </ul>
             </div>
@@ -125,7 +126,7 @@ async function get(id){
         </tr>
       </tbody>
     </table>
-    <button @click="getAll">QWE</button>
+    <button @click="getAll">{{ $t('get_products') }}</button>
 
     <div class="modal fade" id="productFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="productFormModalLabel" aria-hidden="true">
@@ -138,7 +139,7 @@ async function get(id){
           <div class="modal-body">
             <ProductForm type="update" :form="product" @update:form="newValue => product = newValue" />
           </div>
-         
+
         </div>
       </div>
     </div>

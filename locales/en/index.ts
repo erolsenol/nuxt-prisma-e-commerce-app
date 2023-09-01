@@ -56,6 +56,7 @@ export default {
   sub_category: "Sub Category",
   category_get: "Categories Get",
   get: "Get",
+  get_products: "Get Products",
   update: "Update",
   actions: "Actions",
   filters: "Filters",
@@ -84,6 +85,7 @@ export default {
   page_general_setting: "Genel Site Ayarları",
   header_logo: "Header logo",
   footer_logo: "Footer logo",
+  no_found_products: "Product Not Found",
   no_found_products_this_category: "No products found in this category",
 
   password_hint:
@@ -115,8 +117,10 @@ export default {
     updated: "{0} Updated",
     deleted: "{0} Deleted",
     republish: "{0} republish",
+    comment_send: "Comment posted",
 
     error: {
+      comment_post: "Error while adding comment",
       same_error: "Error occurred while performing {0} operation",
       same_name: "There is a {0} with the same name, try a different name",
       image_not_found: "image not found",
