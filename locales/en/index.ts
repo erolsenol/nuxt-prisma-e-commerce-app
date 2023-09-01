@@ -47,6 +47,7 @@ export default {
   product: "Product",
   site_settings: "Site Settings",
   comments: "Comments",
+  comment: "Comment",
   users: "Users",
   user: "User",
   sub_categories: "Sub Categories",
@@ -76,6 +77,8 @@ export default {
   site_address: "Site Address",
   search: "Search",
   search_btn: "Search",
+  contact: "Contact",
+  about: "About",
   search_product_brand_category: "Search by Product, Brand and Category",
 
   page_valid_for_language: "This page is valid for english({0}) language",

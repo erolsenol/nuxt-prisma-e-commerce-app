@@ -67,6 +67,8 @@ async function get() {
     return
   }
 
+  console.log("route.params", route.params);
+  console.log("route.params.id", route.params.id);
   console.log("route.params.name", route.params.name);
   console.log("productName", productName);
 
@@ -194,6 +196,7 @@ async function getStar() {
           <Icon name="icon-park-outline:like" color="black" size="30" style="cursor: pointer;" />
         </div> -->
       </div>
+      <PageProductsComments :productId="item.id" />
       <PageProductsSendComment :productId="item.id" />
     </div>
     <Loading v-else />

@@ -48,3 +48,12 @@ export function paginationCondition(index: number, current: number, total: numbe
 
   return;
 }
+
+export async function imageToObj(file: File) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve({ name: file.name, image: reader.result });
+    reader.onerror = error => reject(error);
+  })
+}

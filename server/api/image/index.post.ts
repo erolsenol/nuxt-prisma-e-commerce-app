@@ -1,4 +1,4 @@
-import { postImage } from "../../data/images";
+import { postImage, getImageWhere } from "../../data/images";
 import { deleteProduct } from "../../data/products";
 import fs from "fs";
 import path from "path";
@@ -20,6 +20,32 @@ interface errorData {
 interface response {
   data: errorData[];
   status: Boolean;
+}
+
+export async function createFolder(path: string) {
+  return new Promise<boolean>((resolve, reject) => {
+
+    console.log("object", path);
+
+    const pathArr = path.split("/")
+
+    console.log("pathArr", pathArr);
+
+    let strPath = ``
+    for (let index = 1; index < pathArr.length - 1; index++) {
+      const pathStr = pathArr[index];
+
+      strPath += `/${pathStr}`
+
+      console.log("strPath", strPath);
+
+      if (!fs.existsSync(strPath)) {
+        fs.mkdirSync(strPath);
+      }
+    }
+
+    resolve(true)
+  })
 }
 
 function fileExists(path: String) {
@@ -96,6 +122,11 @@ export default defineEventHandler(async (event) => {
 
     console.log("image.name1", image.name);
 
+
+    while (await getImageWhere({ name: image.name })) {
+      image.name = image.name.replace(".", "0.")
+    }
+
     let filePath = null;
     if (writePath) {
       filePath = `${dir}/public/images/${writePath}${image.name}`;
@@ -108,6 +139,8 @@ export default defineEventHandler(async (event) => {
     while (await fileExists(filePath.replace(".", prefix + "."))) {
       prefix += "0";
     }
+
+    await createFolder(filePath)
 
     const res = await writeFile(
       filePath.replace(".", prefix + "."),

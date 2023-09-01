@@ -33,7 +33,7 @@ function fileExists(path: String) {
   });
 }
 
-async function createFolder(path: string) {
+export async function createFolder(path: string) {
   return new Promise<boolean>((resolve, reject) => {
 
     console.log("object", path);

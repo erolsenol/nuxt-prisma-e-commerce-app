@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: "ImageSwiper",
+    name: "ProductCommentImage",
 };
 </script>
 <script setup>
@@ -8,14 +8,6 @@ const { images } = defineProps({
     images: {
         type: Array,
         default: () => []
-    },
-    imageNames: {
-        type: Array,
-        default: () => []
-    },
-    loading: {
-        type: Boolean,
-        default: false
     },
 })
 </script>

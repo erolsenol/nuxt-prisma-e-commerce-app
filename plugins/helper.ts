@@ -5,6 +5,7 @@ import {
   paginationCondition,
   set,
   remove,
+  imageToObj
 } from "../helper";
 
 export default defineNuxtPlugin(() => {
@@ -17,6 +18,7 @@ export default defineNuxtPlugin(() => {
         get,
         set,
         remove,
+        imageToObj
       },
     },
   };

@@ -46,6 +46,7 @@ export default {
   product: "Ürün",
   site_settings: "Site Ayarları",
   comments: "Yorumlar",
+  comment: "Yorum",
   users: "Kullanıcılar",
   user: "Kullanıcı",
   sub_categories: "Alt Kategoriler",
@@ -75,6 +76,8 @@ export default {
   site_address: "Site Adres",
   search: "Arama",
   search_btn: "Ara",
+  contact: "İletişim",
+  about: "Hakkımızda",
   search_product_brand_category: "Ürün, Marka ve Kategori Ara",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
@@ -84,7 +87,7 @@ export default {
   page_general_setting: "Genel Site Ayarları",
   header_logo: "Üst logo",
   footer_logo: "Alt logo",
-  no_found_products:"Ürün Bulunamadı",
+  no_found_products: "Ürün Bulunamadı",
   no_found_products_this_category: "Bu kategoride ürün bulunamadı",
 
   password_hint:

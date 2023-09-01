@@ -16,11 +16,11 @@ const { index } = defineProps({
 <template>
     <div class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row mt-5"
         :class="index % 2 == 0 ? 'flex-md-row-reverse flex-lg-row-reverse' : ''">
-        <div class="w-100">
+        <div class="w-100 p-1">
             <slot name="content"></slot>
         </div>
 
-        <div class="w-100 text-center">
+        <div class="w-100 p-1 text-center">
             <NuxtImg v-if="!hasImage" src="svg/circle.png" style="width: 14rem" />
             <slot name="image"></slot>
         </div>

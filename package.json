@@ -46,6 +46,7 @@
     "@vee-validate/rules": "^4.11.1",
     "bootstrap": "^5.3.1",
     "fs": "^0.0.1-security",
+    "mitt": "^3.0.1",
     "nuxt-snackbar": "^1.0.3",
     "nuxt-swiper": "^1.2.0",
     "path": "^0.12.7",

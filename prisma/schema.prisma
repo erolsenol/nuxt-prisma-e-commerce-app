@@ -146,6 +146,7 @@ model Phototype {
 
 model Comment {
   id        Int      @id @unique @default(autoincrement())
+  username  String?  @db.VarChar(255)
   title     String?  @db.VarChar(255)
   content   String?  @db.VarChar(755)
   point     Int?

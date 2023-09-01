@@ -66,7 +66,7 @@ onMounted(() => {
           </template>
           <template v-slot:image>
             <template v-if="item.images && item.images.length > 0">
-              <NuxtImg style="width: 26rem;" :src="`images/about-us/${item.images[0].name}`" />
+              <NuxtImg style="width: 100%" :src="`images/about-us/${item.images[0].name}`" />
             </template>
           </template>
         </PageDesing>
