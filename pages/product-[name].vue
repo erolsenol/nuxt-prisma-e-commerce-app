@@ -51,7 +51,7 @@ onMounted(() => {
 
 async function get() {
   let productName = route.params.name
-  console.log("productName",productName);
+  console.log("productName", productName);
   if (!productName) {
     setTimeout(() => {
       const pathname = window.location.pathname
@@ -167,14 +167,25 @@ async function getStar() {
         </div>
 
         <div class="product-detail-content-question d-flex justify-content-between mt-3" style="cursor: pointer;">
-          <div class="position-relative">
-            <Icon class="product-detail-content-question-like" name="icon-park-outline:like"
-              :color="likeStatus ? 'red' : 'black'" size="36" style="cursor: pointer;" @click="sendStar">
-            </Icon>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-              99+
-              <span class="visually-hidden">unread messages</span>
-            </span>
+          <div class="d-flex flex-row">
+            <div class="position-relative me-4">
+              <Icon class="product-detail-content-question-like" name="icon-park-outline:like"
+                :color="likeStatus ? 'red' : 'black'" size="36" style="cursor: pointer;" @click="sendStar">
+              </Icon>
+              <span class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
+                99+
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            </div>
+            <div class="position-relative">
+              <Icon class="product-detail-content-question-like" name="majesticons:messages-line"
+                :color="likeStatus ? 'red' : 'black'" size="36" style="cursor: pointer;" @click="sendStar">
+              </Icon>
+              <span class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
+                99+
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            </div>
           </div>
 
           <span class="badge bg-secondary text-wrap py-3 px-3 fs-6">{{ $t('ask_question') }}</span>
