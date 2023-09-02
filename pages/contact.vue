@@ -8,6 +8,11 @@ import { Field, Form, ErrorMessage } from 'vee-validate';
 import { string, object } from 'yup';
 import { onMounted, watch, reactive } from "vue"
 
+const { t } = useI18n();
+const { locale } = useI18n()
+const snackbar = useSnackbar();
+const { $qs } = useNuxtApp()
+
 const schema = object({
   name: string().required(),
   surname: string().required(),
@@ -16,9 +21,7 @@ const schema = object({
   content: string().required(),
 });
 
-const { locale } = useI18n()
-const snackbar = useSnackbar();
-const { $qs } = useNuxtApp()
+
 
 let form = reactive({})
 
@@ -69,6 +72,11 @@ async function send() {
 
   if (data.value.status) {
     formClear()
+
+    snackbar.add({
+      type: "success",
+      text: t('contact_message_send'),
+    });
   }
 }
 
@@ -92,9 +100,9 @@ const markerOptions = ref({ position: center, label: "L", title: "LADY LIBERTY" 
       <div class="row my-5">
         <div class="col-12 col-md-6 text-center">
           <NuxtImg class="contact-us-content-image" src="/img/contact-us.jpeg" />
-        
+
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 alert alert-secondary">
           <p class="fs-4 text-center">{{ $t('contact_us') }}</p>
           <Form @submit="send" :validation-schema="schema">
             <div class="mb-2">
@@ -135,7 +143,7 @@ const markerOptions = ref({ position: center, label: "L", title: "LADY LIBERTY" 
               <ErrorMessage class="invalid" name="content" />
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3 px-4">{{ $t('send') }}</button>
+            <button type="submit" class="btn btn-secondary mt-3 px-4">{{ $t('send') }}</button>
           </Form>
         </div>
       </div>

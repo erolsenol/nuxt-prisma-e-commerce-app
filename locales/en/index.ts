@@ -80,9 +80,10 @@ export default {
   contact: "Contact",
   about: "About",
   search_product_brand_category: "Search by Product, Brand and Category",
-  product_no_comment:"The product has no comments",
+  product_no_comment: "The product has no comments",
   filter_options: "Filter Options",
   general: "General",
+  contact_message_send: "Your message has been sent",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",
@@ -93,8 +94,8 @@ export default {
   footer_logo: "Footer logo",
   no_found_products: "Product Not Found",
   no_found_products_this_category: "No products found in this category",
-  select_product_to_receive_comments:"Please select a product to receive comments",
-  footer_text: "Neva | Copyright © 2021. All rights reserved. In case of copying, reproduction and distribution, our legal rights will be exercised.",
+  select_product_to_receive_comments: "Please select a product to receive comments",
+  footer_text: "Neva - Copyright © 2021. All rights reserved. In case of copying, reproduction and distribution, our legal rights will be exercised.",
 
   password_hint:
     "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.",

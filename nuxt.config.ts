@@ -17,7 +17,8 @@ export default defineNuxtConfig({
     "nuxt-snackbar",
     "@vee-validate/nuxt",
     "@pinia/nuxt",
-    "nuxt-bootstrap-icons"
+    "nuxt-bootstrap-icons",
+    '@sidebase/nuxt-auth'
   ],
   app: {
     pageTransition: {
