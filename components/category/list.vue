@@ -119,7 +119,7 @@ function tooltipText(arr) {
       <h5 class="ps-1">{{ $t('category') }} {{ $t('list') }}</h5>
       <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
     </div>
-    <table class="table table-hover table-striped ">
+    <table class="table table-responsive table-hover table-striped ">
       <thead>
         <tr class="table-light">
           <th scope="col">{{ $t('order') }}</th>

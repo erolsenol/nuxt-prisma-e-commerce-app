@@ -117,7 +117,7 @@ async function getAll(page) {
         {{ $t('sub_category') }} {{ $t('get') }}
       </button>
     </div>
-    <table class="table table-hover table-striped ">
+    <table class="table table-responsive table-hover table-striped ">
       <thead>
         <tr class="table-light">
           <th scope="col">{{ $t('order') }}</th>

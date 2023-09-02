@@ -79,7 +79,9 @@ export default {
   contact: "İletişim",
   about: "Hakkımızda",
   search_product_brand_category: "Ürün, Marka ve Kategori Ara",
-  product_no_comment:"Üründe yorum bulunmuyor",
+  product_no_comment: "Üründe yorum bulunmuyor",
+  filter_options: "Arama Seçenekleri",
+  general: "Genel",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",
@@ -90,6 +92,8 @@ export default {
   footer_logo: "Alt logo",
   no_found_products: "Ürün Bulunamadı",
   no_found_products_this_category: "Bu kategoride ürün bulunamadı",
+  select_product_to_receive_comments: "Yorumların gelmesi için ürün seçiniz",
+  footer_text: "Neva | Telif Hakkı © 2023. Tüm hakları saklıdır. Kopyalanması, çoğaltılması ve dağıtılması halinde yasal haklarımız kullanılacaktır.",
 
   password_hint:
     "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
@@ -108,6 +112,7 @@ export default {
   success: {
     user_created: "Kayıt başarılı",
     image_saved: "Görsel Kaydedildi",
+    item_count: "{0} sayısı 0",
   },
 
   validation: {

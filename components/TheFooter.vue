@@ -160,8 +160,8 @@ const headerItems = [
       </div>
       <div class="divider"></div>
       <div class="container footer-bottom d-flex align-items-center justify-content-center py-2">
-         <span>Neva Advertising Agency | Copyright © 2021. All rights reserved. In case of copying, reproduction and
-            distribution, our legal rights will be exercised.
+         <span>
+            {{ $t('footer_text') }}
          </span>
       </div>
    </div>
@@ -195,6 +195,7 @@ const headerItems = [
       max-height: 20rem;
       overflow: hidden;
       overflow-y: auto;
+
       .list-group-item {
          padding: 5px 10px;
       }

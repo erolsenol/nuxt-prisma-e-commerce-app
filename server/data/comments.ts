@@ -4,7 +4,10 @@ async function getAll({ skip = 0, take = 20 }, where = {}) {
   const items = await prisma.comment.findMany({
     skip,
     take,
-    where,
+    where: {
+      deleted: false,
+      ...where
+    },
     include: {
       product: true,
       user: true,
@@ -49,10 +52,24 @@ async function post(data: Object) {
   return item;
 }
 
+async function remove(id: Number, deleted) {
+  const item = await prisma.comment.update({
+    where: {
+      id: id,
+    },
+    data: {
+      deleted: deleted
+    },
+  })
+
+  return item
+}
+
 
 export default {
   getAll,
   get,
   post,
-  count
+  count,
+  remove
 }

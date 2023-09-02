@@ -116,7 +116,7 @@ function itemUpdate(val) {
 
 <template>
   <div class="product-list position-relative mb-5">
-    <table class="table table-hover table-striped" v-if="!loading">
+    <table class="table table-responsive table-hover table-striped" v-if="!loading">
       <thead>
         <tr class="table-light">
           <th scope="col">Id</th>

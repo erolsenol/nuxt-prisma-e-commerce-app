@@ -94,7 +94,7 @@ async function get(id) {
 
 <template>
   <div class="product-list">
-    <table class="table table-hover table-striped ">
+    <table class="table table-responsive table-hover table-striped ">
       <thead>
         <tr class="table-dark">
           <th scope="col">Id</th>

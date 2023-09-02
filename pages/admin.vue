@@ -100,7 +100,9 @@ const tabs = [
           <UserList />
         </div>
         <div class="comment" v-if="active == 4">
-          comment
+
+          <AdminComments />
+
         </div>
         <div class="site-settings" v-if="active == 5">
           <div class="accordion mb-3" id="accordionSiteSettings">
@@ -125,20 +127,20 @@ const tabs = [
             </template>
 
             <div class="accordion-item mt-3">
-                <h2 class="accordion-header">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                     data-bs-target="#collapsePageSiteGeneralSetting" aria-expanded="true"
-                    aria-controls="collapsePageSiteGeneralSetting">
-                    {{ $t(`page_general_setting`) }}
-                  </button>
-                </h2>
-                <div id="collapsePageSiteGeneralSetting" class="accordion-collapse collapse"
-                  data-bs-parent="#collapsePageSiteGeneralSetting">
-                  <div class="accordion-body">
-                   <AdminGeneralSiteSettings />
-                  </div>
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapsePageSiteGeneralSetting" aria-expanded="true"
+                  aria-controls="collapsePageSiteGeneralSetting">
+                  {{ $t(`page_general_setting`) }}
+                </button>
+              </h2>
+              <div id="collapsePageSiteGeneralSetting" class="accordion-collapse collapse"
+                data-bs-parent="#collapsePageSiteGeneralSetting">
+                <div class="accordion-body">
+                  <AdminGeneralSiteSettings />
                 </div>
               </div>
+            </div>
 
             <!-- <div class="accordion-item mt-3">
               <h2 class="accordion-header">

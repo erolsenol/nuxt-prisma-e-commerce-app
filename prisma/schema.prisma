@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -45,7 +46,7 @@ model Product {
   title_en      String?      @db.VarChar(255)
   content       String       @db.VarChar(255)
   content_en    String?      @db.VarChar(255)
-  commentActive Boolean      @db.TinyInt
+  
   otherLangs    Json?
   deleted       Boolean?     @default(false)
   createdAt     DateTime     @default(now())
@@ -159,6 +160,8 @@ model Comment {
   user      User?    @relation(fields: [userId], references: [id])
   userId    Int?
   images    Image[]
+
+  @@fulltext([username, title, content])
 }
 
 model ContactUs {
