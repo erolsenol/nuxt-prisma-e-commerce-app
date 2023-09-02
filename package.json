@@ -33,6 +33,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.79",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^3.0.3",
@@ -46,7 +47,9 @@
     "@vee-validate/rules": "^4.11.1",
     "bootstrap": "^5.3.1",
     "fs": "^0.0.1-security",
+    "i": "^0.3.7",
     "mitt": "^3.0.1",
+    "npm": "^10.0.0",
     "nuxt-snackbar": "^1.0.3",
     "nuxt-swiper": "^1.2.0",
     "path": "^0.12.7",
@@ -55,6 +58,7 @@
     "sass": "^1.64.2",
     "sweetalert2": "^11.7.23",
     "vee-validate": "^4.11.1",
+    "vue3-google-map": "^0.17.1",
     "yup": "^1.2.0"
   },
   "overrides": {

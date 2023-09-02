@@ -13,23 +13,25 @@ const { images } = defineProps({
 </script>
 
 <template>
-    <Swiper v-if="!loading" :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
+    <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
         :effect="'creative'" :autoplay="{ delay: 5000, disableOnInteraction: true, }" :creative-effect="{
-            prev: { shadow: false, translate: ['-20%', 0, -1], },
+            prev: { shadow: true, translate: ['-100%', 0, -1], },
             next: { translate: ['100%', 0, 0], },
         }">
         <SwiperSlide v-for="(image, index) in images" :key="index">
-            <div class="card border-0 rounded-0" style="width: 100%; max-height: 20rem;">
-                <nuxt-img :src="image" style="max-height: 14rem;" class="img-fluid img-thumbnail mx-auto rounded-2 rounded-bottom-0"/>
-                <div class="card-body">
+            <!-- <div class="card border-0 rounded-0" style="width: 100%; max-height: 20rem;"> -->
+            <!-- <div style="width: 100%; max-height: 14rem;" class="d-inline-block"> -->
+                <nuxt-img :src="`images/comment/${image.name}`" style="max-height: 14rem;"
+                    class="img-fluid img-thumbnail mx-auto rounded-2 rounded-bottom-0" />
+            <!-- </div> -->
+            <!-- <div class="card-body">
                     <h5 class="card-title fs-5 text-center">
-                        {{ $t('image_name') }}: {{ imageNames[index] }}
+                        {{ $t('image_name') }}: {{ image.name }}
                     </h5>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
         </SwiperSlide>
     </Swiper>
 </template>
 
-<style>
-</style>
+<style></style>

@@ -79,6 +79,7 @@ export default {
   contact: "İletişim",
   about: "Hakkımızda",
   search_product_brand_category: "Ürün, Marka ve Kategori Ara",
+  product_no_comment:"Üründe yorum bulunmuyor",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",

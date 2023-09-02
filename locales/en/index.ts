@@ -80,6 +80,7 @@ export default {
   contact: "Contact",
   about: "About",
   search_product_brand_category: "Search by Product, Brand and Category",
+  product_no_comment:"The product has no comments",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",

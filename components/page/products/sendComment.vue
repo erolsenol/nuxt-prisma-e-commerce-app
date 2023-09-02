@@ -13,9 +13,9 @@ const { event } = useEventBus()
 const snackbar = useSnackbar();
 
 const schema = object().shape({
-    username: string().required(),
-    title: string().required(),
-    content: string().required(),
+    username: string().required().max(255),
+    title: string().required().max(255),
+    content: string().required().max(755),
 });
 
 const props = defineProps({
@@ -109,7 +109,7 @@ async function send(e, { resetForm }) {
         <div class="row mt-3">
             <div class="col-12">
 
-                <div class="card">
+                <div class="card border-1 border-primary-subtle">
                     <h5 class="card-header"> {{ $t('write_commet') }}</h5>
                     <div class="card-body">
 
@@ -159,8 +159,8 @@ async function send(e, { resetForm }) {
                                 <input name="image" v-show="false" @change="onFileChange" class="form-control" type="file"
                                     ref="commentImage" accept="image/png, image/jpeg" multiple />
                                 <div class="mt-3">
-                                    <button class="btn btn-outline-secondary" @click="uploadImage">
-                                        {{ $t('upload') }}
+                                    <button class="btn btn-outline-primary" @click="uploadImage">
+                                        {{ $t('image') }} {{ $t('upload') }}
                                     </button>
                                 </div>
                             </div>

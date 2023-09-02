@@ -75,6 +75,7 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://example.com",
       siteName: "Awesome Site",
       siteDescription: "Welcome to my awesome site!",
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       language: "tr", // prefer more explicit language codes like `en-AU` over `en`
     },
   },

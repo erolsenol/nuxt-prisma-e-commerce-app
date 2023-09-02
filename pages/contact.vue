@@ -57,7 +57,7 @@ async function getAll() {
   }
 }
 
-function formClear(){
+function formClear() {
   form = {}
 }
 
@@ -67,7 +67,7 @@ async function send() {
   const body = { ...form }
   const { data } = await useFetch('/api/contactus', { method: "post", body })
 
-  if(data.value.status) {
+  if (data.value.status) {
     formClear()
   }
 }
@@ -77,6 +77,11 @@ onMounted(() => {
     getAll()
   }, 300);
 })
+
+const center = ref({ lat: 40.689247, lng: -74.044502 });
+const markerOptions = ref({ position: center, label: "L", title: "LADY LIBERTY" });
+
+
 </script>
 
 <template>
@@ -87,49 +92,50 @@ onMounted(() => {
       <div class="row my-5">
         <div class="col-12 col-md-6 text-center">
           <NuxtImg class="contact-us-content-image" src="/img/contact-us.jpeg" />
+        
         </div>
         <div class="col-12 col-md-6">
-          <p class="fs-4 text-center">{{$t('contact_us')}}</p>
+          <p class="fs-4 text-center">{{ $t('contact_us') }}</p>
           <Form @submit="send" :validation-schema="schema">
             <div class="mb-2">
-              <label for="contact-name" class="form-label">{{$t('name')}}</label>
+              <label for="contact-name" class="form-label">{{ $t('name') }}</label>
               <Field name="name" type="text" as="input" v-model="form.name" class="form-control" id="contact-name" />
               <ErrorMessage class="invalid" name="name" />
             </div>
 
             <div class="mb-2">
-              <label for="contact-surname" class="form-label">{{$t('lastname')}}</label>
+              <label for="contact-surname" class="form-label">{{ $t('lastname') }}</label>
               <Field name="surname" type="text" as="input" v-model="form.surname" class="form-control"
                 id="contact-surname" />
               <ErrorMessage class="invalid" name="surname" />
             </div>
 
             <div class="mb-2">
-              <label for="contact-email" class="form-label">{{$t('email')}}</label>
+              <label for="contact-email" class="form-label">{{ $t('email') }}</label>
               <Field name="email" type="email" as="input" v-model="form.email" class="form-control" id="contact-email" />
               <ErrorMessage class="invalid" name="email" />
             </div>
 
             <div class="mb-2">
-              <label for="contact-phone" class="form-label">{{$t('phone')}}</label>
+              <label for="contact-phone" class="form-label">{{ $t('phone') }}</label>
               <Field name="phone" type="text" as="input" v-model="form.phone" class="form-control" id="contact-phone" />
               <ErrorMessage class="invalid" name="phone" />
             </div>
 
             <div class="mb-2">
-              <label for="contact-title" class="form-label">{{$t('title')}}</label>
+              <label for="contact-title" class="form-label">{{ $t('title') }}</label>
               <Field name="title" type="text" as="input" v-model="form.title" class="form-control" id="contact-title" />
               <ErrorMessage class="invalid" name="title" />
             </div>
 
             <div class="mb-2">
-              <label for="contact-content" class="form-label">{{$t('content')}}</label>
+              <label for="contact-content" class="form-label">{{ $t('content') }}</label>
               <Field name="content" type="text" as="textarea" rows="3" v-model="form.content" class="form-control"
                 id="contact-content" />
               <ErrorMessage class="invalid" name="content" />
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3 px-4">{{$t('send')}}</button>
+            <button type="submit" class="btn btn-primary mt-3 px-4">{{ $t('send') }}</button>
           </Form>
         </div>
       </div>

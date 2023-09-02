@@ -45,6 +45,7 @@ model Product {
   title_en      String?      @db.VarChar(255)
   content       String       @db.VarChar(255)
   content_en    String?      @db.VarChar(255)
+  commentActive Boolean      @db.TinyInt
   otherLangs    Json?
   deleted       Boolean?     @default(false)
   createdAt     DateTime     @default(now())

@@ -13,14 +13,15 @@ const emit = defineEmits(['page'])
 let { paginate, } = defineProps({
     paginate: {
         type: Object,
-        default: () => ({ currentPage: 0, totalCount: 0, totalPage: 0 })
+        required: true
     },
 })
 let selectPage = ref(1)
 
 function goPage(num) {
-    console.log("12312",paginate);
-    console.log("paginate",paginate.totalPage);
+    console.log("12312", paginate);
+    console.log("paginate", paginate.totalPage);
+    console.log("num", num);
     if (num < 1 || num > paginate.totalPage) { return }
 
     console.log("emitttt");
@@ -41,18 +42,17 @@ function goPage(num) {
                     style="--bs-icon-link-transform: translate3d(-.3rem, 0, 0);">
                     <BootstrapIconArrowLeftShort style="width: 2.8rem; height: 2.8rem;" />
                 </a>
-
             </li>
 
             <div class="d-flex justify-content-center pagination-page-area">
                 <template v-for="(page, index) in paginate.totalPage">
-                <li class="page-item" :class="paginate.currentPage == page ? 'active' : ''" @click="goPage(page)"
-                    v-if="$helper.paginationCondition(page, paginate.currentPage, paginate.totalPage)"><a
-                        class="page-link rounded-circle fs-5">{{ page
-                        }}</a></li>
-            </template>
+                    <li class="page-item" :class="paginate.currentPage == page ? 'active' : ''" @click="goPage(page)"
+                        v-if="$helper.paginationCondition(page, paginate.currentPage, paginate.totalPage)"><a
+                            class="page-link rounded-circle fs-5">{{ page
+                            }}</a></li>
+                </template>
             </div>
-         
+
 
             <li class="page-item">
                 <a v-if="false" class="page-link" aria-label="Next" @click="goPage(paginate.currentPage + 1)">
@@ -66,7 +66,7 @@ function goPage(num) {
             </li>
         </ul>
 
-        <template v-if="false">
+        <!-- <template v-if="false">
             <span class="fs-6 me-2">{{ $t('page') }}: {{ paginate.totalPage }} /</span>
             <div class="d-flex flex-row align-items-center input-group me-3" style="width: 8rem;">
                 <input type="text" class="form-control" v-model="selectPage">
@@ -74,6 +74,6 @@ function goPage(num) {
                     <Icon name="el:search" size="24" color="gray" />
                 </span>
             </div>
-        </template>
+        </template> -->
     </nav>
 </template>
