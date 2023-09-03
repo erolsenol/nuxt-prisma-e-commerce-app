@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup>
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import { useI18n, useLocalePath } from '#imports'
 import { setLocale } from '@vee-validate/i18n';
 
@@ -14,7 +14,11 @@ const router = useRouter()
 const storeUser = useUser()
 const storage = useStorage()
 let headerLogo = ref({})
+let site = ref({})
 
+const headerColor = computed(() => {
+   return site.value?.headerBgColor || 'var(--bs-gray-dark)'
+})
 
 function langChange(lang) {
    const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
@@ -32,6 +36,21 @@ async function getHeaderLogo() {
    const { data } = await useFetch("/api/image", config)
    if (data.value.status) {
       headerLogo.value = data.value.data
+   }
+}
+
+async function getSite() {
+   const config = {
+      method: "get",
+      params: {
+         id: "1",
+      },
+      paramsSerializer: (params) => $qs.stringify(params, { encode: false }),
+   };
+
+   const { data } = await useFetch("/api/site", config);
+   if (data.value.status) {
+      site.value = data.value.data
    }
 }
 
@@ -83,6 +102,7 @@ onMounted(() => {
    setTimeout(async () => {
       getCategory()
       getHeaderLogo()
+      getSite()
    }, 100);
 });
 
@@ -216,4 +236,8 @@ let loginFormType = ref("login")
    </header>
 </template>
 
-<style></style>
+<style lang="scss" scoped>
+   .header {
+      background-color: v-bind('headerColor') !important
+   }
+</style>

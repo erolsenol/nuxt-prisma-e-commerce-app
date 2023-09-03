@@ -11,8 +11,9 @@ import { array, number, string, object } from 'yup';
 
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
+const emit = defineEmits(['getAll', 'update'])
 
-const { form } = defineProps({
+const props = defineProps({
     form: {
         type: String, default() {
             return {}
@@ -20,19 +21,21 @@ const { form } = defineProps({
     },
 })
 
-const loginModal = ref("loginModal")
-
 const snackbar = useSnackbar();
 
 async function read() {
-
-    const { data } = await useFetch("/api/contactus", { method: "put", body: { id: form.id, readed: !form.readed } })
+    const body = {
+        id: props.form.id,
+        readed: !props.form.readed,
+    }
+    const { data } = await useFetch("/api/contactus", { method: "put", body: body })
 
     if (data.value.status) {
         snackbar.add({
             type: "success",
-            text: t(`${!form.readed ? '' : 'un'}read`),
+            text: t(`${!props.form.readed ? '' : 'un'}read`),
         });
+        get(props.form.id)
     } else {
         snackbar.add({
             type: "error",
@@ -41,13 +44,21 @@ async function read() {
     }
 }
 
+async function get(id) {
+    const { data } = await useFetch("/api/contactus/" + id)
+
+    if (data.value.status) {
+        emit('update', data.value.data)
+    }
+}
 </script>
 
 <template>
     <div class="contact-us-item card mt-3 border-1 border-primary">
         <div class="card-body position-relative">
+            {{ props.form.readed }}
             <div class="position-absolute text-end" @click="read" style="max-width: 4rem; right: 0px; top: 10px;">
-                <BootstrapIconEnvelope v-if="!form.readed" class="mail-icon position-relative me-4" width="40" height="40"
+                <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40" height="40"
                     fill="#c96161" />
                 <BootstrapIconEnvelopeOpenFill v-else class="mail-icon position-relative me-4" width="40" height="40"
                     fill="#6a98f6" />
@@ -55,15 +66,15 @@ async function read() {
             <p>
                 <span><font-awesome-icon size="30" icon="fa-solid fa-envelope" /></span>
 
-                <strong class="fs-6">{{ $t('name') }}:</strong> <span class="fs-6 me-5">{{ form.name }} </span>
-                <strong class="fs-6">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5">{{ form.surname }}</span>
-                <strong class="fs-6">{{ $t('phone') }}:</strong> <span class="fs-6 me-5">{{ form.phone }}</span>
+                <strong class="fs-6">{{ $t('name') }}:</strong> <span class="fs-6 me-5">{{ props.form.name }} </span>
+                <strong class="fs-6">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5">{{ props.form.surname }}</span>
+                <strong class="fs-6">{{ $t('phone') }}:</strong> <span class="fs-6 me-5">{{ props.form.phone }}</span>
             </p>
             <hr class="my-1" />
-            <strong class="fs-6">{{ $t('email') }}:</strong> <span class="fs-6 me-5">{{ form.email }}</span>
+            <strong class="fs-6">{{ $t('email') }}:</strong> <span class="fs-6 me-5">{{ props.form.email }}</span>
             <hr class="my-1" />
-            <p class="fs-6 mt-3">{{ form.title }}</p>
-            <p class="fs-6">{{ form.content }} </p>
+            <p class="fs-6 mt-3">{{ props.form.title }}</p>
+            <p class="fs-6">{{ props.form.content }} </p>
         </div>
     </div>
 </template>

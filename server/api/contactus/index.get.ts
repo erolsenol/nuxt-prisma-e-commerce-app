@@ -20,7 +20,11 @@ export default defineEventHandler(async (event) => {
   const keys = Object.keys(filterObj)
   keys.forEach(i => {
     if (filterObj[i]) {
-      where[i] = { contains: filterObj[i] }
+      if (i === 'deleted' || i === 'readed') {
+        where[i] = filterObj[i]
+      } else {
+        where[i] = { contains: filterObj[i] }
+      }
     }
   })
 

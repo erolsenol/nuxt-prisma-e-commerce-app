@@ -157,10 +157,19 @@ async function get(id) {
                             style="width: 20rem" />
                     </template>
                 </div>
-                <div class="col-6">
-                    <label for="header-logo" class="form-label fs-5">{{ $t('header_logo') }}</label>
-                    <Field name="image" v-model="file.headerLogo" @change="onFileChange($event, 'headerLogo')"
-                        class="form-control" type="file" id="header-logo" accept="image/png, image/jpeg" />
+                <div class="col-6 d-flex flex-column justify-content-between" style="min-height: 20rem">
+                    <div>
+                        <label for="header-logo" class="form-label fs-5">{{ $t('header_logo') }}</label>
+                        <Field name="image" v-model="file.headerLogo" @change="onFileChange($event, 'headerLogo')"
+                            class="form-control" type="file" id="header-logo" accept="image/png, image/jpeg" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="header-color" class="form-label">
+                            {{ $t('header_color') }} {{ $t('select').toLowerCase() }}
+                        </label>
+                        <input type="color" v-model="formData.headerBgColor" class="form-control form-control-color"
+                            id="header-color">
+                    </div>
                 </div>
             </div>
             <hr />
@@ -171,10 +180,19 @@ async function get(id) {
                             style="width: 20rem" />
                     </template>
                 </div>
-                <div class="col-6">
-                    <label for="footer-logo" class="form-label fs-5">{{ $t('footer_logo') }}</label>
-                    <Field name="image" v-model="file.footerLogo" @change="onFileChange($event, 'footerLogo')"
-                        class="form-control" type="file" id="footer-logo" accept="image/png, image/jpeg" />
+                <div class="col-6 d-flex flex-column justify-content-between" style="min-height: 20rem">
+                    <div>
+                        <label for=" footer-logo" class="form-label fs-5">{{ $t('footer_logo') }}</label>
+                        <Field name="image" v-model="file.footerLogo" @change="onFileChange($event, 'footerLogo')"
+                            class="form-control" type="file" id="footer-logo" accept="image/png, image/jpeg" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="footer-color" class="form-label">
+                            {{ $t('footer_color') }} {{ $t('select').toLowerCase() }}
+                        </label>
+                        <input type="color" v-model="formData.footerBgColor" class="form-control form-control-color"
+                            id="footer-color">
+                    </div>
                 </div>
             </div>
             <hr class="hr" />
@@ -283,8 +301,8 @@ async function get(id) {
                 </div>
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">{{ $t('account_name') }}</span>
-                    <Field name="site-twitter" v-model="formData.twitterName" type="text" class="form-control" id="site-twitter"
-                        rules="" />
+                    <Field name="site-twitter" v-model="formData.twitterName" type="text" class="form-control"
+                        id="site-twitter" rules="" />
                 </div>
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">{{ $t('account_address') }}</span>

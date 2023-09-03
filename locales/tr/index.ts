@@ -90,6 +90,8 @@ export default {
   account_name: "Hesap Adı",
   account_address: "Hesap Adresi",
   do_you_see: "Görünsün mü",
+  header_color: "Üst başlık rengi",
+  footer_color: "Alt başlık rengi",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",

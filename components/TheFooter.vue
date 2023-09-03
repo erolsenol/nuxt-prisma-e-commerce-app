@@ -12,8 +12,11 @@ let footerLogo = ref({})
 let site = ref({})
 let categories = ref([])
 
-function pageChange(to, route = "", item) {
+const footerColor = computed(() => {
+   return site.value?.footerBgColor || 'var(--bs-gray-dark)'
+})
 
+function pageChange(to, route = "", item) {
    if (route && item) {
       router.push({ path: `/${route}/${to}`, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
@@ -134,18 +137,22 @@ const headerItems = [
                      </div>
                      <span class="ms-2">{{ address }}</span>
                   </li>
-                  <li class="list-group-item d-flex flex-row justify-content-around">
-
-                     <a href="https://tr-tr.facebook.com/" target="_blank">
+                  <li class="list-group-item p-2 d-flex flex-row justify-content-start mt-2">
+                     <NuxtLink v-if="site.facebookShow" href="https://tr-tr.facebook.com/" target="_blank"
+                        class="d-flex flex-column align-items-center me-3">
                         <Icon name="fa:facebook-square" color="white" size="30" />
-                     </a>
-                     <a href="https://www.instagram.com/" target="_blank">
+                        <span class="mt-2">{{ site.facebookName }}</span>
+                     </NuxtLink>
+                     <NuxtLink v-if="site.instagramShow" href="https://www.instagram.com/" target="_blank"
+                        class="d-flex flex-column align-items-center me-3">
                         <Icon name="fa:instagram" color="white" size="30" />
-                     </a>
-                     <a href="https://twitter.com/" target="_blank">
+                        <span class="mt-2">{{ site.instagramName }}</span>
+                     </NuxtLink>
+                     <NuxtLink v-if="site.twitterShow" href="https://twitter.com/" target="_blank"
+                        class="d-flex flex-column align-items-center">
                         <Icon name="fa:twitter" color="white" size="30" />
-                     </a>
-
+                        <span class="mt-2">{{ site.twitterName }}</span>
+                     </NuxtLink>
                   </li>
                </ul>
             </div>
@@ -186,11 +193,14 @@ const headerItems = [
 }
 
 .footer {
+
+
    .footer-info {
       max-width: 20rem;
 
       .list-group-item {
-
+         background-color: v-bind('footerColor') !important;
+         border: 1px solid v-bind('footerColor');
 
          .icon {
             width: 2rem;
@@ -201,6 +211,19 @@ const headerItems = [
             text-transform: uppercase;
             line-height: 1.6rem;
          }
+
+         a {
+            text-decoration: none;
+            color: var(--bs-white);
+         }
+      }
+
+   }
+
+   .list-group {
+      .list-group-item {
+         background-color: v-bind('footerColor') !important;
+         border: 1px solid v-bind('footerColor');
       }
    }
 
@@ -211,7 +234,10 @@ const headerItems = [
 
       .list-group-item {
          padding: 5px 10px;
+
       }
    }
+
+   background-color: v-bind('footerColor') !important;
 }
 </style>

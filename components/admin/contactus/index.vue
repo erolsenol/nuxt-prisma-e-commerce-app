@@ -45,6 +45,7 @@ async function getAll(page) {
     const { data } = await useFetch('api/contactus', config)
 
     if (data.value.status) {
+        console.log("12312312 getAllll");
         rows.value = data.value.data
         paginate = data.value.paginate
     } else {
@@ -77,7 +78,6 @@ async function getAll(page) {
                         </label>
                     </div>
                 </div>
-
             </div>
 
             <div class="contact-us-list-filter-container d-flex flex-row collapse">
@@ -97,7 +97,6 @@ async function getAll(page) {
                     <label for="filter-description-en" class="form-label">{{ $t('phone') }}</label>
                     <input type="text" v-model="filter.phone" class="form-control" id="filter-description-en">
                 </div>
-
             </div>
         </div>
 
@@ -109,9 +108,9 @@ async function getAll(page) {
         </div>
 
         <template v-for="(item, index) in rows" :key="index">
-            <ContactusItem :form="item" />
+            {{ item.readed }}
+            <ContactusItem :form="item" @getAll="getAll" @update="(e) => (rows[index] = e)" />
         </template>
-
 
         <div class="d-flex flex-row justify-content-end mt-4">
             <Pagination v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />
