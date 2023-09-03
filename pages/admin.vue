@@ -32,7 +32,7 @@ const tabs = [
     <div class="row">
       <div class="col col-md-2">
         <div class="list-group">
-          <button type="button" class="list-group-item py-3 list-group-item-action d-inlinne-flex" @click="active = index"
+          <button type="button" class="list-group-item py-3 my-1 border-2 rounded list-group-item-action d-inlinne-flex" @click="active = index"
             :class="`${active == index ? 'active' : ''}`" :aria-current="`${active == index ? 'true' : ''}`"
             v-for="(tab, index) in tabs" :key="index">
             <Icon name="ant-design:double-right-outlined" size="20" />
