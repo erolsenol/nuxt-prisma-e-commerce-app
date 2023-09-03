@@ -53,27 +53,34 @@ async function get(id) {
 <template>
     <div class="contact-us-item card mt-3 border-1 border-primary">
         <div class="card-body position-relative">
-            <div class="position-absolute text-end d-flex flex-row" style="max-width: 4rem; right: 4rem; top: 15px;">
-                <div @click="updateItem({ id: props.form.id, readed: !props.form.readed })">
-                    <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40"
-                        height="40" fill="#c96161" />
-                    <BootstrapIconEnvelopeOpenFill v-else class="mail-icon position-relative me-4" width="40" height="40"
-                        fill="#6a98f6" />
+            <div class="d-flex flex-row align-items-center">
+                <div>
+                    <Icon name="majesticons:chat-2" class="me-2" size="30" />
+                    <strong class="fs-6 me-1">{{ $t('name') }}:</strong> <span class="fs-6 me-5 text-break">
+                        {{ props.form.name }}
+                    </span>
                 </div>
-                <div @click="updateItem({ id: props.form.id, deleted: !props.form.deleted })">
-                    <BootstrapIconTrash v-if="!props.form.deleted" class="mail-icon position-relative me-4" width="40"
-                        height="40" fill="#c96161" />
-                    <BootstrapIconArrow90degLeft v-else class="mail-icon position-relative me-4" width="40" height="40"
-                        fill="#6a98f6" />
+                <strong class="fs-6 me-1">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5 text-break">
+                    {{ props.form.surname }}
+                </span>
+                <strong class="fs-6 me-1">{{ $t('phone') }}:</strong> <span class="fs-6 me-5 text-break">
+                    {{ props.form.phone }}
+                </span>
+                <div class="position-relative right-0  d-flex flex-row justify-content-end">
+                    <div @click="updateItem({ id: props.form.id, readed: !props.form.readed })">
+                        <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40"
+                            height="40" fill="#c96161" />
+                        <BootstrapIconEnvelopeOpenFill v-else class="mail-icon position-relative me-4" width="40"
+                            height="40" fill="#6a98f6" />
+                    </div>
+                    <div @click="updateItem({ id: props.form.id, deleted: !props.form.deleted })">
+                        <BootstrapIconTrash v-if="!props.form.deleted" class="mail-icon position-relative me-4" width="40"
+                            height="40" fill="#c96161" />
+                        <BootstrapIconArrow90degLeft v-else class="mail-icon position-relative me-4" width="40" height="40"
+                            fill="#6a98f6" />
+                    </div>
                 </div>
             </div>
-            <p>
-                <Icon name="majesticons:chat-2" class="me-2" size="30" />
-                <span><font-awesome-icon size="30" icon="fa-solid fa-envelope" /></span>
-                <strong class="fs-6">{{ $t('name') }}:</strong> <span class="fs-6 me-5">{{ props.form.name }} </span>
-                <strong class="fs-6">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5">{{ props.form.surname }}</span>
-                <strong class="fs-6">{{ $t('phone') }}:</strong> <span class="fs-6 me-5">{{ props.form.phone }}</span>
-            </p>
             <hr class="my-1" />
             <Icon name="majesticons:mail" class="me-2" size="30" /> <strong class="fs-6">{{ $t('email') }}:</strong> <span
                 class="fs-6 me-5">{{ props.form.email }}</span>

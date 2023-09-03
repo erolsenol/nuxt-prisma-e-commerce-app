@@ -30,17 +30,18 @@ const tabs = [
 <template>
   <div class="container admin">
     <div class="row">
-      <div class="col col-md-2">
+      <div class="col-md-3 col-sm-4 d-sm-flex flex-sm-column">
         <div class="list-group">
-          <button type="button" class="list-group-item py-3 my-1 border-2 rounded list-group-item-action d-inlinne-flex" @click="active = index"
-            :class="`${active == index ? 'active' : ''}`" :aria-current="`${active == index ? 'true' : ''}`"
-            v-for="(tab, index) in tabs" :key="index">
+          <button type="button"
+            class="list-group-item py-3 my-1 border-2 border-secondary rounded list-group-item-action d-inlinne-flex"
+            @click="active = index" :class="`${active == index ? 'active' : ''}`"
+            :aria-current="`${active == index ? 'true' : ''}`" v-for="(tab, index) in tabs" :key="index">
             <Icon name="ant-design:double-right-outlined" size="20" />
             {{ $t(tab) }}
           </button>
         </div>
       </div>
-      <div class="col-9 col-md-10">
+      <div class="col-md-9 col-sm-8 cols-12">
         <div class="products" v-if="active == 0">
           <div class="accordion mb-3" id="accordionProduct">
             <div class="accordion-item">
@@ -176,7 +177,7 @@ const tabs = [
 .admin {
   .list-group {
     .list-group-item {
-      
+
 
       // &::before {
       //   content: ".";
