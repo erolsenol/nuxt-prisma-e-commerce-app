@@ -11,27 +11,14 @@ export default defineEventHandler(async (event) => {
     status: false,
   };
 
-  const { title, content, productId } = await readBody(event);
+  const body = await readBody(event);
 
-  // locale
-  // title
-  // content
-  // image
-
-  console.log("title",title);
-  console.log("content",content);
-
-  if (!title || !content || !productId) {
+  if (!body.title || !body.content || !body.productId || !body.username) {
     response.error = "cannot be empty";
     return response;
   }
 
-  const data = {
-    title: title,
-    content: content,
-    productId: productId,
-  };
-  const res = await comment.post(data);
+  const res = await comment.post(body);
 
   if (res.id) {
     response.data = res;

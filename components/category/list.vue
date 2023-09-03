@@ -112,14 +112,14 @@ function tooltipText(arr) {
           <label for="filter-description-en" class="form-label">{{ $t('description_en') }}</label>
           <input type="text" v-model="filter.description_en" class="form-control" id="filter-description-en">
         </div>
-
       </div>
     </div>
+    
     <div class="filter-item mb-3 text-end d-flex flex-row justify-content-between">
       <h5 class="ps-1">{{ $t('category') }} {{ $t('list') }}</h5>
       <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
     </div>
-    <table class="table table-hover table-striped ">
+    <table class="table table-responsive table-hover table-striped ">
       <thead>
         <tr class="table-light">
           <th scope="col">{{ $t('order') }}</th>
@@ -141,15 +141,7 @@ function tooltipText(arr) {
           <td>{{ row.description }}</td>
           <td>{{ row.description_en }}</td>
           <td class="text-center">
-            <Tooltip text="123123123">
-              <template v-slot:content>
-                <h6>
-                  <span class="badge bg-secondary">
-                    {{ row.subCategory?.length }}
-                  </span>
-                </h6>
-              </template>
-            </Tooltip>
+            <TableItemsCountBadge :count="row.subCategory?.length" />
           </td>
           <td>
             <div class="btn-group dropstart">
@@ -175,7 +167,7 @@ function tooltipText(arr) {
     </table>
     <div class="d-flex flex-row justify-content-between">
       <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('category_get') }}</button>
-      <Pagination :paginate="paginate" @page="getAll" />
+      <Pagination v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />
     </div>
 
     <div class="modal fade" id="categoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

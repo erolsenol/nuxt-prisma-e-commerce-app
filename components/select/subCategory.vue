@@ -14,22 +14,40 @@ const { $qs } = useNuxtApp()
 
 let items = ref([]);
 let innerValue = ref(-1);
+const filter = reactive({})
 
 watch(() => innerValue.value, async (newVal) => {
     emit('value:update', newVal)
 }, { deep: true })
 
-let { value } = defineProps({
+watch(() => props.value, async (newVal) => {
+    innerValue.value = newVal
+})
+
+watch(() => props.categoryId, async (newVal) => {
+    if(newVal < 0) {
+        delete filter.categoryId
+    }else {
+        filter.categoryId = newVal
+    }
+    get()
+})
+
+let props = defineProps({
     value: Number,
+    categoryId: Number,
 })
 
 onMounted(() => {
-    get()
+    setTimeout(() => {
+        get()
+    }, 150);
 });
 
 async function get() {
     const config = {
         params: {
+            filter:filter,
             all: "1"
         },
         paramsSerializer: (params) => $qs.stringify(params, { encode: false })

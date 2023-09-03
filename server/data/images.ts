@@ -25,6 +25,30 @@ export async function getImage(id: Number) {
   return response;
 }
 
+export async function getImageWhere(where) {
+  const response = await prisma.image.findUnique({
+    where: where,
+    include: {
+      product: true,
+      pageContent: true,
+    },
+  });
+  return response;
+}
+
+export async function getImageOwnerName(name: string) {
+  const response = await prisma.image.findMany({
+    where: {
+      ownerName: name
+    },
+    include: {
+      product: true,
+      pageContent: true,
+    },
+  });
+  return response;
+}
+
 export async function getImageWithProductId(id) {
   const response = await prisma.image.findMany({
     where: {
@@ -76,15 +100,4 @@ export async function deleteImage(id) {
   })
 
   return deleteImage
-}
-
-export async function createManyImage() {
-  return await prisma.image.createMany({
-    data: [
-      { firstName: "test1", lastName: "last1" },
-      { firstName: "test2", lastName: "last2" },
-      { firstName: "test3", lastName: "last3" },
-    ],
-    skipDuplicates: true, // Skip 'Bobo'
-  });
 }

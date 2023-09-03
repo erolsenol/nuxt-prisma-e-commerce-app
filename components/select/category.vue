@@ -15,19 +15,22 @@ const { $qs } = useNuxtApp()
 let items = ref([]);
 let innerValue = ref(-1);
 
-let { value } = defineProps({
+let props = defineProps({
     value: Number,
 })
 
 watch(() => innerValue.value, async (newVal) => {
     emit('value:update', newVal)
 }, { deep: true })
-watch(() => value, async (newVal) => {
-    emit('props.value', newVal)
-}, { deep: true })
+
+watch(() => props.value, async (newVal) => {
+    innerValue.value = newVal
+})
 
 onMounted(() => {
-    get()
+    setTimeout(() => {
+        get()
+    }, 150);
 });
 
 async function get() {
@@ -65,5 +68,16 @@ async function get() {
                 </template>
             </select>
         </div>
+
+        <!-- // Datalist Ekle
+        <label for="exampleDataList" class="form-label">Datalist example</label>
+        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+        <datalist id="datalistOptions">
+            <option value="San Francisco"></option>
+            <option value="New York"></option>
+            <option value="Seattle"></option>
+            <option value="Los Angeles"></option>
+            <option value="Chicago"></option>
+        </datalist> -->
     </div>
 </template>

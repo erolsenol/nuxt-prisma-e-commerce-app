@@ -17,10 +17,17 @@ export default defineNuxtConfig({
     "nuxt-snackbar",
     "@vee-validate/nuxt",
     "@pinia/nuxt",
-    "nuxt-bootstrap-icons"
+    "nuxt-bootstrap-icons",
   ],
   app: {
-    pageTransition: { name: "page", mode: "out-in" },
+    pageTransition: {
+      name: 'fade',
+      mode: 'out-in' // default
+    },
+    layoutTransition: {
+      name: 'slide',
+      mode: 'out-in' // default
+    }
   },
   components: [
     {
@@ -68,6 +75,7 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://example.com",
       siteName: "Awesome Site",
       siteDescription: "Welcome to my awesome site!",
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       language: "tr", // prefer more explicit language codes like `en-AU` over `en`
     },
   },

@@ -10,6 +10,7 @@ import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
 const emit = defineEmits(['update', 'get'])
 
+const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
@@ -19,6 +20,8 @@ const schema = object().shape({
     content: string().required(),
     image: array().min(0),
 });
+
+let imageInput = ref([])
 
 const props = defineProps({
     type: String,
@@ -33,20 +36,24 @@ watch(() => props.formId, async (newVal) => {
     }
 })
 
+const disabled = computed(() => {
+    return ['delete', 'show'].includes(props.type)
+})
+
 const imageNames = ref([])
 const images = ref([])
 
-async function formClear() {
-    return new Promise((resolve, reject) => {
-        imageNames.value = []
-        images.value = []
-        product.value.name = null
-        product.value.title = null
-        product.value.content = null
-        resolve(true)
-    })
-
-}
+const computedImage = computed(() => {
+    if (formData.images && images) {
+        return [...formData.images, images]
+    } else if (formData.images) {
+        return formData.images
+    }
+    else if (images) {
+        return images
+    }
+    return []
+})
 
 async function fileToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -65,54 +72,93 @@ async function onFileChange(e) {
     if (props.type == 'update') {
         id = formData.value.id
     }
+    images.value = []
 
     for (let index = 0; index < files.length; index++) {
         const file = files[index];
         const imageData = await fileToBase64(file)
-        const { data } = await useFetch("/api/image", {
-            method: "post",
-            body: {
-                ownerName: "productId",
-                ownerId: id,
-                images: [imageData]
-            },
-        }).catch((error) => {
-            console.error(error);
-        });
+        images.value.push(imageData)
     }
-
-    if (props.type == 'update') {
-        get(id)
-    }
-
 }
 
-async function save(event) {
+async function save(e, { resetForm }) {
     console.log("save");
 
     const bodyData = { ...formData.value }
 
     const keys = Object.keys(bodyData)
     keys.forEach(key => {
-        if (typeof bodyData[key] === "object") {
+        if (typeof bodyData[key] === "object" || bodyData[key] === -1) {
             delete bodyData[key]
         }
     })
+
+    const method = props.type == "create" ? "post" : props.type == "update" ? 'put' : props.type == "delete" ? 'delete' : ''
+
     const { data, pending, error, refresh } = await useFetch("/api/product", {
-        method: "put",
+        method: method,
         body: bodyData,
     }).catch((error) => {
         console.error(error);
-    });
-    if (!data.value.status) {
-        console.log("Ürün Kaydedilemedi");
         snackbar.add({
             type: "error",
-            text: "Ürün Kaydedilemedi",
+            text: t(`api.error.same_error`, [t('product')]),
+        });
+    });
+    console.log("data.value.status", data.value.status);
+    if (!data.value.status) {
+
+        snackbar.add({
+            type: "error",
+            text: t(`api.error.${data.value.error}`, [t('product')]),
         });
         return
+    } else {
+
+        const { imageData = data } = await useFetch("/api/image", {
+            method: "post",
+            body: {
+                ownerName: "productId",
+                ownerId: data.value.data.id,
+                images: images.value
+            },
+        }).catch((error) => {
+            console.error(error);
+        });
+
+        if (imageData.value.status) {
+            if (props.type == 'update') {
+                get(id)
+            }
+
+            resetForm()
+            imageInput.value = []
+            formData.value.categoryId = -1
+            formData.value.subCategoryId = -1
+            if (props.type !== "create") {
+                const closeModal = document.querySelector('#close-modal')
+                closeModal?.click()
+                emit('getAll')
+                emit('formId:reset', -1)
+
+                snackbar.add({
+                    type: "success",
+                    text: t('api.success', [t('product')]),
+                });
+                return
+            }
+
+            snackbar.add({
+                type: "success",
+                text: t('api.created', [t('product')]),
+            });
+        } else {
+            snackbar.add({
+                type: "error",
+                text: t('api.error.same_error', [t('image')]),
+            });
+        }
     }
-    formData.value = data.value.data
 }
 
 async function get(id) {
@@ -164,8 +210,11 @@ async function removeImage(id) {
 <template>
     <div class="product-form">
         <Form @submit="save" :validation-schema="schema">
+            <SelectCategory :value="formData.categoryId" @value:update="(e) => formData.categoryId = e" />
+            <SelectSubCategory :categoryId="formData.categoryId" :value="formData.subCategoryId"
+                @value:update="(e) => formData.subCategoryId = e" />
             <div class="mb-3">
-                <label for="product-form-name" class="form-label">Ürün Adı</label>
+                <label for="product-form-name" class="form-label">{{ $t('product_name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="name" v-model="formData.name" type="text" class="form-control" id="product-form-name"
@@ -179,7 +228,7 @@ async function removeImage(id) {
                 </div>
             </div>
             <div class="mb-3">
-                <label for="product-form-title" class="form-label">Ürün Başlığı</label>
+                <label for="product-form-title" class="form-label">{{ $t('product_title') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="title" rules="required" v-model="formData.title" type="text" class="form-control"
@@ -193,7 +242,7 @@ async function removeImage(id) {
                 </div>
             </div>
             <div class="mb-3">
-                <label for="product-content" class="form-label">Ürün Açıklaması</label>
+                <label for="product-content" class="form-label">{{ $t('product_description') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="content" rules="required" v-model="formData.content" type="text" class="form-control"
@@ -207,8 +256,11 @@ async function removeImage(id) {
                 </div>
             </div>
             <div class="product-form-slide mb-3">
-                <span class="">Görsel Sayısı {{ formData.images?.length }}</span>
-                <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
+                <template v-if="computedImage?.length > 0">
+                    <span class="">{{ $t('image_count') }} {{ computedImage?.length }}</span>
+
+                    <ImageSwiper :images="computedImage?.map(e => e.image)" :imageNames="computedImage?.map(e => e.name)" />
+                    <!-- <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
                     :effect="'creative'" :autoplay="{ delay: 5000, disableOnInteraction: true, }" :creative-effect="{
                         prev: { shadow: false, translate: ['-20%', 0, -1], },
                         next: { translate: ['100%', 0, 0], },
@@ -219,7 +271,7 @@ async function removeImage(id) {
                                 <button type="button" @click="removeImage(image.id)"
                                     class="btn btn-danger float-end px-3 d-flex align-items-center justify-content-center">
                                     <Icon name="material-symbols:delete-outline" color="white" size="22" class="me-2" />
-                                    Sil
+                                    {{ $t('delete') }}
                                 </button>
                             </div>
                             <nuxt-img :src="`/images/${image.name}`" class="card-img-top img-fluid" style="width: 20rem" />
@@ -232,18 +284,21 @@ async function removeImage(id) {
                         </div>
                     </SwiperSlide>
 
-                </Swiper>
+                </Swiper> -->
+                </template>
             </div>
             <div class="mb-3">
-                <label for="product-image" class="form-label">Görsel Yükle</label>
-                <Field name="image" rules="" @change="onFileChange" class="form-control" type="file" id="product-image"
-                    accept="image/png, image/jpeg" multiple />
+                <label for="product-image" class="form-label">{{ $t('upload_image') }}</label>
+
+                <Field name="image" rules="" v-model="imageInput" @change="onFileChange" class="form-control" type="file"
+                    id="product-image" accept="image/png, image/jpeg" multiple />
                 <ErrorMessage class="invalid" name="image" />
             </div>
             <hr class="hr" />
             <div class="product-form-footer d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
-                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productFormModal">Kapat</button>
+                <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal"
+                    data-bs-target="#productFormModal">{{ $t('close') }}</button>
             </div>
 
         </Form>

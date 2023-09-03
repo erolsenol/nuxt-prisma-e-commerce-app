@@ -1,12 +1,16 @@
 import prisma from "./prisma";
 
-async function getAll({
-  skip = 0,
-  take = 20,
-}): Promise<interfaceGetProducts[]> {
+async function getAll({ skip = 0, take = 20 }, where = {}): Promise<interfaceGetProducts[]> {
   const response = await prisma.contactUs.findMany({
     skip,
     take,
+    where: {
+      deleted: false,
+      ...where
+    },
+    include: {
+      user: true
+    }
   });
   return response;
 }
@@ -16,6 +20,9 @@ async function get(id: Number) {
     where: {
       id,
     },
+    include: {
+      user: true
+    }
   });
   return response;
 }
@@ -23,6 +30,9 @@ async function get(id: Number) {
 async function post(data: interfaceProduct) {
   const response = await prisma.contactUs.create({
     data: data,
+    include: {
+      user: true
+    }
   });
 
   return response;
@@ -34,6 +44,9 @@ async function update(id: String, data: interfaceProduct) {
       id: id,
     },
     data: data,
+    include: {
+      user: true
+    }
   });
 
   return response;

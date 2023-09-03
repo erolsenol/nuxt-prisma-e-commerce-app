@@ -1,28 +1,40 @@
-import comments from "../../data/comments";
+import contactus from "../../data/contactus";
+import { definePaginate } from "~/server/utils/utils";
 
 export default defineEventHandler(async (event) => {
   let response = {
     status: false
   }
-  const query = getQuery(event);
-  console.log("query", query);
+  const { paginate = "", filter = "", userId = "" } = getQuery(event)
 
-  const skip: Number = Number(query.skip || 0) as number;
-  const take: Number = Number(query.take || 20) as number;
-  const name: String = query.name || "" as string;
+  let paginateObj = {}, filterObj = {}
 
-  let items, total: Number
-
-  items = await comments.getAll({ skip: Number(skip), take: Number(take) })
-  total = await comments.count({})
-
-  if (items) {
-    response.data = items
-    response.paginate = {
-      totalPage: Math.ceil(total / take),
-      totalCount: total
-    }
-    response.status = true
+  if (paginate) {
+    paginateObj = JSON.parse(paginate)
   }
+  if (filter) {
+    filterObj = JSON.parse(filter)
+  }
+
+  const where = {}
+  const keys = Object.keys(filterObj)
+  keys.forEach(i => {
+    if (filterObj[i]) {
+      if (i === 'deleted' || i === 'readed') {
+        where[i] = filterObj[i]
+      } else {
+        where[i] = { contains: filterObj[i] }
+      }
+    }
+  })
+
+  let items = await contactus.getAll(paginateObj, where)
+  if (items && items.length > 0) {
+    const total = await contactus.count(where)
+    response.data = items;
+    response.paginate = definePaginate(paginateObj, total)
+    response.status = true;
+  }
+
   return response
 });

@@ -7,20 +7,24 @@ export default {
 <script setup>
 import { ref, toRef, computed } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
-import { array, number, string,  object } from 'yup';
+import * as Yup from 'yup';
 
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
 
-const schema = object().shape({
-    firstname: string(),
-    lastname: string(),
-    username: string(),
-    age: number(),
-    email: string(),
-    password0: string().min(8).required(),
-    password1: string()
-        .oneOf([ref('password0'), null], 'Passwords must match')
+const storage = useStorage()
+
+console.log("storage", storage);
+
+const schema = Yup.object().shape({
+    firstname: Yup.string(),
+    lastname: Yup.string(),
+    username: Yup.string(),
+    age: Yup.number(),
+    email: Yup.string(),
+    password0: Yup.string().min(8).required(),
+    password1: Yup.string()
+        .oneOf([Yup.ref('password0'), null], t('validation.passwords_must_match'))
 });
 
 const storeUser = useUser()
@@ -43,18 +47,8 @@ const form = ref({
 })
 const snackbar = useSnackbar();
 
-function formClear() {
-    form.value.firstname = null
-    form.value.lastname = null
-    form.value.username = null
-    form.value.age = null
-    form.value.email = null
-    form.value.password0 = null
-    form.value.password1 = null
-}
+async function submit(e, { resetForm }) {
 
-async function submit() {
-    console.log("type", type.value);
     if (type.value == 'login') {
         if (!form.value.email) {
             snackbar.add({
@@ -77,7 +71,7 @@ async function submit() {
             },
             paramsSerializer: (params) => $qs.stringify(params, { encode: false })
         };
-        const { data, pending, error, refresh } = await useFetch("/api/user", {
+        const { data, pending, error, refresh } = await useFetch("/api/user/login", {
             ...config,
         }).catch((error) => {
             console.error(error);
@@ -86,54 +80,58 @@ async function submit() {
         if (data.value.status) {
             snackbar.add({
                 type: "success",
-                text: t('success.user_created'),
+                text: t('success.user_login'),
             });
             storeUser.login(data.value.data)
-            console.log("loginModal", loginModal);
+
+            storage.set("user", data.value.data.user)
+            storage.set("access_token", data.value.data.access_token)
+            storage.set("has_login", true)
+
             loginModal.value.click()
-            formClear()
+            resetForm()
             return
         } else {
-            if (data.value.error === "your password is wrong") {
+            if (data.value.error == "user_not_created") {
                 snackbar.add({
                     type: "error",
-                    text: t('your_password_wrong'),
+                    text: t('api.error.user_not_created'),
                 });
                 return
             }
-            console.log("giriş yapılamnadı");
             snackbar.add({
                 type: "error",
-                text: t('login_failed'),
+                text: t('api.error.login_failed'),
             });
+            return
         }
 
     } else if (type.value == 'sing_up') {
-        if (form.value.password0 !== form.value.password1) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.password_not_match'),
-            });
-            return
-        } else if (form.value.password0.length < 8) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.password_min_length_8'),
-            });
-            return
-        } else if (!form.value.email) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.email_required'),
-            });
-            return
-        } else if (!form.value.username) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.username_required'),
-            });
-            return
-        }
+        // if (form.value.password0 !== form.value.password1) {
+        //     snackbar.add({
+        //         type: "error",
+        //         text: t('errors.password_not_match'),
+        //     });
+        //     return
+        // } else if (form.value.password0.length < 8) {
+        //     snackbar.add({
+        //         type: "error",
+        //         text: t('errors.password_min_length_8'),
+        //     });
+        //     return
+        // } else if (!form.value.email) {
+        //     snackbar.add({
+        //         type: "error",
+        //         text: t('errors.email_required'),
+        //     });
+        //     return
+        // } else if (!form.value.username) {
+        //     snackbar.add({
+        //         type: "error",
+        //         text: t('errors.username_required'),
+        //     });
+        //     return
+        // }
 
         form.value.password = form.value.password0
         const body = {
@@ -157,9 +155,13 @@ async function submit() {
                 text: t('success.user_created'),
             });
             storeUser.login(data.value.data)
+            storage.set("user", data.value.data.user)
+            storage.set("access_token", data.value.data.access_token)
+            storage.set("has_login", true)
+
             console.log("loginModal", loginModal);
             loginModal.value.click()
-            formClear()
+            resetForm()
             return
         } else {
             if (data.value.error === "email address is already registered") {
@@ -232,7 +234,8 @@ async function submit() {
             </div>
             <div class="border-1 border-bottom mb-3"></div>
             <div class="text-end">
-                <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal" ref="loginModal">Close</button>
+                <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal" ref="loginModal">{{ $t('close')
+                }}</button>
                 <button type="submit" class="btn btn-primary">{{ type ==
                     'login' ?
                     $t('login') :

@@ -1,25 +1,23 @@
-import pageAbout from "../../data/pageContents";
+import comments from "../../data/comments";
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
-  const id: Number = Number(query.id) as number;
-
-  let response = {
+  let response: response = {
+    data: [],
     status: false,
   };
 
-  if (!id) {
+  const body = await readBody(event)
+
+  if (!body.id) {
     response.error = "id cannot be empty";
     return response;
   }
 
-  const data = await pageAbout.remove(id);
+  const res = await comments.remove(body.id, !body.deleted);
 
-  if (!data.id) {
-    response.error = "about page "+ id + " not found";
-  }else {
-    response.data = data
-    response.status = true
+  if (res) {
+    response.data = res;
+    response.status = true;
   }
 
   return response;

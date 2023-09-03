@@ -1,20 +1,68 @@
+<script>
+export default {
+   name: "TheHeader",
+};
+</script>
 <script setup>
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import { useI18n, useLocalePath } from '#imports'
 import { setLocale } from '@vee-validate/i18n';
 
+const { $qs } = useNuxtApp()
 const { locale, locales } = useI18n()
 const router = useRouter()
 const storeUser = useUser()
-const switchLocalePath = useSwitchLocalePath()
+const storage = useStorage()
+let headerLogo = ref({})
+let site = ref({})
+
+const headerColor = computed(() => {
+   return site.value?.headerBgColor || 'var(--bs-gray-dark)'
+})
 
 function langChange(lang) {
    const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
    router.push(({ name: `${pathName}${lang}` }))
 }
 
-function pageChange(to) {
-   router.push({ name: `${to}___${locale.value}` })
+async function getHeaderLogo() {
+   const config = {
+      method: "get",
+      params: {
+         ownerName: "headerLogo"
+      },
+      paramsSerializer: (params) => qs.stringify(params, { encode: false })
+   };
+   const { data } = await useFetch("/api/image", config)
+   if (data.value.status) {
+      headerLogo.value = data.value.data
+   }
+}
+
+async function getSite() {
+   const config = {
+      method: "get",
+      params: {
+         id: "1",
+      },
+      paramsSerializer: (params) => $qs.stringify(params, { encode: false }),
+   };
+
+   const { data } = await useFetch("/api/site", config);
+   if (data.value.status) {
+      site.value = data.value.data
+   }
+}
+
+function pageChange(to, route = "", item) {
+
+   if (route && item) {
+      router.push({ path: `/${route}/${to}`, query: { id: item.id } })
+      // router.push({ name: `${route}-${to}___${locale.value}` })
+   }
+   else if (to) {
+      router.push({ name: `${to}___${locale.value}` })
+   }
 }
 
 const availableLocales = computed(() => {
@@ -26,7 +74,37 @@ function formTypeChange(str) {
 }
 function logout() {
    storeUser.logout()
+   storage.remove("user")
+   storage.remove("access_token")
+   storage.remove("has_login")
 }
+
+const categories = ref([])
+
+async function getCategory() {
+   const config = {
+      params: {
+         all: "1"
+      },
+      paramsSerializer: (params) => $qs.stringify(params, { encode: false })
+   };
+   const { data, pending, error, refresh } = await useFetch("/api/category").catch((error) => {
+      console.error(error);
+   });
+
+   if (data.value.status) {
+      categories.value = data.value.data
+   }
+}
+
+
+onMounted(() => {
+   setTimeout(async () => {
+      getCategory()
+      getHeaderLogo()
+      getSite()
+   }, 100);
+});
 
 const headerItems = [
    {
@@ -34,11 +112,12 @@ const headerItems = [
       to: "index"
    },
    {
-      text: "services",
-      to: null
+      text: "categories",
+      to: null,
+      dropdown: true
    },
    {
-      text: "news_and_publications",
+      text: "services",
       to: null
    },
    {
@@ -61,19 +140,40 @@ let loginFormType = ref("login")
 
 <template>
    <header class="header">
-      <div
-         class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+      <div class="container d-flex flex-wrap align-items-center justify-content-center 
+      justify-content-md-between py-3 mb-4">
+         <div class="bg-white">
+         </div>
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
-            <a @click="pageChange('index')" class="d-inline-flex cool-link link-body-emphasis text-decoration-none">
-               <NuxtImg class="logo" src="neva/logo.svg" />
+            <a @click="pageChange('index')" class="d-inline-flex link-body-emphasis text-decoration-none">
+               <template v-if="headerLogo.name">
+                  <NuxtImg class="logo" :src="`images/app/${headerLogo.name}`" />
+               </template>
+               <SpinnerGrow v-else color="secondary" size="1" />
             </a>
          </div>
+
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li class="" v-for="(item, index) in headerItems" :key="index">
-               <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2">
-                  {{ $t(item.text) }}
-               </NuxtLink>
-            </li>
+            <template v-for="(item, index) in headerItems" :key="index">
+               <li class="" :class="`${item.dropdown ? 'dropdown-toggle' : ''}`"
+                  :data-bs-toggle="`${item.dropdown ? 'dropdown' : ''}`">
+                  <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2"
+                     :class="`${router.currentRoute.value.name.includes(item.to) ? 'active' : ''}`">
+                     {{ $t(item.text) }}
+                  </NuxtLink>
+                  <template v-if="item.dropdown">
+                     <ul class="dropdown-menu">
+                        <template v-for="(item, index) in categories" :key="index">
+                           <li>
+                              <NuxtLink class="dropdown-item" @click="pageChange(item.name, 'category', item)">
+                                 {{ item.name.toUpperCase() }}
+                              </NuxtLink>
+                           </li>
+                        </template>
+                     </ul>
+                  </template>
+               </li>
+            </template>
          </ul>
          <div
             class="d-flex flex-row align-items-center justify-content-lg-end col-lg-4 col-md-5 col-sm-6 text-xl-end text-lg-start mt-xl-0 mt-lg-3 mt-md-3 me-0">
@@ -136,4 +236,8 @@ let loginFormType = ref("login")
    </header>
 </template>
 
-<style></style>
+<style lang="scss" scoped>
+   .header {
+      background-color: v-bind('headerColor') !important
+   }
+</style>

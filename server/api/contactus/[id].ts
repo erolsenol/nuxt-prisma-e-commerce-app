@@ -1,5 +1,4 @@
-import { getProduct } from "../../data/products";
-import { getImageWithProductId } from "../../data/images";
+import contactus from "../../data/contactus";
 
 export default defineEventHandler(async (event) => {
   let response = {
@@ -12,14 +11,12 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  
-  const product = await getProduct(id);
-  
-  if (product && product.id) {
+  const item = await contactus.get(id);
 
-    response.data = product;
+  if (item?.id) {
+    response.data = item;
     response.status = true;
-    return response;
   }
+
   return response;
 });

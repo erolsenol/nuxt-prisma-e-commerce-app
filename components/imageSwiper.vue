@@ -27,11 +27,10 @@ const { images } = defineProps({
             next: { translate: ['100%', 0, 0], },
         }">
         <SwiperSlide v-for="(image, index) in images" :key="index">
-            <div class="card rounded-0" style="width: 26rem;">
-                <nuxt-img :src="image" class="card-img-top rounded-2 rounded-bottom-0"
-                    style="width: 100%; height: 12rem;" />
+            <div class="card border-0 rounded-0" style="width: 100%; max-height: 20rem;">
+                <nuxt-img :src="image" style="max-height: 14rem;" class="img-fluid img-thumbnail mx-auto rounded-2 rounded-bottom-0"/>
                 <div class="card-body">
-                    <h5 class="card-title fs-5">
+                    <h5 class="card-title fs-5 text-center">
                         {{ $t('image_name') }}: {{ imageNames[index] }}
                     </h5>
                 </div>
@@ -39,3 +38,6 @@ const { images } = defineProps({
         </SwiperSlide>
     </Swiper>
 </template>
+
+<style>
+</style>

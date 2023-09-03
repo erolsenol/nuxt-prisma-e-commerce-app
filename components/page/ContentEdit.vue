@@ -98,14 +98,14 @@ async function save() {
             }]
         }
 
-        const response = await useFetch("/api/image", {
+        const {imgData = data} = await useFetch("/api/image", {
             method: "post",
             body: imageBody,
         }).catch((error) => {
             console.error(error);
         });
 
-        if (response.data.value.status) {
+        if (imgData.value.status) {
             console.log("Görsel Yüklendi");
             snackbar.add({
                 type: "success",
@@ -120,7 +120,7 @@ async function save() {
             });
         }
     } else {
-        if (data.value.error === "There is a product with the same name") {
+        if (data.value.error === "same_name") {
             snackbar.add({
                 type: "error",
                 text: "Aynı İsimle Ürün bulunuyor",
@@ -143,7 +143,7 @@ async function save() {
         <Form @submit="save" :validation-schema="schema">
             <div class="page-content-edit-language" :class="lang">
                 <div class="alert alert-primary py-1" role="alert">
-                    {{ $t('page_language') }}: {{ lang }}
+                    {{ $t(pageName) }} {{ $t('page_language') }}: {{ lang.toUpperCase() }}
                 </div>
                 <div class="mb-3">
                     <label for="title" class="form-label">{{ $t('title') }}</label>

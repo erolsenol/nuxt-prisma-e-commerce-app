@@ -13,7 +13,7 @@ const rows = ref([])
 const loading = ref(true)
 const paginate = ref({
   skip: 0,
-  take: 4,
+  take: 20,
 })
 const total = ref({
   count: 0,
@@ -116,7 +116,7 @@ function itemUpdate(val) {
 
 <template>
   <div class="product-list position-relative mb-5">
-    <table class="table table-hover table-striped" v-if="!loading">
+    <table class="table table-responsive table-hover table-striped" v-if="!loading">
       <thead>
         <tr class="table-light">
           <th scope="col">Id</th>

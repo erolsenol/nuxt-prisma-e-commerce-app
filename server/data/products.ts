@@ -19,18 +19,21 @@ interface interfaceProduct {
   // comments:  Comment[]
 }
 
-export async function getProducts({
-  skip = 0,
-  take = 20,
-}): Promise<interfaceGetProducts[]> {
+export async function getProducts({ skip = 0, take = 20 }, where = {}): Promise<interfaceGetProducts[]> {
   const response = await prisma.product.findMany({
     skip,
     take,
+    where: {
+      deleted: false,
+      ...where
+    },
     include: {
       images: true,
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
   return response;
@@ -46,6 +49,8 @@ export async function getProduct(id: Number) {
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
   return response;
@@ -61,6 +66,8 @@ export async function getProductByName(name: String) {
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
   return response;
@@ -85,17 +92,22 @@ export async function updateProduct(id: String, data: interfaceProduct) {
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
 
   return response;
 }
 
-export async function deleteProduct(id: Number) {
-  const deleteProduct = await prisma.product.delete({
+export async function deleteProduct(id: Number, deleted: boolean) {
+  const deleteProduct = await prisma.product.update({
     where: {
       id: id,
     },
+    data: {
+      deleted
+    }
   })
 
   return deleteProduct
@@ -109,13 +121,21 @@ export async function countProduct(where: Object) {
   return deleteProduct
 }
 
-export async function createManyProduct() {
-  return await prisma.product.createMany({
-    data: [
-      { firstName: "test1", lastName: "last1" },
-      { firstName: "test2", lastName: "last2" },
-      { firstName: "test3", lastName: "last3" },
-    ],
-    skipDuplicates: true, // Skip 'Bobo'
+export async function getProductsByCategory({
+  skip = 0,
+  take = 20,
+}): Promise<interfaceGetProducts[]> {
+  const response = await prisma.product.findMany({
+    skip,
+    take,
+    include: {
+      images: true,
+      comments: true,
+      star: true,
+      question: true,
+      subCategory: true,
+      category: true
+    },
   });
+  return response;
 }
