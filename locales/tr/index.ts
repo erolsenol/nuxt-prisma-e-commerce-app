@@ -31,6 +31,7 @@ export default {
   upload: "Yükle",
   image_name: "Görsel adı",
   image: "Görsel",
+  image_count: "Görsel sayısı",
   fill_form_completely: "Formu eksiksiz doldurunuz",
   product_add: "Ürün Ekle",
   product_name: "Ürün Adı",

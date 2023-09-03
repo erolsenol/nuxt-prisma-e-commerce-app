@@ -32,6 +32,7 @@ export default {
   upload: "Upload",
   image_name: "Image name",
   image: "Image",
+  image_count: "Image count",
   fill_form_completely: "Fill out the form completely",
   product_add: "Product Add",
   product_name: "Product Name",

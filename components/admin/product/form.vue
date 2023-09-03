@@ -43,17 +43,17 @@ const disabled = computed(() => {
 const imageNames = ref([])
 const images = ref([])
 
-async function formClear() {
-    return new Promise((resolve, reject) => {
-        imageNames.value = []
-        images.value = []
-        product.value.name = null
-        product.value.title = null
-        product.value.content = null
-        resolve(true)
-    })
-
-}
+const computedImage = computed(() => {
+    if (formData.images && images) {
+        return [...formData.images, images]
+    } else if (formData.images) {
+        return formData.images
+    }
+    else if (images) {
+        return images
+    }
+    return []
+})
 
 async function fileToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -78,9 +78,7 @@ async function onFileChange(e) {
         const file = files[index];
         const imageData = await fileToBase64(file)
         images.value.push(imageData)
-
     }
-
 }
 
 async function save(e, { resetForm }) {
@@ -258,8 +256,11 @@ async function removeImage(id) {
                 </div>
             </div>
             <div class="product-form-slide mb-3">
-                <span class="">Görsel Sayısı {{ formData.images?.length }}</span>
-                <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
+                <template v-if="computedImage?.length > 0">
+                    <span class="">{{ $t('image_count') }} {{ computedImage?.length }}</span>
+
+                    <ImageSwiper :images="computedImage?.map(e => e.image)" :imageNames="computedImage?.map(e => e.name)" />
+                    <!-- <Swiper :modules="[SwiperAutoplay, SwiperEffectCreative]" :slides-per-view="1" :loop="true"
                     :effect="'creative'" :autoplay="{ delay: 5000, disableOnInteraction: true, }" :creative-effect="{
                         prev: { shadow: false, translate: ['-20%', 0, -1], },
                         next: { translate: ['100%', 0, 0], },
@@ -270,7 +271,7 @@ async function removeImage(id) {
                                 <button type="button" @click="removeImage(image.id)"
                                     class="btn btn-danger float-end px-3 d-flex align-items-center justify-content-center">
                                     <Icon name="material-symbols:delete-outline" color="white" size="22" class="me-2" />
-                                    Sil
+                                    {{ $t('delete') }}
                                 </button>
                             </div>
                             <nuxt-img :src="`/images/${image.name}`" class="card-img-top img-fluid" style="width: 20rem" />
@@ -283,13 +284,14 @@ async function removeImage(id) {
                         </div>
                     </SwiperSlide>
 
-                </Swiper>
+                </Swiper> -->
+                </template>
             </div>
             <div class="mb-3">
                 <label for="product-image" class="form-label">{{ $t('upload_image') }}</label>
 
-                <Field name="image" rules="" v-model="imageInput" @change="onFileChange" class="form-control" type="file" id="product-image"
-                    accept="image/png, image/jpeg" multiple />
+                <Field name="image" rules="" v-model="imageInput" @change="onFileChange" class="form-control" type="file"
+                    id="product-image" accept="image/png, image/jpeg" multiple />
                 <ErrorMessage class="invalid" name="image" />
             </div>
             <hr class="hr" />

@@ -56,25 +56,31 @@ async function get(id) {
 <template>
     <div class="contact-us-item card mt-3 border-1 border-primary">
         <div class="card-body position-relative">
-            {{ props.form.readed }}
             <div class="position-absolute text-end" @click="read" style="max-width: 4rem; right: 0px; top: 10px;">
-                <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40" height="40"
-                    fill="#c96161" />
+                <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40"
+                    height="40" fill="#c96161" />
                 <BootstrapIconEnvelopeOpenFill v-else class="mail-icon position-relative me-4" width="40" height="40"
                     fill="#6a98f6" />
             </div>
             <p>
+                <Icon name="majesticons:chat-2" class="me-2" size="30" />
                 <span><font-awesome-icon size="30" icon="fa-solid fa-envelope" /></span>
-
                 <strong class="fs-6">{{ $t('name') }}:</strong> <span class="fs-6 me-5">{{ props.form.name }} </span>
                 <strong class="fs-6">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5">{{ props.form.surname }}</span>
                 <strong class="fs-6">{{ $t('phone') }}:</strong> <span class="fs-6 me-5">{{ props.form.phone }}</span>
             </p>
             <hr class="my-1" />
-            <strong class="fs-6">{{ $t('email') }}:</strong> <span class="fs-6 me-5">{{ props.form.email }}</span>
+            <Icon name="majesticons:mail" class="me-2" size="30" /> <strong class="fs-6">{{ $t('email') }}:</strong> <span
+                class="fs-6 me-5">{{ props.form.email }}</span>
             <hr class="my-1" />
-            <p class="fs-6 mt-3">{{ props.form.title }}</p>
-            <p class="fs-6">{{ props.form.content }} </p>
+
+            <p class="fs-6 mt-3">
+                <Icon name="majesticons:note-text" class="me-2" size="30" /> {{ props.form.title }}
+            </p>
+
+            <p class="fs-6">
+                {{ props.form.content }}
+            </p>
         </div>
     </div>
 </template>

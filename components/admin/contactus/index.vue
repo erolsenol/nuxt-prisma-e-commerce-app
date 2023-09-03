@@ -21,7 +21,9 @@ let paginate = reactive({
     totalCount: 0,
     totalPage: 0,
 })
-let filter = reactive({})
+let filter = reactive({
+    readed: false
+})
 
 const rows = ref([])
 
@@ -108,8 +110,7 @@ async function getAll(page) {
         </div>
 
         <template v-for="(item, index) in rows" :key="index">
-            {{ item.readed }}
-            <ContactusItem :form="item" @getAll="getAll" @update="(e) => (rows[index] = e)" />
+            <AdminContactusItem :form="item" @getAll="getAll" @update="(e) => (rows[index] = e)" />
         </template>
 
         <div class="d-flex flex-row justify-content-end mt-4">
