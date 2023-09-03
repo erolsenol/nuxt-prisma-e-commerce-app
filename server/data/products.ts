@@ -32,6 +32,8 @@ export async function getProducts({ skip = 0, take = 20 }, where = {}): Promise<
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
   return response;
@@ -47,6 +49,8 @@ export async function getProduct(id: Number) {
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
   return response;
@@ -62,6 +66,8 @@ export async function getProductByName(name: String) {
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
   return response;
@@ -86,6 +92,8 @@ export async function updateProduct(id: String, data: interfaceProduct) {
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
 
@@ -125,6 +133,8 @@ export async function getProductsByCategory({
       comments: true,
       star: true,
       question: true,
+      subCategory: true,
+      category: true
     },
   });
   return response;

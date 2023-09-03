@@ -8,6 +8,7 @@ export default {
 import { ref, reactive, onMounted } from "vue";
 const { $qs, $helper } = useNuxtApp()
 const { t } = useI18n();
+const { locale } = useI18n();
 
 const rows = ref([])
 const loading = ref(true)
@@ -175,6 +176,7 @@ function itemUpdate(val) {
           <th scope="col">{{ $t('name') }}</th>
           <th scope="col">{{ $t('title') }}</th>
           <th scope="col">{{ $t('content') }}</th>
+          <th scope="col">{{ $t('category') }}</th>
           <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
@@ -184,6 +186,7 @@ function itemUpdate(val) {
           <td>{{ row.name }}</td>
           <td>{{ row.title }}</td>
           <td>{{ row.content }}</td>
+          <td>{{ row?.category[`name${locale != 'tr' ? `_${locale}` : ''}`] }}</td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
