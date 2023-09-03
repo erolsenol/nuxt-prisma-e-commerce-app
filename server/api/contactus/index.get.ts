@@ -24,8 +24,6 @@ export default defineEventHandler(async (event) => {
     }
   })
 
-  console.log("where", where);
-
   let items = await contactus.getAll(paginateObj, where)
   if (items && items.length > 0) {
     const total = await contactus.count(where)

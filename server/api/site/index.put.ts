@@ -24,7 +24,9 @@ export default defineEventHandler(async (event) => {
   } else {
     const oldSite = await sites.get(body.id);
     if (oldSite && oldSite.id) {
-      const update = await sites.update(oldSite.id, { ...oldSite, ...body });
+      const updateData = { ...oldSite, ...body }
+      delete updateData.id
+      const update = await sites.update(oldSite.id, { ...updateData });
       if (update && update.id) {
         response.data = update;
         response.status = true;

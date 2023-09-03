@@ -134,6 +134,19 @@ const headerItems = [
                      </div>
                      <span class="ms-2">{{ address }}</span>
                   </li>
+                  <li class="list-group-item d-flex flex-row justify-content-around">
+
+                     <a href="https://tr-tr.facebook.com/" target="_blank">
+                        <Icon name="fa:facebook-square" color="white" size="30" />
+                     </a>
+                     <a href="https://www.instagram.com/" target="_blank">
+                        <Icon name="fa:instagram" color="white" size="30" />
+                     </a>
+                     <a href="https://twitter.com/" target="_blank">
+                        <Icon name="fa:twitter" color="white" size="30" />
+                     </a>
+
+                  </li>
                </ul>
             </div>
             <div class="col-6 col-sm-3  mb-3">

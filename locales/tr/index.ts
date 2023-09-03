@@ -87,6 +87,9 @@ export default {
   incoming_messages: "Gelen mesajlar",
   read: "Okundu",
   unread: "Okunmadı",
+  account_name: "Hesap Adı",
+  account_address: "Hesap Adresi",
+  do_you_see: "Görünsün mü",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",

@@ -133,7 +133,7 @@ async function getStar() {
           <span class="fs-3"> {{ item.title }}</span>
         </div>
         <div class="product-detail-content-name">
-          <p class="fs-6 text-secondary" > {{ item.name }}</p>
+          <p class="fs-6 text-secondary"> {{ item.name }}</p>
         </div>
 
         <div class="product-detail-content-price d-flex flex-row justify-content-between">
@@ -152,9 +152,9 @@ async function getStar() {
               <Icon class="product-detail-content-question-like" name="icon-park-outline:like"
                 :color="likeStatus ? 'red' : 'black'" size="36" style="cursor: pointer;" @click="sendStar">
               </Icon>
-              <span v-if="item.star.length > 0"
+              <span v-if="item.star?.length > 0"
                 class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
-                {{ item.star.length }}
+                {{ item.star?.length }}
 
               </span>
             </div>
@@ -162,9 +162,9 @@ async function getStar() {
               <Icon class="product-detail-content-question-like" name="majesticons:messages-line" :color="'black'"
                 size="36" style="cursor: pointer;" @click="sendStar">
               </Icon>
-              <span v-if="item.comments.length > 0"
+              <span v-if="item.comments?.length > 0"
                 class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
-                {{ item.comments.length }}
+                {{ item.comments?.length }}
 
               </span>
             </div>
@@ -172,8 +172,12 @@ async function getStar() {
 
           <span class="badge bg-secondary text-wrap py-3 px-3 fs-6">{{ $t('ask_question') }}</span>
         </div>
-        <div class="fs-6">
-          {{ item.content }}
+        <hr />
+        <div class="fs-6 overflow-y-auto" style="max-height: 13rem;">
+          <p>
+            {{ item.content }}
+          </p>
+
         </div>
         <!-- <div class="product-detail-content-start text-start mt-2" style="cursor: pointer;">
           <Icon name="icon-park-outline:like" color="black" size="30" style="cursor: pointer;" />

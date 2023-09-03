@@ -88,6 +88,9 @@ export default {
   incoming_messages:"Incoming messages",
   read:"Read",
   unread: "Okunmadı",
+  account_name: "Account Name",
+  account_address: "Account Address",
+  do_you_see: "Do you see",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",

@@ -87,7 +87,7 @@ onMounted(() => {
     <div class="container product-detail-comments">
         <div class="row mt-3">
             <template v-for="(comment, index) in comments" :key="index">
-                <div class="card px-0 my-2 border-1 border-primary-subtle">
+                <div class="card px-0 my-2 border-1 border-secondary-subtle">
                     <h5 class="card-header" v-if="comment.username">
                         <!-- <span class="fs-6">{{ $t('username') }}:</span> -->
                         <Icon name="ep:user-filled" color="gray" size="32" />

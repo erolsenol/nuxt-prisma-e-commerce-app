@@ -223,10 +223,89 @@ async function get(id) {
                 </div>
             </div>
 
-            <div class="product-form-footer d-flex justify-content-between">
+            <div class="border rounded border-secondary-subtle p-2">
+                <h6 class="mb-0 ms-2">
+                    <Icon name="fa:facebook-square" class="me-2" color="black" size="30" />
+                    Facebook
+                </h6>
+                <div class="filter-item form-switch mx-3 text-end">
+                    <input class="form-check-input me-2" role="switch" type="checkbox" v-model="formData.facebookShow"
+                        id="site-facebook-show">
+                    <label class="form-check-label" for="site-facebook-show">
+                        {{ $t('do_you_see') }}
+                    </label>
+                </div>
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">{{ $t('account_name') }}</span>
+                    <Field name="site-facebook" v-model="formData.facebookName" type="text" class="form-control"
+                        id="site-facebook" rules="" />
+                </div>
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">{{ $t('account_address') }}</span>
+                    <Field name="site-facebook-url" v-model="formData.facebookUrl" type="text" class="form-control"
+                        id="site-facebook-url" rules="" />
+                </div>
+            </div>
+            <div class="border rounded border-secondary-subtle p-2 mt-2">
+                <h6 class="mb-0 ms-2">
+                    <Icon name="fa:instagram" class="me-2" color="black" size="40" />
+                    Instagram
+                </h6>
+                <div class="filter-item form-switch mx-3 text-end">
+                    <input class="form-check-input me-2" role="switch" type="checkbox" v-model="formData.instagramShow"
+                        id="site-instagram-show">
+                    <label class="form-check-label" for="site-instagram-show">
+                        {{ $t('do_you_see') }}
+                    </label>
+                </div>
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">{{ $t('account_name') }}</span>
+                    <Field name="site-instagram" v-model="formData.instagramName" type="text" class="form-control"
+                        id="site-instagram" rules="" />
+                </div>
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">{{ $t('account_address') }}</span>
+                    <Field name="site-instagram-url" v-model="formData.instagramUrl" type="text" class="form-control"
+                        id="site-instagram-url" rules="" />
+                </div>
+            </div>
+            <div class="border rounded border-secondary-subtle p-2 mt-2">
+                <h6 class="mb-0 ms-2">
+                    <Icon name="fa:twitter" class="me-2" color="black" size="30" />
+                    Twitter
+                </h6>
+                <div class="filter-item form-switch mx-3 text-end">
+                    <input class="form-check-input me-2" role="switch" type="checkbox" v-model="formData.twitterShow"
+                        id="site-twitter-show">
+                    <label class="form-check-label" for="site-twitter-show">
+                        {{ $t('do_you_see') }}
+                    </label>
+                </div>
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">{{ $t('account_name') }}</span>
+                    <Field name="site-twitter" v-model="formData.twitterName" type="text" class="form-control" id="site-twitter"
+                        rules="" />
+                </div>
+                <div class="input-group mt-2">
+                    <span class="input-group-text px-3">{{ $t('account_address') }}</span>
+                    <Field name="site-twitter-url" v-model="formData.twitterUrl" type="text" class="form-control"
+                        id="site-twitter-url" rules="" />
+                </div>
+            </div>
+
+
+            <div class="product-form-footer d-flex justify-content-between mt-2">
                 <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
             </div>
 
         </Form>
     </div>
 </template>
+
+
+<style lang="scss" scoped>
+.icon {
+    width: 2rem;
+    height: 2rem;
+}
+</style>
