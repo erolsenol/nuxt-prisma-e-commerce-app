@@ -16,7 +16,7 @@ const snackbar = useSnackbar();
 
 let paginate = reactive({
     skip: 0,
-    take: 3,
+    take: 20,
     currentPage: 1,
     totalCount: 0,
     totalPage: 0,

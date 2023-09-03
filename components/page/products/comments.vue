@@ -18,7 +18,7 @@ const props = defineProps({
 
 let paginate = reactive({
     skip: 0,
-    take: 10,
+    take: 20,
     currentPage: 1,
     totalCount: 0,
     totalPage: 0,

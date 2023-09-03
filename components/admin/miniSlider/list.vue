@@ -13,7 +13,7 @@ const rows = ref([])
 const loading = ref(true)
 const paginate = ref({
   skip: 0,
-  take: 4,
+  take: 20,
 })
 const total = ref({
   count: 0,
