@@ -133,7 +133,7 @@ async function getStar() {
           <span class="fs-3"> {{ item.title }}</span>
         </div>
         <div class="product-detail-content-name">
-          <p class="fs-6"> {{ item.name }}</p>
+          <p class="fs-6 text-secondary" > {{ item.name }}</p>
         </div>
 
         <div class="product-detail-content-price d-flex flex-row justify-content-between">
@@ -152,23 +152,28 @@ async function getStar() {
               <Icon class="product-detail-content-question-like" name="icon-park-outline:like"
                 :color="likeStatus ? 'red' : 'black'" size="36" style="cursor: pointer;" @click="sendStar">
               </Icon>
-              <span class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
-                99+
-                <span class="visually-hidden">unread messages</span>
+              <span v-if="item.star.length > 0"
+                class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
+                {{ item.star.length }}
+
               </span>
             </div>
             <div class="position-relative">
-              <Icon class="product-detail-content-question-like" name="majesticons:messages-line"
-                :color="likeStatus ? 'red' : 'black'" size="36" style="cursor: pointer;" @click="sendStar">
+              <Icon class="product-detail-content-question-like" name="majesticons:messages-line" :color="'black'"
+                size="36" style="cursor: pointer;" @click="sendStar">
               </Icon>
-              <span class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
-                99+
-                <span class="visually-hidden">unread messages</span>
+              <span v-if="item.comments.length > 0"
+                class="position-absolute top-0 end-60 translate-middle badge rounded-pill bg-dark">
+                {{ item.comments.length }}
+
               </span>
             </div>
           </div>
 
           <span class="badge bg-secondary text-wrap py-3 px-3 fs-6">{{ $t('ask_question') }}</span>
+        </div>
+        <div class="fs-6">
+          {{ item.content }}
         </div>
         <!-- <div class="product-detail-content-start text-start mt-2" style="cursor: pointer;">
           <Icon name="icon-park-outline:like" color="black" size="30" style="cursor: pointer;" />

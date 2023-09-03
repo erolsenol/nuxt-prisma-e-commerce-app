@@ -16,11 +16,19 @@ export default defineEventHandler(async (event) => {
     filterObj = JSON.parse(filter)
   }
 
-  console.log("filterObj",filterObj);
+  const where = {}
+  const keys = Object.keys(filterObj)
+  keys.forEach(i => {
+    if (filterObj[i]) {
+      where[i] = { contains: filterObj[i] }
+    }
+  })
 
-  let items = await contactus.getAll(paginateObj, filterObj)
+  console.log("where", where);
+
+  let items = await contactus.getAll(paginateObj, where)
   if (items && items.length > 0) {
-    const total = await contactus.count(filterObj)
+    const total = await contactus.count(where)
     response.data = items;
     response.paginate = definePaginate(paginateObj, total)
     response.status = true;

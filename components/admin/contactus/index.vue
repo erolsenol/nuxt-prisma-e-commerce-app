@@ -33,6 +33,7 @@ async function getAll(page) {
     if (Number.isInteger(page)) {
         paginate.skip = paginate.take * (page - 1)
     }
+
     const config = {
         params: {
             paginate,
