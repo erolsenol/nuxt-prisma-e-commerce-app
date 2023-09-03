@@ -1,3 +1,5 @@
+
+
 export function fileToBase64(file: Blob): PromiseLike<String | null> {
   return new Promise<String>((resolve, reject) => {
     let reader = new FileReader();
@@ -15,26 +17,6 @@ export function fileToBase64(file: Blob): PromiseLike<String | null> {
 export function replaceTurkishCharacters(str: String) {
   const text = str.replace(/\s/g, "-").replace(/[^a-zA-Z0-9_-]/g, "");
   return text;
-}
-
-export function get(name: string) {
-  let data = localStorage.getItem(name);
-  if (!data) return data;
-  return JSON.parse(data);
-}
-
-export function set(name: string, val: any) {
-  return localStorage.setItem(name, JSON.stringify(val));
-}
-
-export function addArray(name: String, val: Array) {
-  let oVal = localStorage.get(name);
-  let nVal = oVal.concat(val);
-  localStorage.set(name, nVal);
-}
-
-export function remove(name: string) {
-  localStorage.removeItem(name);
 }
 
 export function paginationCondition(index: number, current: number, total: number) {
@@ -57,3 +39,4 @@ export async function imageToObj(file: File) {
     reader.onerror = error => reject(error);
   })
 }
+

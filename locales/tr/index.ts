@@ -112,6 +112,7 @@ export default {
   },
   success: {
     user_created: "Kayıt başarılı",
+    user_login: "Giriş Yapıldı",
     image_saved: "Görsel Kaydedildi",
     item_count: "{0} sayısı 0",
   },
@@ -130,6 +131,8 @@ export default {
     comment_send: "Yorum gönderildi",
 
     error: {
+      user_not_created: "Kullanıcı oluşturulamadı",
+      login_failed: "Giriş Yapılamadı",
       comment_post: "Yorum gönderilirken hata oluştu",
       same_error: "{0} işlemi gerçekleştirilirken hata oluştu",
       same_name: "Aynı isimle {0} bulunuyor farklı bir isim deneyin",

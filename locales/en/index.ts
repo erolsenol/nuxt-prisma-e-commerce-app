@@ -113,6 +113,7 @@ export default {
   },
   success: {
     user_created: "Registration successful",
+    user_login: "Logged in",
     image_saved: "Image Saved",
     item_count: "{0} number 0",
   },
@@ -130,6 +131,8 @@ export default {
     comment_send: "Comment posted",
 
     error: {
+      user_not_created: "Failed to create user",
+      login_failed: "Login Failed",
       comment_post: "Error while adding comment",
       same_error: "Error occurred while performing {0} operation",
       same_name: "There is a {0} with the same name, try a different name",

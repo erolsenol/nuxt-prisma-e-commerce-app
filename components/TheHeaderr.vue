@@ -12,7 +12,9 @@ const { $qs } = useNuxtApp()
 const { locale, locales } = useI18n()
 const router = useRouter()
 const storeUser = useUser()
+const storage = useStorage()
 let headerLogo = ref({})
+
 
 function langChange(lang) {
    const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
@@ -53,6 +55,9 @@ function formTypeChange(str) {
 }
 function logout() {
    storeUser.logout()
+   storage.remove("user")
+   storage.remove("access_token")
+   storage.remove("has_login")
 }
 
 const categories = ref([])
@@ -121,9 +126,9 @@ let loginFormType = ref("login")
          </div>
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
             <a @click="pageChange('index')" class="d-inline-flex link-body-emphasis text-decoration-none">
-               <template v-if="headerLogo.name" >
+               <template v-if="headerLogo.name">
                   <NuxtImg class="logo" :src="`images/app/${headerLogo.name}`" />
-               </template> 
+               </template>
                <SpinnerGrow v-else color="secondary" size="1" />
             </a>
          </div>

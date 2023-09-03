@@ -1,4 +1,5 @@
 import users from "../../data/users";
+import { bcryptPassword, createJwt } from "../../utils/utils"
 
 interface response {
   data: Object[],
@@ -57,5 +58,6 @@ export default defineEventHandler(async (event) => {
     response.status = true
     return response
   }
+  
   return response
 });

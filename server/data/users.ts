@@ -61,6 +61,22 @@ async function getByEmail(email: String) {
   return users;
 }
 
+async function getUser(where: object) {
+  const users = await prisma.user.findUnique({
+    where: {
+      deleted: false,
+      ...where
+    },
+    include: {
+      comments: true,
+      star: true,
+      question: true,
+      contactUs: true,
+    },
+  });
+  return users;
+}
+
 async function create(data: Object) {
   const user = await prisma.user.create({
     data,
@@ -116,4 +132,5 @@ export default {
   update,
   count,
   remove,
+  getUser,
 };

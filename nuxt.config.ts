@@ -18,7 +18,6 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@pinia/nuxt",
     "nuxt-bootstrap-icons",
-    '@sidebase/nuxt-auth'
   ],
   app: {
     pageTransition: {

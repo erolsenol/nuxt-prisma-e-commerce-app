@@ -1,5 +1,9 @@
 // import { get, set, remove } from "../helper/index"
 
+const storage = useStorage()
+
+console.log("user storageee", storage);
+
 const delay = (t: number) => new Promise((r) => setTimeout(r, t))
 
 export const useUser = defineStore('user', {
@@ -8,9 +12,9 @@ export const useUser = defineStore('user', {
         incrementedTimes: 0,
         decrementedTimes: 0,
         numbers: [] as number[],
-        user: null,
-        has_login: false,
-        access_token: null,
+        user:  null,
+        has_login:  false,
+        access_token:  null,
         refresh_token: null,
     }),
     getters: {
@@ -20,15 +24,17 @@ export const useUser = defineStore('user', {
     },
     actions: {
         login(data: Object) {
-            this.user = data
+            this.user = data.user
+            this.access_token = data.access_token
             this.has_login = true
-            // set("user", this.user)
-            // set("has_login", this.has_login)
         },
         logout() {
             this.user = null
+            this.access_token = null
             this.has_login = false
+
             // remove("user")
+            // remove("access_token")
             // remove("has_login")
         },
         increment(amount = 1) {
