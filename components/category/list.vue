@@ -112,9 +112,9 @@ function tooltipText(arr) {
           <label for="filter-description-en" class="form-label">{{ $t('description_en') }}</label>
           <input type="text" v-model="filter.description_en" class="form-control" id="filter-description-en">
         </div>
-
       </div>
     </div>
+    
     <div class="filter-item mb-3 text-end d-flex flex-row justify-content-between">
       <h5 class="ps-1">{{ $t('category') }} {{ $t('list') }}</h5>
       <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>

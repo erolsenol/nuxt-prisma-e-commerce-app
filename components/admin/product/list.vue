@@ -7,6 +7,7 @@ export default {
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 const { $qs, $helper } = useNuxtApp()
+const { t } = useI18n();
 
 const rows = ref([])
 const loading = ref(true)
@@ -30,6 +31,7 @@ let product = ref({
   createdAt: null,
   updatedAt: null
 })
+let filter = ref({})
 let formData = reactive({})
 let formId = ref(-1)
 
@@ -59,6 +61,7 @@ async function getAll(page) {
 
   const config = {
     params: {
+      filter: { ...filter.value },
       paginate
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
@@ -114,6 +117,20 @@ async function get(id) {
   }
 }
 
+async function remove(id) {
+
+  const { data } = await useFetch("/api/product", { method: "delete", body: { id } })
+
+  if (data.value.status) {
+    if (data.value.data.deleted) {
+      t('api.deleted', [t('product')])
+    } else {
+      t('api.republish', [t('product')])
+    }
+    getAll()
+  }
+}
+
 function itemUpdate(val) {
   console.log("itemUpdate", val);
   formData.value = val
@@ -123,7 +140,34 @@ function itemUpdate(val) {
 
 <template>
   <div class="product-list position-relative mb-5">
-    <button @click="getAll" class="btn btn-primary" >{{ $t('product') }} {{ $t('get') }}</button>
+    <div class="category-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
+      role="alert">
+      <div class="d-flex justify-content-between mb-3">
+        <span class="fs-5">{{ $t('filters') }}</span>
+        <div class="filter-item form-switch mx-3">
+          <input class="form-check-input me-2" role="switch" type="checkbox" v-model="filter.deleted" id="filter-deleted">
+          <label class="form-check-label" for="filter-deleted">
+            {{ $t('show_deleted') }}
+          </label>
+        </div>
+      </div>
+
+      <div class="category-list-filter-container d-flex flex-row collapse">
+        <div class="filter-item">
+          <label for="filter-name" class="form-label">{{ $t('name') }}</label>
+          <input type="text" v-model="filter.name" class="form-control" id="filter-name">
+        </div>
+        <div class="filter-item">
+          <label for="filter-title" class="form-label">{{ $t('title') }}</label>
+          <input type="text" v-model="filter.title" class="form-control" id="filter-title">
+        </div>
+        <div class="filter-item">
+          <label for="filter-content" class="form-label">{{ $t('content') }}</label>
+          <input type="text" v-model="filter.content" class="form-control" id="filter-content">
+        </div>
+      </div>
+    </div>
+    <button @click="getAll" class="btn btn-primary mb-2">{{ $t('product') }} {{ $t('get') }}</button>
     <table class="table table-responsive table-hover table-striped" v-if="!loading">
       <thead>
         <tr class="table-light">
@@ -150,7 +194,8 @@ function itemUpdate(val) {
                 <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
                   data-bs-target="#productFormModal">
                   {{ $t('update') }}</li>
-                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productFormModal"> TEST </li>
+                <li class="dropdown-item" @click="remove(row.id)"> {{ $t('delete') }}
+                </li>
               </ul>
             </div>
           </td>
@@ -204,8 +249,8 @@ function itemUpdate(val) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <AdminProductForm type="update" @update="itemUpdate" @getAll="getAll" @get="get" :form="formData" :formId="formId"
-            @formId:reset="(e) => formId = e" />
+            <AdminProductForm type="update" @update="itemUpdate" @getAll="getAll" @get="get" :form="formData"
+              :formId="formId" @formId:reset="(e) => formId = e" />
           </div>
         </div>
       </div>

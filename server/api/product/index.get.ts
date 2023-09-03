@@ -25,11 +25,18 @@ export default defineEventHandler(async (event) => {
     paginateObj.take = 9999
   }
 
+  console.log("filterObj", filterObj);
+
   const where: any = {}
   const keys = Object.keys(filterObj)
   keys.forEach(key => {
     if (filterObj[key]) {
-      where[key] = filterObj[key]
+      if (key !== 'deleted') {
+        where[key] = { contains: filterObj[key] }
+      } else {
+        where[key] = filterObj[key]
+      }
+
     }
   })
 

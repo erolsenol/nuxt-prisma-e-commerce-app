@@ -18,6 +18,7 @@ let paginate = reactive({
   totalPage: 0,
 })
 let items = ref([])
+let filter = ref({})
 let loading = ref(true)
 
 onMounted(() => {
@@ -34,6 +35,7 @@ async function getAll(page) {
 
   const config = {
     params: {
+      filter: { ...filter },
       paginate
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
@@ -59,9 +61,9 @@ async function getAll(page) {
           <span class="input-group-text p-2" id="product-search">
             <Icon name="el:search" size="26" />
           </span>
-          <input type="text" class="form-control" :placeholder="$t('search_product_brand_category')" aria-label="Search"
-            aria-describedby="product-search">
-          <button class="input-group-text btn btn-secondary px-4">{{ $t('search_btn') }}</button>
+          <input type="text" v-model="filter.general" class="form-control"
+            :placeholder="$t('search_product_brand_category')" aria-label="Search" aria-describedby="product-search">
+          <button class="input-group-text btn btn-secondary px-4" @click="getAll">{{ $t('search_btn') }}</button>
         </div>
       </div>
     </div>

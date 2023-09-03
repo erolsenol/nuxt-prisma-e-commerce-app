@@ -92,11 +92,14 @@ export async function updateProduct(id: String, data: interfaceProduct) {
   return response;
 }
 
-export async function deleteProduct(id: Number) {
-  const deleteProduct = await prisma.product.delete({
+export async function deleteProduct(id: Number, deleted: boolean) {
+  const deleteProduct = await prisma.product.update({
     where: {
       id: id,
     },
+    data: {
+      deleted
+    }
   })
 
   return deleteProduct
