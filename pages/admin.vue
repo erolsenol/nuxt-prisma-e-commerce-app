@@ -30,16 +30,17 @@ const tabs = [
 <template>
   <div class="container admin">
     <div class="row">
-      <div class="col-12 col-md-2">
+      <div class="col col-md-2">
         <div class="list-group">
-          <button type="button" class="list-group-item list-group-item-action" @click="active = index"
+          <button type="button" class="list-group-item py-3 list-group-item-action d-inlinne-flex" @click="active = index"
             :class="`${active == index ? 'active' : ''}`" :aria-current="`${active == index ? 'true' : ''}`"
             v-for="(tab, index) in tabs" :key="index">
+            <Icon name="ant-design:double-right-outlined" size="20" />
             {{ $t(tab) }}
           </button>
         </div>
       </div>
-      <div class="col-12 col-md-10">
+      <div class="col-9 col-md-10">
         <div class="products" v-if="active == 0">
           <div class="accordion mb-3" id="accordionProduct">
             <div class="accordion-item">
@@ -169,3 +170,22 @@ const tabs = [
     </div>
   </div>
 </template>
+
+
+<style lang="scss" scoped>
+.admin {
+  .list-group {
+    .list-group-item {
+      
+
+      // &::before {
+      //   content: ".";
+      // }
+    }
+
+    .active {
+      background-color: var(--bs-secondary-color);
+    }
+  }
+}
+</style>
