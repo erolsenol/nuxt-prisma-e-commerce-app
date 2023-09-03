@@ -21,12 +21,7 @@ let items = ref([])
 let loading = ref(true)
 
 onMounted(() => {
-  console.log("product onMounted");
-  //fix
-  setTimeout(() => {
-    getAll()
-  }, 500);
-
+  getAll()
 })
 
 async function getAll(page) {
@@ -63,7 +58,7 @@ async function getAll(page) {
           </span>
           <input type="text" class="form-control" :placeholder="$t('search_product_brand_category')" aria-label="Search"
             aria-describedby="product-search">
-            <button class="input-group-text btn btn-secondary px-4">{{$t('search_btn')}}</button>
+          <button class="input-group-text btn btn-secondary px-4">{{ $t('search_btn') }}</button>
         </div>
       </div>
     </div>
@@ -75,9 +70,9 @@ async function getAll(page) {
       </div>
 
       <PaginationPage v-if="items.length > 0" :paginate="paginate" @page="getAll" />
-        <template v-else>
-          <p class="text-center fs-5 mb-5">{{ $t('no_found_products') }}</p>
-        </template>
+      <template v-else>
+        <p class="text-center fs-5 mb-5">{{ $t('no_found_products') }}</p>
+      </template>
     </template>
 
     <Loading v-else />
@@ -87,8 +82,9 @@ async function getAll(page) {
 <style lang="scss" scoped>
 .input-search {
   width: 32rem;
+
   @media screen and (max-width: 575px) {
     width: 28rem;
-}
+  }
 }
 </style>

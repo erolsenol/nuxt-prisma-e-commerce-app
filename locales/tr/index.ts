@@ -83,6 +83,10 @@ export default {
   filter_options: "Arama Seçenekleri",
   general: "Genel",
   contact_message_send: "Mesajınız gönderildi",
+  show_read: "Okunanları göster",
+  incoming_messages: "Gelen mesajlar",
+  read: "Okundu",
+  unread: "Okunmadı",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",

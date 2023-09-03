@@ -159,21 +159,11 @@ const tabs = [
           </div>
         </div>
         <div class="contact_us" v-if="active == 6">
-          <div class="accordion mb-3" id="accordionContactUs">
-            <div class="accordion-item mt-3">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#collapsePageContact" aria-expanded="true" aria-controls="collapsePageContact">
-                  {{ $t('contact_us') }}
-                </button>
-              </h2>
-              <div id="collapsePageContact" class="accordion-collapse collapse" data-bs-parent="#accordionSiteSettings">
-                <div class="accordion-body">
-                  <AdminContactus />
-                </div>
-              </div>
-            </div>
-          </div>
+
+          <p class="fs-5">
+            {{ $t('contact_us') }}
+          </p>
+          <AdminContactus />
         </div>
       </div>
     </div>

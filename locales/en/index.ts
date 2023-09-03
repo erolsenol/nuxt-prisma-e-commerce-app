@@ -84,6 +84,10 @@ export default {
   filter_options: "Filter Options",
   general: "General",
   contact_message_send: "Your message has been sent",
+  show_read:"Show read",
+  incoming_messages:"Incoming messages",
+  read:"Read",
+  unread: "Okunmadı",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",

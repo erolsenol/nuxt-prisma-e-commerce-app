@@ -32,7 +32,7 @@ const paginate = ref({ skip: 0, take: 20 })
 
 <template>
   <div class="product-item col-6 col-md-4 col-lg-3 px-md-2 px-sm-1 px-xs-1 mb-3">
-    <nuxt-link :to="localePath({ path: '/product-' + name, params: { id: name } })">
+    <nuxt-link :to="localePath({ path: '/product/' + name, params: { id: name } })">
       <div class="card shadow dark" style="width: 100%; height: 27rem;">
         <NuxtImg class="border-bottom border-secondary-subtle" v-if="image" :src="'images/' + image.name"
           style="height: 15rem;" />

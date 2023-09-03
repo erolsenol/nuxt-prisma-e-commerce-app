@@ -1,7 +1,11 @@
 <template>
-      <TheHeaderr></TheHeaderr>
-      <Transition>
+      
+            
+            <TheHeaderr></TheHeaderr>
+
             <slot />
-      </Transition>
-      <TheFooter></TheFooter>
+
+            <TheFooter></TheFooter>
+      
+      
 </template>

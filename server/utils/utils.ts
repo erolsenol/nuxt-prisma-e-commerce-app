@@ -11,3 +11,19 @@ export function createJwt(data: object) {
 
     return token
 }
+
+interface paginate {
+    take: number,
+    skip: number
+}
+
+export function definePaginate(paginate: paginate, total: number) {
+    return {
+        totalPage: Math.ceil(total / paginate.take),
+        currentPage: (paginate.skip / paginate.take) + 1,
+        totalCount: total,
+        take: paginate.take,
+        skip: paginate.skip
+    }
+
+}

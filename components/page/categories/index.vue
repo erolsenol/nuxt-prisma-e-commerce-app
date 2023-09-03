@@ -78,10 +78,8 @@ async function getData() {
   await getCategory()
 }
 
-onMounted(() => {
-  setTimeout(async () => {
-    await getData()
-  }, 100);
+onMounted(async () => {
+  await getData()
 })
 
 </script>

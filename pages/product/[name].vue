@@ -16,12 +16,7 @@ let loading = ref(true)
 let likeStatus = ref(false)
 
 onMounted(() => {
-  console.log("product onMounted");
-  //fix
-  setTimeout(() => {
-    get()
-  }, 100);
-
+  get()
 })
 
 // async function sendComment() {
@@ -50,31 +45,10 @@ onMounted(() => {
 // }
 
 async function get() {
-  let productName = route.params.name
-  console.log("productName", productName);
-  if (!productName) {
-    setTimeout(() => {
-      const pathname = window.location.pathname
-      const index = pathname.indexOf('ct-')
-      if (index > -1) {
-        productName = pathname.substring(index + 3, pathname.length - index + 3)
-      }
-      console.log(window.location);
-      if (!productName) {
-        get()
-      }
-    }, 200);
-    return
-  }
-
-  console.log("route.params", route.params);
-  console.log("route.params.id", route.params.id);
-  console.log("route.params.name", route.params.name);
-  console.log("productName", productName);
 
   const config = {
     params: {
-      name: route.params.name || productName
+      name: route.params.name
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };

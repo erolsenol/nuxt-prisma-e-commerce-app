@@ -24,151 +24,60 @@ const loginModal = ref("loginModal")
 
 const snackbar = useSnackbar();
 
-async function submit() {
-    console.log("type", type.value);
-    if (type.value == 'login') {
-        if (!form.value.email) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.email_required'),
-            });
-            return
-        } else if (!form.value.password0) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.password_required'),
-            });
-            return
-        }
+async function read() {
 
-        const config = {
-            params: {
-                email: form.value.email,
-                password: form.value.password0,
-            },
-            paramsSerializer: (params) => $qs.stringify(params, { encode: false })
-        };
-        const { data, pending, error, refresh } = await useFetch("/api/user", {
-            ...config,
-        }).catch((error) => {
-            console.error(error);
+    const { data } = await useFetch("/api/contactus", { method: "put", body: { id: form.id, readed: !form.readed } })
+
+    if (data.value.status) {
+        snackbar.add({
+            type: "success",
+            text: t(`${!form.readed ? '' : 'un'}read`),
         });
-
-        if (data.value.status) {
-            snackbar.add({
-                type: "success",
-                text: t('success.user_created'),
-            });
-            storeUser.login(data.value.data)
-            console.log("loginModal", loginModal);
-            loginModal.value.click()
-            formClear()
-            return
-        } else {
-            if (data.value.error === "your password is wrong") {
-                snackbar.add({
-                    type: "error",
-                    text: t('your_password_wrong'),
-                });
-                return
-            }
-            console.log("giriş yapılamnadı");
-            snackbar.add({
-                type: "error",
-                text: t('login_failed'),
-            });
-        }
-
-    } else if (type.value == 'sing_up') {
-        if (form.value.password0 !== form.value.password1) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.password_not_match'),
-            });
-            return
-        } else if (form.value.password0.length < 8) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.password_min_length_8'),
-            });
-            return
-        } else if (!form.value.email) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.email_required'),
-            });
-            return
-        } else if (!form.value.username) {
-            snackbar.add({
-                type: "error",
-                text: t('errors.username_required'),
-            });
-            return
-        }
-
-        form.value.password = form.value.password0
-        const body = {
-            firstname: form.value.firstname,
-            lastname: form.value.lastname,
-            username: form.value.username,
-            age: form.value.age,
-            email: form.value.email,
-            password: form.value.password,
-        }
-        const { data, pending, error, refresh } = await useFetch("/api/user", {
-            method: "post",
-            body: body,
-        }).catch((error) => {
-            console.error(error);
+    } else {
+        snackbar.add({
+            type: "error",
+            text: t('api.error.same_error', [t('read')]),
         });
-
-        if (data.value.status) {
-            snackbar.add({
-                type: "success",
-                text: t('success.user_created'),
-            });
-            storeUser.login(data.value.data)
-            console.log("loginModal", loginModal);
-            loginModal.value.click()
-            formClear()
-            return
-        } else {
-            if (data.value.error === "email address is already registered") {
-                snackbar.add({
-                    type: "error",
-                    text: t('email_already_existing'),
-                });
-                return
-            }
-            console.log("Ürün Kaydedilemedi");
-            snackbar.add({
-                type: "error",
-                text: t('register_failed'),
-            });
-        }
     }
 }
+
 </script>
 
 <template>
-    <div class="contact-us-item card">
-        
-        <div class="card-body">
-            <div class="position-absolute w-100 text-end">
-                <BootstrapIconEnvelope v-if="true" class="position-relative me-4" width="40" height="40" fill="#c96161" />
-                <BootstrapIconEnvelopeOpenFill v-else class="position-relative me-4" width="40" height="40" fill="#6a98f6" />
+    <div class="contact-us-item card mt-3 border-1 border-primary">
+        <div class="card-body position-relative">
+            <div class="position-absolute text-end" @click="read" style="max-width: 4rem; right: 0px; top: 10px;">
+                <BootstrapIconEnvelope v-if="!form.readed" class="mail-icon position-relative me-4" width="40" height="40"
+                    fill="#c96161" />
+                <BootstrapIconEnvelopeOpenFill v-else class="mail-icon position-relative me-4" width="40" height="40"
+                    fill="#6a98f6" />
             </div>
             <p>
                 <span><font-awesome-icon size="30" icon="fa-solid fa-envelope" /></span>
-                <strong class="fs-5">{{ $t('name') }}:</strong> <span class="fs-5 me-5">{{ form.name }} </span>
-                <strong class="fs-5">{{ $t('surname') }}:</strong> <span class="fs-5 me-5">{{ form.surname }}</span>
-                <strong class="fs-5">{{ $t('phone') }}:</strong> <span class="fs-5 me-5">{{ form.phone }}</span>
+
+                <strong class="fs-6">{{ $t('name') }}:</strong> <span class="fs-6 me-5">{{ form.name }} </span>
+                <strong class="fs-6">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5">{{ form.surname }}</span>
+                <strong class="fs-6">{{ $t('phone') }}:</strong> <span class="fs-6 me-5">{{ form.phone }}</span>
             </p>
-            <strong class="fs-5">{{ $t('email') }}:</strong> <span class="fs-5 me-5">{{ form.email }}</span>
-
-            <p class="fs-5 mt-3">{{ form.title }}</p>
-            <p class="fs-5">{{ form.content }} </p>
-
+            <hr class="my-1" />
+            <strong class="fs-6">{{ $t('email') }}:</strong> <span class="fs-6 me-5">{{ form.email }}</span>
+            <hr class="my-1" />
+            <p class="fs-6 mt-3">{{ form.title }}</p>
+            <p class="fs-6">{{ form.content }} </p>
         </div>
     </div>
 </template>
+
+
+<style lang="scss" scoped>
+.contact-us-item {
+    .mail-icon {
+        cursor: pointer;
+        transition: all 0.2s linear;
+
+        &:hover {
+            transform: scale(1.2) translate(0, -5px);
+        }
+    }
+}
+</style>

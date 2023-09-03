@@ -1,5 +1,4 @@
-import { updateProduct, getProduct } from "../../data/products";
-import { postImage } from "../../data/images";
+import contactus from "../../data/contactus";;
 
 export default defineEventHandler(async (event) => {
   let response = {
@@ -8,26 +7,15 @@ export default defineEventHandler(async (event) => {
   };
   const body = await readBody(event);
 
-  if (!body.name || !body.title || !body.content || !body.id) {
+  if (!body.id) {
     response.error = "cannot be empty";
     return response;
   }
 
-  console.log("product put body", body.id);
+  const item = await contactus.update(body.id, body)
 
-  const nameProduct = await getProduct(body.id);
-  console.log("nameProduct", nameProduct);
-  console.log("nameProduct id", nameProduct.id);
-  if (nameProduct?.id > -1 && false) {
-    console.log("errrrrrr");
-    response.error = "There is a product with the same id";
-    return response;
-  }
-
-  const product = await updateProduct(body.id, { ...body });
-
-  if (product.id) {
-    response.data = product;
+  if (item.id) {
+    response.data = item;
     response.status = true;
   }
   return response;
