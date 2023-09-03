@@ -16,7 +16,10 @@ let loading = ref(true)
 let likeStatus = ref(false)
 
 onMounted(() => {
-  get()
+  setTimeout(() => {
+    get()
+  }, 150);
+
 })
 
 // async function sendComment() {
@@ -46,6 +49,7 @@ onMounted(() => {
 
 async function get() {
 
+  console.log("getttttt");
   const config = {
     params: {
       name: route.params.name
@@ -54,7 +58,7 @@ async function get() {
   };
 
   const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
-  console.log("data", data.value);
+  console.log("data123123", data);
   if (!data || !data.value || !data.value.data) return
 
   item.value = data.value.data
@@ -71,7 +75,7 @@ async function sendStar() {
   }
 
   const body = {
-    productId: item.value.id,
+    productId: item.id,
     userId: storeUser.getUser.id
   }
   const { data, pending, error, refresh } = await useFetch("/api/star", {

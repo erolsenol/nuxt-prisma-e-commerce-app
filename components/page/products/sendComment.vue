@@ -148,7 +148,7 @@ async function send(e, { resetForm }) {
                             </div>
 
                             <hr class="d-sm-none mt-sm-0 mt-5" />
-                            <div class="col-12 col-sm-6" style="min-height: 20rem;">
+                            <div class="col-12 col-sm-6 position-relative" style="min-height: 20rem;">
                                 <div class="product-detail-comment-image" style="min-height: 19rem;">
                                     <label class="form-label mt-3">{{ $t('image') }}</label>
                                     <template v-if="images?.length > 0">
@@ -158,7 +158,7 @@ async function send(e, { resetForm }) {
                                 </div>
                                 <input name="image" v-show="false" @change="onFileChange" class="form-control" type="file"
                                     ref="commentImage" accept="image/png, image/jpeg" multiple />
-                                <div class="mt-3">
+                                <div class="mt-3 position-absolute" style="bottom: 5px;">
                                     <button class="btn btn-outline-primary" @click="uploadImage">
                                         {{ $t('image') }} {{ $t('upload') }}
                                     </button>
