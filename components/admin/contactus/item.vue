@@ -23,11 +23,8 @@ const props = defineProps({
 
 const snackbar = useSnackbar();
 
-async function read() {
-    const body = {
-        id: props.form.id,
-        readed: !props.form.readed,
-    }
+async function updateItem(update) {
+    const body = update
     const { data } = await useFetch("/api/contactus", { method: "put", body: body })
 
     if (data.value.status) {
@@ -56,11 +53,20 @@ async function get(id) {
 <template>
     <div class="contact-us-item card mt-3 border-1 border-primary">
         <div class="card-body position-relative">
-            <div class="position-absolute text-end" @click="read" style="max-width: 4rem; right: 0px; top: 10px;">
-                <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40"
-                    height="40" fill="#c96161" />
-                <BootstrapIconEnvelopeOpenFill v-else class="mail-icon position-relative me-4" width="40" height="40"
-                    fill="#6a98f6" />
+            <div class="position-absolute text-end d-flex flex-row" style="max-width: 4rem; right: 4rem; top: 15px;">
+                <data @click="updateItem({ id: props.form.id, readed: !props.form.readed })">
+                    <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40"
+                        height="40" fill="#c96161" />
+                    <BootstrapIconEnvelopeOpenFill v-else class="mail-icon position-relative me-4" width="40" height="40"
+                        fill="#6a98f6" />
+                </data>
+                <data @click="updateItem({ id: props.form.id, deleted: !props.form.deleted })">
+                    <BootstrapIconTrash v-if="!props.form.deleted" class="mail-icon position-relative me-4" width="40"
+                        height="40" fill="#c96161" />
+                    <BootstrapIconArrow90degLeft v-else class="mail-icon position-relative me-4" width="40" height="40"
+                        fill="#6a98f6" />
+                </data>
+
             </div>
             <p>
                 <Icon name="majesticons:chat-2" class="me-2" size="30" />

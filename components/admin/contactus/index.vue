@@ -22,7 +22,8 @@ let paginate = reactive({
     totalPage: 0,
 })
 let filter = reactive({
-    readed: false
+    readed: false,
+    deleted: false
 })
 
 const rows = ref([])
