@@ -21,6 +21,8 @@ const schema = object().shape({
     image: array().min(0),
 });
 
+let imageInput = ref([])
+
 const props = defineProps({
     type: String,
     formId: Number,
@@ -132,6 +134,7 @@ async function save(e, { resetForm }) {
             }
 
             resetForm()
+            imageInput.value = []
             formData.value.categoryId = -1
             formData.value.subCategoryId = -1
             if (props.type !== "create") {
@@ -209,12 +212,11 @@ async function removeImage(id) {
 <template>
     <div class="product-form">
         <Form @submit="save" :validation-schema="schema">
-            {{ formData.categoryId }}
             <SelectCategory :value="formData.categoryId" @value:update="(e) => formData.categoryId = e" />
             <SelectSubCategory :categoryId="formData.categoryId" :value="formData.subCategoryId"
                 @value:update="(e) => formData.subCategoryId = e" />
             <div class="mb-3">
-                <label for="product-form-name" class="form-label">Ürün Adı</label>
+                <label for="product-form-name" class="form-label">{{ $t('product_name') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="name" v-model="formData.name" type="text" class="form-control" id="product-form-name"
@@ -228,7 +230,7 @@ async function removeImage(id) {
                 </div>
             </div>
             <div class="mb-3">
-                <label for="product-form-title" class="form-label">Ürün Başlığı</label>
+                <label for="product-form-title" class="form-label">{{ $t('product_title') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="title" rules="required" v-model="formData.title" type="text" class="form-control"
@@ -242,7 +244,7 @@ async function removeImage(id) {
                 </div>
             </div>
             <div class="mb-3">
-                <label for="product-content" class="form-label">Ürün Açıklaması</label>
+                <label for="product-content" class="form-label">{{ $t('product_description') }}</label>
                 <div class="input-group">
                     <span class="input-group-text">TR *</span>
                     <Field name="content" rules="required" v-model="formData.content" type="text" class="form-control"
@@ -284,14 +286,15 @@ async function removeImage(id) {
                 </Swiper>
             </div>
             <div class="mb-3">
-                <label for="product-image" class="form-label">Görsel Yükle</label>
-                <Field name="image" rules="" @change="onFileChange" class="form-control" type="file" id="product-image"
+                <label for="product-image" class="form-label">{{ $t('upload_image') }}</label>
+
+                <Field name="image" rules="" v-model="imageInput" @change="onFileChange" class="form-control" type="file" id="product-image"
                     accept="image/png, image/jpeg" multiple />
                 <ErrorMessage class="invalid" name="image" />
             </div>
             <hr class="hr" />
             <div class="product-form-footer d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
                 <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal"
                     data-bs-target="#productFormModal">{{ $t('close') }}</button>
             </div>

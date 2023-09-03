@@ -10,6 +10,7 @@ import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, number, object } from 'yup';
 const emit = defineEmits(['getAll', 'formId:reset'])
 
+const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 

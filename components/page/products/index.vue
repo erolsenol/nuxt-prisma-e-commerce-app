@@ -21,7 +21,10 @@ let items = ref([])
 let loading = ref(true)
 
 onMounted(() => {
-  getAll()
+  setTimeout(() => {
+    getAll()
+  }, 100);
+
 })
 
 async function getAll(page) {
@@ -38,7 +41,7 @@ async function getAll(page) {
 
   const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
 
-  if (data.value.status) {
+  if (data?.value?.status) {
     items.value = data.value.data
     console.log("paginate", paginate);
     paginate = data.value.paginate

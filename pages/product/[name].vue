@@ -126,7 +126,7 @@ async function getStar() {
         <template v-if="item.images && item.images.length > 0">
           <NuxtImg class="rounded-2" placeholder="./images/no-image.jpeg" :src="'images/' + item.images[0].name" />
         </template>
-        <NuxtImg class="" v-else :src="'images/no-image.jpeg'" />
+        <NuxtImg class="" v-else :src="'default/no_image.jpeg'" />
       </div>
       <div class="col-12 col-md-5 col-lg-6 product-detail-content border border-end-0 border-start-0 p-2 py-3">
         <div class="product-detail-content-title">
