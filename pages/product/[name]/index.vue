@@ -4,23 +4,27 @@ export default {
 };
 </script>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 const route = useRoute()
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
 const storeUser = useUser()
+const storeApp = useApp()
 const snackbar = useSnackbar();
 
-const item = ref({})
+const item = reactive({})
 let loading = ref(true)
 let likeStatus = ref(false)
 
-onMounted(() => {
-  setTimeout(() => {
-    get()
-  }, 150);
-
+const getProductDetail = computed(() => {
+  return storeApp.getProductDetail
 })
+
+onMounted(() => {
+  setTimeout(get, 150);
+})
+
+
 
 // async function sendComment() {
 //   const body = {}
@@ -48,8 +52,9 @@ onMounted(() => {
 // }
 
 async function get() {
-
   console.log("getttttt");
+  console.log("route.params.name", route.params.name)
+  console.log("route.params", route.params)
   const config = {
     params: {
       name: route.params.name
@@ -58,11 +63,12 @@ async function get() {
   };
 
   const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
-  console.log("data123123", data);
-  if (!data || !data.value || !data.value.data) return
 
-  item.value = data.value.data
-  console.log("item.value", item.value);
+  if (data?.value?.status) {
+    item.value = data.value.data
+  }
+
+  console.log("item", item);
 }
 
 async function sendStar() {
@@ -100,7 +106,6 @@ async function sendStar() {
 }
 
 async function getStar() {
-
   const config = {
     params: {
       productId: item.id
@@ -119,6 +124,8 @@ async function getStar() {
 
 <template>
   <div class="container product-detail" style="min-height: 40vw;">
+    getproductDetail {{ getProductDetail }} <br />
+    item {{ item }}
     <div class="row" v-if="!loading">
       <div
         class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
