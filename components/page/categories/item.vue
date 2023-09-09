@@ -34,7 +34,7 @@ const paginate = ref({ skip: 0, take: 20 })
       <div class="card shadow dark" style="width: 100%; height: 27rem;">
         <NuxtImg class="border-bottom border-secondary-subtle" v-if="image" :src="'images/' + image.name"
           style="height: 15rem;" />
-        <NuxtImg class="border-bottom border-secondary-subtle" v-else :src="'images/no-image.jpeg'"
+        <NuxtImg class="border-bottom border-secondary-subtle" v-else :src="'default/no-image.jpeg'"
           style="height: 15rem;" />
         <div class="card-body p-2">
           <h5 class="card-title text-capitalize mb-3">{{ title }}</h5>

@@ -11,7 +11,6 @@ export const useApp = defineStore("app", {
     footerBgColor: null,
     headerFontColor: null,
     footerFontColor: null,
-
     mail: null,
     mail_en: null,
     phone: null,
@@ -19,11 +18,20 @@ export const useApp = defineStore("app", {
     address: null,
     address_en: null,
     footerText: null,
+    productDetail: {
+      id: null,
+      name: null,
+      name_en: null
+    }
   }),
   getters: {
-    getInfo: (key) => (state:Object) => state[key],
+    getInfo: (key) => (state: Object) => state[key],
+    getProductDetail: (state) => state.productDetail,
   },
   actions: {
+    setProductDetail(data: any) {
+      this.productDetail = data
+    },
     async getSiteInfo() {
       this.$patch((state) => {
         state.loading = true;
