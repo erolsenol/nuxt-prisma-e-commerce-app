@@ -27,8 +27,8 @@ onMounted(() => {
   <!-- <el-config-provider :size="elConfig.size" :z-index="elConfig.zIndex" :locale="locale"> -->
   <NuxtLayout>
 
-    <router-view></router-view>
-
+    <!-- <router-view></router-view> -->
+    <NuxtPage />
     <NuxtSnackbar />
     <SeoKit />
   </NuxtLayout>

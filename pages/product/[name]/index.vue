@@ -4,23 +4,32 @@ export default {
 };
 </script>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 const route = useRoute()
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
 const storeUser = useUser()
+const storeApp = useApp()
 const snackbar = useSnackbar();
+
+definePageMeta({
+  middleware: "product-detail",
+});
+const paramName = useState('routeParamName')
 
 const item = ref({})
 let loading = ref(true)
 let likeStatus = ref(false)
 
-onMounted(() => {
-  setTimeout(() => {
-    get()
-  }, 150);
+// const getProductDetail = computed(() => {
+//   return storeApp.getProductDetail
+// })
 
+onMounted(() => {
+  setTimeout(get, 150);
 })
+
+
 
 // async function sendComment() {
 //   const body = {}
@@ -47,22 +56,27 @@ onMounted(() => {
 //   }
 // }
 
-async function get() {
+function formClear() {
+  item.value = {}
+}
 
-  console.log("getttttt");
+async function get() {
+  console.log("paramName.value", paramName.value)
+  formClear()
   const config = {
     params: {
-      name: route.params.name
+      name: paramName.value
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
 
   const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
-  console.log("data123123", data);
-  if (!data || !data.value || !data.value.data) return
 
-  item.value = data.value.data
-  console.log("item.value", item.value);
+  if (data?.value?.status) {
+    item.value = data.value.data
+  }
+
+  console.log("item", item);
 }
 
 async function sendStar() {
@@ -100,7 +114,6 @@ async function sendStar() {
 }
 
 async function getStar() {
-
   const config = {
     params: {
       productId: item.id
@@ -119,12 +132,13 @@ async function getStar() {
 
 <template>
   <div class="container product-detail" style="min-height: 40vw;">
+    {{item}}
     <div class="row" v-if="!loading">
       <div
         class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
         style=" min-height: 20rem;">
         <template v-if="item.images && item.images.length > 0">
-          <NuxtImg class="rounded-2" placeholder="./images/no-image.jpeg" :src="'images/' + item.images[0].name" />
+          <NuxtImg class="rounded-2" placeholder="./default/no-image.jpeg" :src="'images/' + item.images[0].name" />
         </template>
         <NuxtImg class="" v-else :src="'default/no_image.jpeg'" />
       </div>

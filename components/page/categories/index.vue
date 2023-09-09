@@ -21,22 +21,22 @@ let paginate = reactive({
   totalPage: 0,
 })
 
-async function getCategory() {
-  console.log("route.query.id", route.query.id);
-  const { data } = await useFetch("/api/category/" + route.query.id)
+// async function getCategory() {
+//   console.log("route.query.id", route.query.id);
+//   const { data } = await useFetch("/api/category/" + route.query.id).finally(() => loading.value = false)
 
-  if (data.value.status) {
-    category.value = data.value.data
+//   if (data?.value?.status) {
+//     category.value = data.value.data
+//   }
+// }
 
-  }
-}
+// watch(() => category.value, async (newVal) => {
+//   console.log("new category", newVal)
+//   await getAll(1, newVal.id)
+// }, { deep: true })
 
-watch(() => category.value, async (newVal) => {
-  console.log("new category", newVal)
-  await getAll(1, newVal.id)
-}, { deep: true })
-
-async function getAll(page, categoryId) {
+async function getAll(page) {
+  console.log("getAllgetAllgetAll");
   if (Number.isInteger(page)) {
     paginate.skip = paginate.take * (page - 1)
   }
@@ -45,18 +45,17 @@ async function getAll(page, categoryId) {
     params: {
       filter: {
         ...filter,
-        categoryId: categoryId,
         // categoryId: category.id,
       },
       paginate
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
-
+  console.log("useFetch");
   loading.value = true
-  const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
-
-  if (data.value.status) {
+  const { data } = await useFetch("/api/product/category/" + route.query.id, config).finally(() => loading.value = false);
+  console.log("useFetch done");
+  if (data?.value?.status) {
     items.value = data.value.data
     paginate = data.value.paginate
     // nextTick(() => {
@@ -70,16 +69,16 @@ async function getAll(page, categoryId) {
 
 }
 
-watch(() => route.query.id, async (newVal) => {
-  getData()
-}, { deep: true })
+// watch(() => route.query.id, async (newVal) => {
+//   getData()
+// }, { deep: true })
 
-async function getData() {
-  await getCategory()
-}
+// async function getData() {
+//   await getCategory()
+// }
 
 onMounted(async () => {
-  await getData()
+  await getAll(1)
 })
 
 </script>
