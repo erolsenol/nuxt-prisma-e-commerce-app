@@ -12,13 +12,18 @@ const storeUser = useUser()
 const storeApp = useApp()
 const snackbar = useSnackbar();
 
-const item = reactive({})
+definePageMeta({
+  middleware: "product-detail",
+});
+const paramName = useState('routeParamName')
+
+const item = ref({})
 let loading = ref(true)
 let likeStatus = ref(false)
 
-const getProductDetail = computed(() => {
-  return storeApp.getProductDetail
-})
+// const getProductDetail = computed(() => {
+//   return storeApp.getProductDetail
+// })
 
 onMounted(() => {
   setTimeout(get, 150);
@@ -51,13 +56,16 @@ onMounted(() => {
 //   }
 // }
 
+function formClear() {
+  item.value = {}
+}
+
 async function get() {
-  console.log("getttttt");
-  console.log("route.params.name", route.params.name)
-  console.log("route.params", route.params)
+  console.log("paramName.value", paramName.value)
+  formClear()
   const config = {
     params: {
-      name: route.params.name
+      name: paramName.value
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
@@ -124,14 +132,13 @@ async function getStar() {
 
 <template>
   <div class="container product-detail" style="min-height: 40vw;">
-    getproductDetail {{ getProductDetail }} <br />
-    item {{ item }}
+    {{item}}
     <div class="row" v-if="!loading">
       <div
         class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
         style=" min-height: 20rem;">
         <template v-if="item.images && item.images.length > 0">
-          <NuxtImg class="rounded-2" placeholder="./images/no-image.jpeg" :src="'images/' + item.images[0].name" />
+          <NuxtImg class="rounded-2" placeholder="./default/no-image.jpeg" :src="'images/' + item.images[0].name" />
         </template>
         <NuxtImg class="" v-else :src="'default/no_image.jpeg'" />
       </div>

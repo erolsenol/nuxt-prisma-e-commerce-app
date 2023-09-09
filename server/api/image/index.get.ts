@@ -21,11 +21,8 @@ export default defineEventHandler(async (event) => {
     data: [],
     status: false,
   };
-  console.log("image getttt requestttttttttt");
 
   const query = getQuery(event);
-
-  console.log("image gettttt image gettttt", query);
 
   if (!query.id && query.ownerName && query.name) {
     response.error = "cannot be empty";

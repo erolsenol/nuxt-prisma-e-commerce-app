@@ -20,14 +20,14 @@ export default defineNuxtConfig({
     "nuxt-bootstrap-icons",
   ],
   app: {
-    pageTransition: {
-      name: 'fade',
-      mode: 'out-in' // default
-    },
-    layoutTransition: {
-      name: 'slide',
-      mode: 'out-in' // default
-    }
+    // pageTransition: {
+    //   name: 'fade',
+    //   mode: 'out-in' // default
+    // },
+    // layoutTransition: {
+    //   name: 'slide',
+    //   mode: 'out-in' // default
+    // }
   },
   components: [
     {
