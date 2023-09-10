@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted,onServerPrefetch } from 'vue'
 const { locales } = useI18n()
 const { $qs } = useNuxtApp()
 
@@ -25,8 +25,15 @@ onMounted(() => {
   setTimeout(() => {
     getAll()
   }, 100);
-
 })
+onUnmounted(() => {
+  formClear()
+})
+
+function formClear() {
+  items.value = []
+  loading.value = true
+}
 
 async function getAll(page) {
   if (Number.isInteger(page)) {
@@ -50,7 +57,6 @@ async function getAll(page) {
     console.log("paginate", paginate);
   }
 }
-
 </script>
 
 

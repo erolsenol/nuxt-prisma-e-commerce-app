@@ -19,13 +19,16 @@ let props = defineProps({
     value: Object,
 })
 
+const breadcrumbItems = computed(() => {
+   return items.value.reverse()
+})
+
 watch(() => props.value, async (newVal) => {
     get(props.value)
 }, { deep: true })
 
 
 async function get({ name, id }) {
-    console.log("bredcumpss gettt");
     const config = {
         params: {
         },
@@ -39,14 +42,11 @@ async function get({ name, id }) {
         console.error(error);
     });
 
-    console.log("bredcumpss gettt data:", data.value);
-    console.log("locale", locale.value);
     if (data.value.status) {
         const localName = `name${locale.value !== 'tr' ? `_${locale.value}` : ''}`
         const resData = data.value.data
         // items.value.push(data.value.data.map(item => ({ text: item[localName], value: item.id })))
         items.value.push(resData)
-        console.log("items.value", items);
 
         const topCategory = resData.lowerSubCategoryId ? { name: 'subCategory', id: resData.lowerSubCategoryId } :
             resData.categoryId ? { name: 'category', id: resData.categoryId } : null
@@ -70,7 +70,7 @@ function pageChange(to, route = "", item) {
 <template>
     <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
         <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center bg-body-tertiary border rounded-3 ps-4">
-            <li class="breadcrumb-item" v-for="(item, index) in items.reverse()">
+            <li class="breadcrumb-item" v-for="(item, index) in breadcrumbItems">
                 <NuxtLink class="link-body-emphasis text-decoration-none text-capitalize"
                     @click="pageChange(item.name, 'category', category)"
                     :class="items.length > index + 1 ? 'fw-semibold' : ''">

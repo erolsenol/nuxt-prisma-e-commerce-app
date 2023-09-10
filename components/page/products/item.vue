@@ -25,8 +25,12 @@ let starBgWidth = ref(0)
 const image = props.images && props.images.length > 0 && props.images[0]
 
 function openDetail() {
+  console.log("props", props);
+  console.log("props.name", props.name);
+  console.log("props.value", props.value);
   storeApp.setProductDetail({ id: props.id, name: props.name, name_en: props.name_en })
-  router.push({ path: `${locale.value !== 'tr' ? locale.value : ''}/product/${props.name}`, params: { id: props.name } });
+  router.push({ name: `product-name___${locale.value}`, params: { name: props.name, name_en: props.name_en }, query: { id: props.id } })
+  // router.push({ path: `${locale.value !== 'tr' ? locale.value : ''}/product/${props.name}` });
   // router.push(localeLocation({ path: "/product-" + props.name, params: { id: props.name } }))
 }
 

@@ -4,8 +4,9 @@ export default {
 };
 </script>
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted,onUnmounted } from 'vue'
 const route = useRoute()
+const router = useRouter()
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
 const storeUser = useUser()
@@ -31,6 +32,9 @@ const breadcrumbObj = computed(() => {
 
 onMounted(() => {
   setTimeout(get, 150);
+})
+onUnmounted(() => {
+  formClear()
 })
 
 // async function sendComment() {
@@ -60,14 +64,15 @@ onMounted(() => {
 
 function formClear() {
   item.value = {}
+  loading.value = true
+  likeStatus.value = false
 }
 
 async function get() {
-  console.log("paramName.value", paramName.value)
   formClear()
   const config = {
     params: {
-      name: paramName.value
+      name: route.params.name
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: false })
   };
@@ -78,7 +83,6 @@ async function get() {
     item.value = data.value.data
   }
 
-  console.log("item", item);
 }
 
 async function sendStar() {

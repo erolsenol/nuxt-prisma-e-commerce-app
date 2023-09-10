@@ -57,7 +57,8 @@ async function getSite() {
 function pageChange(to, route = "", item) {
 
    if (route && item) {
-      router.push({ path: `/${route}/${to}`, query: { id: item.id } })
+      // router.push({ path: `/${route}/${to}`, query: { id: item.id } })
+      router.push({ name: `category-name___${locale.value}`, params: { name: item.name }, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
@@ -237,7 +238,7 @@ let loginFormType = ref("login")
 </template>
 
 <style lang="scss" scoped>
-   .header {
-      background-color: v-bind('headerColor') !important
-   }
+.header {
+   background-color: v-bind('headerColor') !important
+}
 </style>
