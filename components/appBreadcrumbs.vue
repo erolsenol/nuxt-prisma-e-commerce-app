@@ -8,6 +8,7 @@ export default {
 import { ref, watch, computed, toRefs, toRef } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 const { locale } = useI18n();
+const router = useRouter()
 
 const emit = defineEmits(['value:update'])
 const { $qs } = useNuxtApp()
@@ -20,7 +21,7 @@ let props = defineProps({
 })
 
 const breadcrumbItems = computed(() => {
-   return items.value.reverse()
+    return items.value.reverse()
 })
 
 watch(() => props.value, async (newVal) => {
@@ -56,14 +57,8 @@ async function get({ name, id }) {
     }
 }
 
-function pageChange(to, route = "", item) {
-    if (route && item) {
-        router.push({ path: `/${route}/${to}`, query: { id: item.id } })
-        // router.push({ name: `${route}-${to}___${locale.value}` })
-    }
-    else if (to) {
-        router.push({ name: `${to}___${locale.value}` })
-    }
+function pageChange(item) {
+    router.push({ name: `category-name___${locale.value}`, params: { name: item.name }, query: { id: item.id } })
 }
 </script>
 
@@ -71,8 +66,7 @@ function pageChange(to, route = "", item) {
     <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
         <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center bg-body-tertiary border rounded-3 ps-4">
             <li class="breadcrumb-item" v-for="(item, index) in breadcrumbItems">
-                <NuxtLink class="link-body-emphasis text-decoration-none text-capitalize"
-                    @click="pageChange(item.name, 'category', category)"
+                <NuxtLink class="link-body-emphasis text-decoration-none text-capitalize" @click="pageChange(item)"
                     :class="items.length > index + 1 ? 'fw-semibold' : ''">
                     <i class="bi bi-house-door-fill"></i>
                     {{ item[`name${locale !== 'tr' ? `_${locale}` : ''}`] }}

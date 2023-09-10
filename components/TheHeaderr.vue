@@ -55,7 +55,6 @@ async function getSite() {
 }
 
 function pageChange(to, route = "", item) {
-
    if (route && item) {
       // router.push({ path: `/${route}/${to}`, query: { id: item.id } })
       router.push({ name: `category-name___${locale.value}`, params: { name: item.name }, query: { id: item.id } })

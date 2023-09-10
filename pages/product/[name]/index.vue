@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup>
-import { ref, reactive, onMounted,onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n();
@@ -190,7 +190,8 @@ async function getStar() {
             </div>
           </div>
 
-          <span class="badge bg-secondary text-wrap py-3 px-3 fs-6">{{ $t('ask_question') }}</span>
+          <span class="badge bg-secondary text-wrap py-3 px-3 fs-6" data-bs-toggle="modal"
+            data-bs-target="#productQuestion">{{ $t('ask_question') }}</span>
         </div>
         <hr />
         <div class="fs-6 overflow-y-auto" style="max-height: 13rem;">
@@ -205,6 +206,7 @@ async function getStar() {
       </div>
       <PageProductsComments v-if="item.id" :productId="item.id" />
       <PageProductsSendComment v-if="item.id" :productId="item.id" />
+      <PageProductsQuestionModal v-if="item.id" :productId="item.id" />
     </div>
     <Loading v-else />
 

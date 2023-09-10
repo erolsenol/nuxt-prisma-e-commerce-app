@@ -73,15 +73,22 @@ model Star {
 }
 
 model Question {
-  id        Int      @id @unique @default(autoincrement())
-  title     String   @db.VarChar(255)
-  content   String   @db.VarChar(1000)
-  reply     String?  @db.VarChar(1000)
-  answered  Boolean? @default(false)
-  product   Product? @relation(fields: [productId], references: [id])
-  productId Int?
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+  id          Int        @id @unique @default(autoincrement())
+  title       String     @db.VarChar(255)
+  content     String     @db.VarChar(1000)
+  reply       String?    @db.VarChar(1000)
+  answered    Boolean?   @default(false)
+  product     Product?   @relation(fields: [productId], references: [id])
+  productId   Int?
+  user        User?      @relation(fields: [userId], references: [id])
+  userId      Int?
+  questionId  Int?
+  topQuestion Question?  @relation("topLowQuestion", fields: [questionId], references: [id])
+  lowQuestion Question[] @relation("topLowQuestion")
+
+  deleted   Boolean? @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
