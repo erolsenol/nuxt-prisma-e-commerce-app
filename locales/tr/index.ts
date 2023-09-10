@@ -1,4 +1,6 @@
 export default {
+  yes: "Evet",
+  no: "Hayır",
   welcome: "Hoşgeldiniz",
   services: "Hizmetler",
   news_and_publications: "Haberler ve Yayınlar",
@@ -93,6 +95,9 @@ export default {
   do_you_see: "Görünsün mü",
   header_color: "Üst başlık rengi",
   footer_color: "Alt başlık rengi",
+  warning: "Uyarı",
+  are_you_sure: "Emin misin?",
+  are_you_sure_delete: "Silmek istediğinize emin misiniz?",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",

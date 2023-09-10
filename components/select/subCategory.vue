@@ -5,8 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, watch, computed, toRefs, toRef } from "vue";
-import { Field, Form, ErrorMessage } from 'vee-validate';
+import { ref, watch, onMounted, onUnmounted, computed, toRefs, toRef } from "vue";
 const { locale } = useI18n();
 
 const emit = defineEmits(['value:update'])
@@ -14,7 +13,7 @@ const { $qs } = useNuxtApp()
 
 let items = ref([]);
 let innerValue = ref(-1);
-const filter = reactive({})
+let filter = reactive({})
 
 watch(() => innerValue.value, async (newVal) => {
     emit('value:update', newVal)
@@ -25,9 +24,9 @@ watch(() => props.value, async (newVal) => {
 })
 
 watch(() => props.categoryId, async (newVal) => {
-    if(newVal < 0) {
+    if (newVal < 0) {
         delete filter.categoryId
-    }else {
+    } else {
         filter.categoryId = newVal
     }
     get()
@@ -43,11 +42,16 @@ onMounted(() => {
         get()
     }, 150);
 });
+onUnmounted(() => {
+    items.value = []
+    innerValue.value = -1
+    filter = {}
+})
 
 async function get() {
     const config = {
         params: {
-            filter:filter,
+            filter: filter,
             all: "1"
         },
         paramsSerializer: (params) => $qs.stringify(params, { encode: false })

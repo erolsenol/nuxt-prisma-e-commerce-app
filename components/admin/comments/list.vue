@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-const { $qs, $helper } = useNuxtApp()
+const { $qs, $helper, $swal } = useNuxtApp()
 const { t } = useI18n();
 const { locale } = useI18n();
 
@@ -62,11 +62,28 @@ function getPage(page) {
   getAll()
 }
 
-async function remove(id) {
+async function remove(id, deleted) {
+  if (!deleted) {
+    const result = await $swal.fire({
+      title: t('are_you_sure_delete'),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `${t('yes')} ${t('delete')}`
+    })
+
+    if (!result.isConfirmed) {
+      return
+    }
+  }
+
+
   const config = {
     method: "delete",
     body: {
-      id
+      id,
+      deleted
     }
   };
 
@@ -185,10 +202,9 @@ async function getAll(page) {
                     <!-- <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
                     data-bs-target="#productFormModal">
                     {{ $t('update') }}</li> -->
-                    <li class="dropdown-item" @click="remove(row.id)" data-bs-toggle="modal"
+                    <li class="dropdown-item" @click="remove(row.id, row.deleted)" data-bs-toggle="modal"
                       data-bs-target="#productFormModal">
-                      {{
-                        $t('delete') }}
+                      {{ row.deleted ? $t('republish') : $t('delete') }}
                     </li>
                   </ul>
                 </div>

@@ -78,7 +78,7 @@ async function save(e, { resetForm }) {
     if (data.value.status) {
         resetForm()
         if (props.type !== "create") {
-            const closeModal = document.querySelector('#close-modal')
+            const closeModal = document.querySelector('#close-modal-category-form')
             closeModal?.click()
             emit('getAll')
             emit('formId:reset', -1)
@@ -154,7 +154,7 @@ async function get(id) {
                 <button type="submit" class="btn px-4"
                     :class="`${props.type == 'delete' ? 'btn-danger' : 'btn-primary'}`">{{ props.type == 'delete' ?
                         formData.deleted ? $t('republish') : $t('delete') : $t('save') }}</button>
-                <button v-if="closeBtnStatus" class="close btn btn-secondary px-4" id="close-modal" data-bs-toggle="modal"
+                <button v-if="closeBtnStatus" class="close btn btn-secondary px-4" id="close-modal-category-form" data-bs-toggle="modal"
                     data-bs-target="#productFormModal">{{ $t('close') }}</button>
             </div>
         </Form>

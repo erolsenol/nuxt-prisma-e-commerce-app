@@ -28,7 +28,6 @@ async function send(value) {
             productId: props.productId,
             ...value
         }
-
     }
     const user = storeUser.getUser
     console.log("user", user);
@@ -39,8 +38,6 @@ async function send(value) {
     const { data } = await useFetch("/api/question/", config);
 
     if (data.value.status) {
-
-
         const closeBtn = document.querySelector('#product-question-close-btn')
         closeBtn.click()
     }

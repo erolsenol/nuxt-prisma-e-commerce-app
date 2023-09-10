@@ -1,4 +1,6 @@
 export default {
+  yes: "Yes",
+  no: "No",
   welcome: "Welcome",
   services: "Services",
   news_and_publications: "News and publications",
@@ -94,6 +96,9 @@ export default {
   do_you_see: "Do you see",
   header_color: "Header color",
   footer_color: "Footer color",
+  warning: "Warning",
+  are_you_sure: "Are you sure?",
+  are_you_sure_delete:"Are you sure you want to delete?",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",

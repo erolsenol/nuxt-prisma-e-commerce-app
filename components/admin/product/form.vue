@@ -136,7 +136,7 @@ async function save(e, { resetForm }) {
             formData.value.categoryId = -1
             formData.value.subCategoryId = -1
             if (props.type !== "create") {
-                const closeModal = document.querySelector('#close-modal')
+                const closeModal = document.querySelector('#close-modal-product-form')
                 closeModal?.click()
                 emit('getAll')
                 emit('formId:reset', -1)
@@ -297,7 +297,7 @@ async function removeImage(id) {
             <hr class="hr" />
             <div class="product-form-footer d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
-                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal"
+                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal-product-form"
                     data-bs-target="#productFormModal">{{ $t('close') }}</button>
             </div>
 

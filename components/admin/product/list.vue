@@ -186,7 +186,7 @@ function itemUpdate(val) {
           <td>{{ row.name }}</td>
           <td>{{ row.title }}</td>
           <td>{{ row.content }}</td>
-          <td>{{ row?.category[`name${locale != 'tr' ? `_${locale}` : ''}`] }}</td>
+          <td>{{ row?.category && row.category[`name${locale != 'tr' ? `_${locale}` : ''}`] }}</td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
