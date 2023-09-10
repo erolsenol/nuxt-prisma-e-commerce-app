@@ -41,6 +41,8 @@ async function get(id: Number) {
     },
     include: {
       category: true,
+      lowerSubCategories: true,
+      topSubCategory: true,
       product: true,
     },
   });

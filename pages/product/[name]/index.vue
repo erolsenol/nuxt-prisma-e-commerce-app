@@ -25,11 +25,13 @@ let likeStatus = ref(false)
 //   return storeApp.getProductDetail
 // })
 
+const breadcrumbObj = computed(() => {
+  return item.value.subCategoryId ? { name: 'subCategory', id: item.value.subCategoryId } : item.value.categoryId ? { name: 'category', id: item.value.categoryId } : null
+})
+
 onMounted(() => {
   setTimeout(get, 150);
 })
-
-
 
 // async function sendComment() {
 //   const body = {}
@@ -132,13 +134,13 @@ async function getStar() {
 
 <template>
   <div class="container product-detail" style="min-height: 40vw;">
-    {{item}}
+    <AppBreadcrumbs :value="breadcrumbObj" />
     <div class="row" v-if="!loading">
       <div
         class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
         style=" min-height: 20rem;">
         <template v-if="item.images && item.images.length > 0">
-          <NuxtImg class="rounded-2" placeholder="./default/no-image.jpeg" :src="'images/' + item.images[0].name" />
+          <NuxtImg class="rounded-2" :src="'images/' + item.images[0].name" />
         </template>
         <NuxtImg class="" v-else :src="'default/no_image.jpeg'" />
       </div>
@@ -197,8 +199,8 @@ async function getStar() {
           <Icon name="icon-park-outline:like" color="black" size="30" style="cursor: pointer;" />
         </div> -->
       </div>
-      <PageProductsComments :productId="item.id" />
-      <PageProductsSendComment :productId="item.id" />
+      <PageProductsComments v-if="item.id" :productId="item.id" />
+      <PageProductsSendComment v-if="item.id" :productId="item.id" />
     </div>
     <Loading v-else />
 
