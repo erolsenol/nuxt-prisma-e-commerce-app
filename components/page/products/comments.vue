@@ -87,31 +87,34 @@ onMounted(() => {
     <div class="container product-detail-comments">
         <div class="row mt-3">
             <template v-for="(comment, index) in comments" :key="index">
-                <div class="card px-0 my-2 border-1 border-secondary-subtle">
-                    <h5 class="card-header" v-if="comment.username">
-                        <!-- <span class="fs-6">{{ $t('username') }}:</span> -->
-                        <Icon name="ep:user-filled" color="gray" size="32" />
-                        @{{ comment.username }}
-                    </h5>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="my-2 " :class="`${comment.images?.length > 0 ? 'col-8' : 'col-12'}`">
-                                <p class="mb-3 fs-6"><span style="font-size: 0.9rem;">{{ $t('title') }}:</span> {{
-                                    comment.title }}</p>
-                                <hr />
-                                <p class="mb-0"><span style="font-size: 0.9rem;">{{ $t('content') }}:</span> {{
-                                    comment.content }}</p>
-                            </div>
-                            <div class="text-end" :class="`${comment.images?.length > 0 ? 'col-4' : 'col-0'}`">
-                                <template v-if="comment.images?.length > 0">
-                                    <PageProductsCommentImage class="mt-0" :images="comment.images" />
-                                </template>
+                <div class="col-12">
+                    <div class="card px-0 my-2 border-1 border-secondary-subtle">
+                        <h5 class="card-header" v-if="comment.username">
+                            <!-- <span class="fs-6">{{ $t('username') }}:</span> -->
+                            <Icon name="ep:user-filled" color="gray" size="32" />
+                            @{{ comment.username }}
+                        </h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="my-2 " :class="`${comment.images?.length > 0 ? 'col-8' : 'col-12'}`">
+                                    <p class="mb-3 fs-6"><span style="font-size: 0.9rem;">{{ $t('title') }}:</span> {{
+                                        comment.title }}</p>
+                                    <hr />
+                                    <p class="mb-0"><span style="font-size: 0.9rem;">{{ $t('content') }}:</span> {{
+                                        comment.content }}</p>
+                                </div>
+                                <div class="text-end" :class="`${comment.images?.length > 0 ? 'col-4' : 'col-0'}`">
+                                    <template v-if="comment.images?.length > 0">
+                                        <PageProductsCommentImage class="mt-0" :images="comment.images" />
+                                    </template>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </template>
-            
+
             <PaginationPage v-if="paginate.totalPage > 1" :paginate="paginate" @page="get" />
             <template v-if="loading">
                 <div class="text-center my-3">
