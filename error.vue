@@ -10,6 +10,17 @@ definePageMeta({
     layout: "404",
 });
 
+// const nuxtApp = useNuxtApp()
+// const error = new Error()
+// error.statusCode = 404
+// nuxtApp.ssrContext.error = error
+
+const nuxtApp = useNuxtApp();
+const error = new Error();
+error.statusCode = 404;
+
+nuxtApp.ssrContext.nuxt.error = error;
+
 function goBack() {
     router.push("/")
 }
@@ -20,10 +31,10 @@ function goBack() {
     <NuxtLayout :name="404">
         <div class="container">
             <div class="page-null d-flex flex-column align-items-center justify-content-center">
-                <p class="text-center fs-5">{{ $t('page_was_not_found') }}</p>
-                <NuxtImg  sizes="sm:100vw md:50vw lg:400px" src="default/404.jpg" />
+                <!-- <p class="text-center fs-5">{{ $t('page_was_not_found') }}</p> -->
+                <NuxtImg sizes="sm:100vw md:50vw lg:400px" src="default/404.jpg" />
                 <div>
-                    <button class="btn btn-primary" style="min-width: 10rem;" @click="goBack">{{ $t('back') }}</button>
+                    <!-- <button class="btn btn-primary" style="min-width: 10rem;" @click="goBack">{{ $t('back') }}</button> -->
                 </div>
             </div>
         </div>

@@ -7,6 +7,8 @@ export default {
 <script setup>
 import { ref, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+
+const { t } = useI18n();
 const { $qs } = useNuxtApp()
 
 

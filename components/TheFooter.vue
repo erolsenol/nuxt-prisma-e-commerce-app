@@ -5,7 +5,7 @@ export default {
 </script>
 <script setup>
 const { $qs } = useNuxtApp()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const router = useRouter()
 
 let footerLogo = ref({})
