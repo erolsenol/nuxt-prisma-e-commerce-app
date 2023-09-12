@@ -2,13 +2,13 @@
 import path from "path";
 
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   devtools: { enabled: true },
   nitro: {
     prerender: {
-      // routes: ['/404.html'
-      // ,'/500.html'
-    // ]
+      routes: ['/404.html'
+        , '/500.html'
+      ]
     }
   },
   modules: [
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
       extensions: [".vue"],
     },
   ],
-  // generate: { fallback: true },
+  generate: { fallback: true },
   veeValidate: {
     // disable or enable auto imports
     autoImports: true,
