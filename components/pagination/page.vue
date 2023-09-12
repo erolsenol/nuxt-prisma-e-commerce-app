@@ -19,12 +19,10 @@ let { paginate, } = defineProps({
 let selectPage = ref(1)
 
 function goPage(num) {
-    console.log("12312", paginate);
-    console.log("paginate", paginate.totalPage);
-    console.log("num", num);
+    
     if (num < 1 || num > paginate.totalPage) { return }
 
-    console.log("emitttt");
+    
 
     emit('page', num)
     selectPage = num

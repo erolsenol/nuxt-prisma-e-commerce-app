@@ -8,8 +8,7 @@ import { Field, Form, ErrorMessage } from 'vee-validate';
 import { string, object } from 'yup';
 import { onMounted, watch, reactive } from "vue"
 
-const { t } = useI18n();
-const { locale } = useI18n()
+const { locale,t } = useI18n()
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 

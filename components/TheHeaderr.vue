@@ -158,7 +158,7 @@ let loginFormType = ref("login")
                <li class="" :class="`${item.dropdown ? 'dropdown-toggle' : ''}`"
                   :data-bs-toggle="`${item.dropdown ? 'dropdown' : ''}`">
                   <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2"
-                     :class="`${router.currentRoute.value.name.includes(item.to) ? 'active' : ''}`">
+                     :class="`${router.currentRoute.value.name?.includes(item.to) ? 'active' : ''}`">
                      {{ $t(item.text) }}
                   </NuxtLink>
                   <template v-if="item.dropdown">

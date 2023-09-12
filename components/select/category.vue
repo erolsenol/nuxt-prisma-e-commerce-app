@@ -52,7 +52,7 @@ async function get() {
     if (data.value.status) {
         const localName = `name${locale.value !== 'tr' ? `_${locale.value}` : ''}`
         items.value = data.value.data.map(item => ({ text: item[localName], value: item.id }))
-        console.log("items.value", items);
+        
     }
 }
 </script>

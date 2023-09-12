@@ -4,6 +4,11 @@ import path from "path";
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
+  // nitro: {
+  //   prerender: {
+  //     routes: ['/404.html','/500.html']
+  //   }
+  // },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
     "@nuxtjs/i18n",
@@ -35,6 +40,7 @@ export default defineNuxtConfig({
       extensions: [".vue"],
     },
   ],
+  generate: { fallback: true },
   veeValidate: {
     // disable or enable auto imports
     autoImports: true,
@@ -68,14 +74,13 @@ export default defineNuxtConfig({
       "acceptHMRUpdate",
     ],
   },
-  nitro: {},
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://example.com",
-      siteName: "Awesome Site",
-      siteDescription: "Welcome to my awesome site!",
-      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "www.buyfast.com.tr",
+      siteName: "Buyfast",
+      siteDescription: "Welcome to buy fast!",
+      // GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       language: "tr", // prefer more explicit language codes like `en-AU` over `en`
     },
   },

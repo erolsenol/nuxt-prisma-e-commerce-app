@@ -141,7 +141,7 @@ async function getStar() {
     <AppBreadcrumbs :value="breadcrumbObj" />
     <div class="row" v-if="!loading">
       <div
-        class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
+        class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex align-items-center justify-content-start"
         style=" min-height: 20rem;">
         <template v-if="item.images && item.images.length > 0">
           <NuxtImg class="rounded-2" :src="'images/' + item.images[0].name" />

@@ -7,8 +7,7 @@ export default {
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 const { $qs, $helper, $swal } = useNuxtApp()
-const { t } = useI18n();
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 
 let props = defineProps({
   productId: Number,
@@ -77,7 +76,6 @@ async function remove(id, deleted) {
       return
     }
   }
-
 
   const config = {
     method: "delete",

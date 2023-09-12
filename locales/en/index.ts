@@ -98,7 +98,10 @@ export default {
   footer_color: "Footer color",
   warning: "Warning",
   are_you_sure: "Are you sure?",
-  are_you_sure_delete:"Are you sure you want to delete?",
+  back:"Back",
+  are_you_sure_delete: "Are you sure you want to delete?",
+  page_was_not_found: "The page you were looking for was not found",
+  turkish_characters_no: "There should be no Turkish characters or spaces in the product name",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",

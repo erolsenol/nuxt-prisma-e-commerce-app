@@ -205,6 +205,8 @@ async function removeImage(id) {
         text: "Görsel Silindi",
     });
 }
+
+
 </script>
 
 <template>
@@ -219,12 +221,26 @@ async function removeImage(id) {
                     <span class="input-group-text">TR *</span>
                     <Field name="name" v-model="formData.name" type="text" class="form-control" id="product-form-name"
                         rules="required" />
+                    <span class="input-group-text">
+                        <Tooltip :text="$t('turkish_characters_no')">
+                            <template #content>
+                                <BootstrapIconInfoCircle class="position-relative" width="40" />
+                            </template>
+                        </Tooltip>
+                    </span>
                 </div>
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
                     <Field name="name-en" v-model="formData.name_en" type="text" class="form-control"
                         id="product-form-name-en" rules="" />
+                    <span class="input-group-text">
+                        <Tooltip :text="$t('turkish_characters_no')">
+                            <template #content>
+                                <BootstrapIconInfoCircle class="position-relative" width="40" />
+                            </template>
+                        </Tooltip>
+                    </span>
                 </div>
             </div>
             <div class="mb-3">

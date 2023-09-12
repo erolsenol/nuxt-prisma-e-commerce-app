@@ -55,7 +55,7 @@ const paginate = ref({ skip: 0, take: 20 })
             <p class="fs-6 card-subtitle text-body-secondary  text-capitalize  mb-2">{{ props.name }} </p>
           </div>
 
-          <div class="d-flex aling-items-center justify-content-start mb-3">
+          <div class="d-flex align-items-center justify-content-start mb-3">
             <template v-for="index in 5">
               <!-- <Icon name="fontisto:star" :color="`${index < point ? 'orange' : 'black'}`" class="product-item-star"
                 :class="`${index != 1 ? 'ms-2' : ''}`" /> -->

@@ -97,7 +97,10 @@ export default {
   footer_color: "Alt başlık rengi",
   warning: "Uyarı",
   are_you_sure: "Emin misin?",
+  back:"Geri",
   are_you_sure_delete: "Silmek istediğinize emin misiniz?",
+  page_was_not_found: "Aradığınız sayfa bulunamadı",
+  turkish_characters_no: "Ürün isminde türkçe karakter ve boşluk olmamalıdır",
 
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",

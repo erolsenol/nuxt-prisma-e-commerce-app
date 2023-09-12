@@ -54,9 +54,9 @@ function upload() {
 }
 
 async function onFileChange(e) {
-    console.log("onFileChange", pageName);
+    
     let files = e.target.files || e.dataTransfer.files;
-    console.log("files", files);
+    
     if (!files.length) return;
     imageBase64.value = null
     imageBase64.value = await $helper.fileToBase64(files[0])
