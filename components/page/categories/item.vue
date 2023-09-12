@@ -4,7 +4,6 @@ export default {
 };
 </script>
 <script setup>
-import { useLocalePath } from '#imports'
 import { ref, onMounted } from 'vue'
 const router = useRouter();
 const { id, title, content, name, images } = defineProps({

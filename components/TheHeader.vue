@@ -1,7 +1,6 @@
 <script setup>
 const { locale, locales } = useI18n()
 import { ref } from "vue"
-import { useI18n, useLocalePath } from '#imports'
 import { setLocale } from '@vee-validate/i18n';
 const router = useRouter()
 

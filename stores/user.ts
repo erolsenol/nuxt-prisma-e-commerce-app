@@ -2,8 +2,6 @@
 
 const storage = useStorage()
 
-console.log("user storageee", storage);
-
 const delay = (t: number) => new Promise((r) => setTimeout(r, t))
 
 export const useUser = defineStore('user', {

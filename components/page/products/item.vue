@@ -6,7 +6,6 @@ export default {
 </script>
 <script setup>
 
-import { useLocalePath } from '#imports'
 import { ref, onMounted } from 'vue'
 const { locale, locales } = useI18n()
 const router = useRouter();

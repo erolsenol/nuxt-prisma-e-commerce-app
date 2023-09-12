@@ -5,7 +5,6 @@ export default {
 </script>
 <script setup>
 import { ref, computed } from "vue"
-import { useI18n, useLocalePath } from '#imports'
 import { setLocale } from '@vee-validate/i18n';
 
 const { $qs } = useNuxtApp()
