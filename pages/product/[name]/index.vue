@@ -13,9 +13,6 @@ const storeUser = useUser()
 const storeApp = useApp()
 const snackbar = useSnackbar();
 
-definePageMeta({
-  middleware: "product-detail",
-});
 
 const item = ref({})
 let loading = ref(true)

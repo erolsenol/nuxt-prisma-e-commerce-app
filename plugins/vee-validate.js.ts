@@ -6,9 +6,9 @@ export default defineNuxtPlugin({
   name: 'vee-validate',
   enforce: 'pre', // or 'post'
   async setup(nuxtApp) {
-    Object.keys(AllRules).forEach(rule => {
-      defineRule(rule, AllRules[rule]);
-    });
+    // Object.keys(AllRules).forEach(rule => {
+    //   defineRule(rule, AllRules[rule]);
+    // });
 
     configure({
       validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
