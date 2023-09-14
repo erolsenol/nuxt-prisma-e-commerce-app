@@ -2,15 +2,8 @@
 import path from "path";
 
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   devtools: { enabled: true },
-  nitro: {
-    prerender: {
-      routes: ['/404.html'
-        , '/500.html'
-      ]
-    }
-  },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
     "@nuxtjs/i18n",
@@ -42,7 +35,6 @@ export default defineNuxtConfig({
       extensions: [".vue"],
     },
   ],
-  generate: { fallback: true },
   veeValidate: {
     // disable or enable auto imports
     autoImports: true,
@@ -80,6 +72,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "www.buyfast.com.tr",
+      MAIL_USER: process.env.MAIL_USER,
+      MAIL_PASSWORD: process.env.MAIL_PASSWORD,
       siteName: "Buyfast",
       siteDescription: "Welcome to buy fast!",
       // GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
@@ -106,32 +100,6 @@ export default defineNuxtConfig({
     right: true,
     duration: 5000,
   },
-  // head() {
-  //   const i18nHead = this.$nuxtI18nHead({ addSeoAttributes: true })
-  //   return {
-  //     htmlAttrs: {
-  //       myAttribute: 'My Value',
-  //       ...i18nHead.htmlAttrs
-  //     },
-  //     meta: [
-  //       {
-  //         hid: 'description',
-  //         name: 'description',
-  //         content: 'My Custom Description'
-  //       },
-  //       ...i18nHead.meta
-  //     ],
-  //     link: [
-  //       {
-  //         hid: 'apple-touch-icon',
-  //         rel: 'apple-touch-icon',
-  //         sizes: '180x180',
-  //         href: '/apple-touch-icon.png'
-  //       },
-  //       ...i18nHead.link
-  //     ]
-  //   }
-  // },
   i18n: {
     vueI18n: "./i18n.config.ts", // if you are using custom path, default
     locales: ["en", "tr"],

@@ -14,8 +14,6 @@ const { $qs } = useNuxtApp()
 
 const storage = useStorage()
 
-console.log("storage", storage);
-
 const schema = Yup.object().shape({
     firstname: Yup.string(),
     lastname: Yup.string(),

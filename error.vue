@@ -6,10 +6,6 @@ export default {
 <script setup>
 const router = useRouter()
 
-definePageMeta({
-    layout: "404",
-});
-
 // const nuxtApp = useNuxtApp()
 // const error = new Error()
 // error.statusCode = 404
@@ -19,7 +15,10 @@ const nuxtApp = useNuxtApp();
 const error = new Error();
 error.statusCode = 404;
 
-nuxtApp.ssrContext.nuxt.error = error;
+console.log(nuxtApp)
+
+// nuxtApp.ssrContext.nuxt.error = error;
+// nuxtApp.vueApp.nuxt.error = error;
 
 function goBack() {
     router.push("/")
@@ -28,7 +27,7 @@ function goBack() {
 </script>
 
 <template>
-    <NuxtLayout :name="404">
+    <NuxtLayout :name="'404'">
         <div class="container">
             <div class="page-null d-flex flex-column align-items-center justify-content-center">
                 <!-- <p class="text-center fs-5">{{ $t('page_was_not_found') }}</p> -->

@@ -1,9 +1,6 @@
 <script>
 export default {
     name: "LayoutDefault",
-    // head() {
-    //     return $nuxtI18nHead()
-    // }
 };
 </script>
 

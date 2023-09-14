@@ -19,6 +19,7 @@ const availableLocales = computed(() => {
 })
 
 function changeLocale(val) {
+   switchLocalePath(val)
    setLocale(val);
 }
 
@@ -57,8 +58,9 @@ let selectedIndex = ref("0")
       <div class="">
          <ul class="nav nav-pills nav-fill shadow-lg justify-content-center flex-column flex-sm-row mb-2">
             <li class="nav-item logo">
-               <a class="nav-link shadow12 fs-5 logo-container-logo py-3" :class="selectedIndex == '0' ? 'nav-link-active' : ''"
-                  aria-current="page" href="#" @click="selectedIndex = '0'">
+               <a class="nav-link shadow12 fs-5 logo-container-logo py-3"
+                  :class="selectedIndex == '0' ? 'nav-link-active' : ''" aria-current="page" href="#"
+                  @click="selectedIndex = '0'">
                   <span class="logo-container-mail fs-6">
                      erosnl@gmail.com
                   </span>
@@ -77,7 +79,7 @@ let selectedIndex = ref("0")
                <ul class="dropdown-menu">
                   <template v-for="item in availableLocales" :key="locale.code">
                      <li>
-                        <NuxtLink class="dropdown-item" @click="changeLocale(item)" :to="switchLocalePath(item)">
+                        <NuxtLink class="dropdown-item" @click="changeLocale(item)">
                            {{ item.toUpperCase() }}
                         </NuxtLink>
                      </li>
