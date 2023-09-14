@@ -16,7 +16,6 @@ const snackbar = useSnackbar();
 definePageMeta({
   middleware: "product-detail",
 });
-const paramName = useState('routeParamName')
 
 const item = ref({})
 let loading = ref(true)
