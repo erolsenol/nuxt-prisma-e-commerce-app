@@ -45,7 +45,7 @@ async function getAll(page) {
         paramsSerializer: (params) => $qs.stringify(params, { encode: false })
     };
 
-    const { data } = await useFetch('api/contactus', config)
+    const { data } = await useFetch('/api/contactus', config)
 
     if (data.value.status) {
         console.log("12312312 getAllll");
@@ -83,7 +83,7 @@ async function getAll(page) {
                 </div>
             </div>
 
-            <div class="contact-us-list-filter-container d-flex flex-row collapse">
+            <div class="contact-us-list-filter-container b-row">
                 <div class="filter-item">
                     <label for="filter-name" class="form-label">{{ $t('name') }}</label>
                     <input type="text" v-model="filter.name" class="form-control" id="filter-name">
