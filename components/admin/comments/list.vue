@@ -158,7 +158,7 @@ async function getAll(page) {
             </label>
           </div>
         </div>
-
+        
         <div class="comment-list-filter-container d-flex flex-row collapse">
           <div class="filter-item">
             <label for="filter-name" class="form-label">{{ $t('general') }}</label>

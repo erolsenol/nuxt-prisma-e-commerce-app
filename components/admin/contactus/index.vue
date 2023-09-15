@@ -83,20 +83,20 @@ async function getAll(page) {
                 </div>
             </div>
 
-            <div class="contact-us-list-filter-container b-row">
-                <div class="filter-item">
+            <div class="contact-us-list-filter-container row">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-name" class="form-label">{{ $t('name') }}</label>
                     <input type="text" v-model="filter.name" class="form-control" id="filter-name">
                 </div>
-                <div class="filter-item">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-name-en" class="form-label">{{ $t('lastname') }}</label>
                     <input type="text" v-model="filter.surname" class="form-control" id="filter-name-en">
                 </div>
-                <div class="filter-item">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-description" class="form-label">{{ $t('email') }}</label>
                     <input type="text" v-model="filter.email" class="form-control" id="filter-description">
                 </div>
-                <div class="filter-item">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-description-en" class="form-label">{{ $t('phone') }}</label>
                     <input type="text" v-model="filter.phone" class="form-control" id="filter-description-en">
                 </div>
