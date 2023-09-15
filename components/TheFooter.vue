@@ -25,7 +25,8 @@ function pageChange(to, route = "", item) {
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
-      router.push({ name: `${to}___${locale.value}` })
+      // router.push({ name: `${to}___${locale.value}` })
+      router.push({ name: `${to}` })
    }
 }
 
@@ -109,7 +110,7 @@ const headerItems = [
    },
    {
       text: "communication",
-      to: null
+      to: "contact"
    },
 ]
 </script>

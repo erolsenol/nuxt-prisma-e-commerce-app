@@ -27,8 +27,8 @@ function langChange(lang) {
    // const pathName = router.currentRoute?.value.name.substring(0, router.currentRoute?.value.name.length - 2)
    // router.push(({ name: `${pathName}${lang}` }))
 
-
-   router.push(({ name: `${router.currentRoute.value.name}` }))
+   locale.value = lang
+   // router.push(({ name: `${router.currentRoute.value.name}` }))
 }
 
 async function getHeaderLogo() {
@@ -67,7 +67,8 @@ function pageChange(to, route = "", item) {
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
-      router.push({ name: `${to}___${locale?.value}` })
+      // router.push({ name: `${to}___${locale?.value}` })
+      router.push({ name: `${to}` })
    }
 }
 
