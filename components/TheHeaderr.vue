@@ -22,8 +22,13 @@ const headerColor = computed(() => {
 })
 
 function langChange(lang) {
+   console.log("router", router.getRoutes())
+   console.log("router.currentRoute", router.currentRoute.value);
    // const pathName = router.currentRoute?.value.name.substring(0, router.currentRoute?.value.name.length - 2)
    // router.push(({ name: `${pathName}${lang}` }))
+
+
+   router.push(({ name: `${router.currentRoute.value.name}` }))
 }
 
 async function getHeaderLogo() {
