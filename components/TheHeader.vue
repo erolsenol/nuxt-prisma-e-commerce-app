@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from "vue-i18n"
+
 const { locale, locales } = useI18n()
 import { ref } from "vue"
 import { setLocale } from '@vee-validate/i18n';
@@ -15,7 +17,8 @@ function pageChange(key, url) {
 const switchLocalePath = useSwitchLocalePath()
 
 const availableLocales = computed(() => {
-   return (locales.value).filter(i => i !== locale.value)
+   // return (locales.value).filter(i => i !== locale.value)
+   return ["tr", "en"].filter(i => i !== locale.value)
 })
 
 function changeLocale(val) {

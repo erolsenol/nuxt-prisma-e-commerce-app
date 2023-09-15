@@ -8,6 +8,7 @@ export default {
 import { ref, toRef, computed } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import * as Yup from 'yup';
+import { useI18n } from "vue-i18n"
 
 const { t } = useI18n();
 const { $qs } = useNuxtApp()

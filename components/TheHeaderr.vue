@@ -5,11 +5,12 @@ export default {
 </script>
 <script setup>
 import { ref, computed } from "vue"
+import { useI18n } from "vue-i18n"
 import { setLocale } from '@vee-validate/i18n';
 
 const { $qs } = useNuxtApp()
-const { locale, locales } = useI18n()
-console.log("locales",locales)
+const { locale } = useI18n()
+
 const router = useRouter()
 const storeUser = useUser()
 const storage = useStorage()
@@ -21,8 +22,8 @@ const headerColor = computed(() => {
 })
 
 function langChange(lang) {
-   const pathName = router.currentRoute?.value.name.substring(0, router.currentRoute?.value.name.length - 2)
-   router.push(({ name: `${pathName}${lang}` }))
+   // const pathName = router.currentRoute?.value.name.substring(0, router.currentRoute?.value.name.length - 2)
+   // router.push(({ name: `${pathName}${lang}` }))
 }
 
 async function getHeaderLogo() {
@@ -66,7 +67,8 @@ function pageChange(to, route = "", item) {
 }
 
 const availableLocales = computed(() => {
-   return (locales.value).filter(i => i !== locale?.value)
+   // return (locales.value).filter(i => i !== locale?.value)
+   return ["tr", "en"].filter(i => i !== locale?.value)
 })
 
 function formTypeChange(str) {

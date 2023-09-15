@@ -6,6 +6,8 @@ export default {
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted, computed, toRefs, toRef } from "vue";
+import { useI18n } from "vue-i18n"
+
 const { locale } = useI18n();
 
 const emit = defineEmits(['value:update'])

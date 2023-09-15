@@ -7,9 +7,12 @@ export default {
 import { ref, onMounted, onUnmounted, onServerPrefetch } from 'vue'
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { string, object } from 'yup';
+import { useI18n } from 'vue-i18n'
 
-const { locales } = useI18n()
 const { $qs } = useNuxtApp()
+const snackbar = useSnackbar();
+
+const { t, locale } = useI18n()
 
 const schema = object().shape({
   general: string().required().min(2),
@@ -69,7 +72,11 @@ async function search(page, e) {
   if (Number.isInteger(page)) {
     paginate.skip = paginate.take * (page - 1)
   }
-
+  console.log("t", t)
+  snackbar.add({
+    type: "success",
+    text: t('product'),
+  });
   const config = {
     params: {
       general: filter.value.general,
@@ -92,13 +99,11 @@ async function search(page, e) {
 
 <template>
   <ClientOnly fallback-tag="span" fallback="Loading comments...">
-
-
     <div class="product">
       <Form @submit="search(1)" :validation-schema="schema">
         <div class="row mt-3 mb-2">
           <div class="col product-filter p-2 px-3 mb-2">
-            <div class="input-group input-search mb-3" v-if="items.length > 0">
+            <div class="input-group input-search mb-3">
               <span class="input-group-text p-2" id="product-search">
                 <Icon name="el:search" size="26" />
               </span>

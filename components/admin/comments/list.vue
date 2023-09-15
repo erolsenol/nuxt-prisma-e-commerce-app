@@ -6,6 +6,8 @@ export default {
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import { useI18n } from "vue-i18n"
+
 const { $qs, $helper, $swal } = useNuxtApp()
 const { locale, t } = useI18n();
 

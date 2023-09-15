@@ -8,6 +8,8 @@ export default {
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
+import { useI18n } from "vue-i18n"
+
 const emit = defineEmits(['update', 'get'])
 
 const { t } = useI18n();

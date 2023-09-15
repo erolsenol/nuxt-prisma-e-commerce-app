@@ -1,12 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from "path";
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'url'
+import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
-    "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
     "nuxt-icon",
@@ -19,6 +21,20 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "nuxt-bootstrap-icons",
   ],
+  vite: {
+    resolve: {
+      alias: {
+        'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
+      }
+    },
+    plugins: [
+      VueI18nVitePlugin({
+        include: [
+          resolve(dirname(fileURLToPath(import.meta.url)), './locales/*.json')
+        ]
+      })
+    ]
+  },
   app: {
     // pageTransition: {
     //   name: 'fade',
@@ -99,16 +115,6 @@ export default defineNuxtConfig({
     bottom: true,
     right: true,
     duration: 5000,
-  },
-  i18n: {
-    vueI18n: "./i18n.config.ts", // if you are using custom path, default
-    locales: ["en", "tr"],
-    // defaultLocale: "tr",
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root',  // recommended
-    }
   },
   image: {
     // Options

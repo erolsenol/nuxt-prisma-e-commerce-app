@@ -7,6 +7,8 @@ export default {
 <script setup>
 import { ref, watch, computed, toRefs, toRef } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { useI18n } from "vue-i18n"
+
 const { locale } = useI18n();
 const router = useRouter()
 

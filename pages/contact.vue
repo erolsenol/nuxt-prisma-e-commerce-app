@@ -7,6 +7,7 @@ export default {
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { string, object } from 'yup';
 import { onMounted, watch, reactive } from "vue"
+import { useI18n } from "vue-i18n"
 
 const { locale,t } = useI18n()
 const snackbar = useSnackbar();

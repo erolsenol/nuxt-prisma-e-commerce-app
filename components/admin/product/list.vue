@@ -6,9 +6,10 @@ export default {
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import { useI18n } from "vue-i18n"
+
 const { $qs, $helper } = useNuxtApp()
-const { t } = useI18n();
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const rows = ref([])
 const loading = ref(true)

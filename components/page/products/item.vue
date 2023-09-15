@@ -7,7 +7,9 @@ export default {
 <script setup>
 
 import { ref, onMounted } from 'vue'
-const { locale, locales } = useI18n()
+import { useI18n } from "vue-i18n"
+
+const { locale } = useI18n()
 const router = useRouter();
 const storeApp = useApp()
 const props = defineProps({

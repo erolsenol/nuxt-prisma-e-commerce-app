@@ -5,6 +5,8 @@ export default {
 </script>
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { useI18n } from "vue-i18n"
+
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n();

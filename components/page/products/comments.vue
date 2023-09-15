@@ -7,6 +7,8 @@ export default {
 import { ref, onMounted } from 'vue'
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { string, object } from 'yup';
+import { useI18n } from "vue-i18n"
+
 const { t } = useI18n();
 const { $qs, $helper } = useNuxtApp()
 const snackbar = useSnackbar();
