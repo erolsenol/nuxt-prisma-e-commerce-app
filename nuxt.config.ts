@@ -7,6 +7,11 @@ import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
+  nitro: {
+    prerender: {
+      failOnError: false
+    }
+  },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
     "@nuxt/image",
