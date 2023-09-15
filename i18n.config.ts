@@ -5,7 +5,5 @@ export default defineI18nConfig(() => ({
   locale: "tr",
   fallbackLocale: 'tr',
   // baseUrl: 'https://www.buyfast.com.tr',
-  messages: {
-    ...locales
-  },
+  messages: locales ,
 }));

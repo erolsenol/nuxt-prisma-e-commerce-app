@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+
 const { $bootstrap } = useNuxtApp()
 const storage = useStorage()
 const storeUser = useUser()

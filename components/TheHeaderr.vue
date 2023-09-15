@@ -9,6 +9,7 @@ import { setLocale } from '@vee-validate/i18n';
 
 const { $qs } = useNuxtApp()
 const { locale, locales } = useI18n()
+console.log("locales",locales)
 const router = useRouter()
 const storeUser = useUser()
 const storage = useStorage()
@@ -20,7 +21,7 @@ const headerColor = computed(() => {
 })
 
 function langChange(lang) {
-   const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
+   const pathName = router.currentRoute?.value.name.substring(0, router.currentRoute?.value.name.length - 2)
    router.push(({ name: `${pathName}${lang}` }))
 }
 
@@ -32,8 +33,8 @@ async function getHeaderLogo() {
       },
       paramsSerializer: (params) => qs.stringify(params, { encode: false })
    };
-   const { data } = await useFetch("/api/image", config)
-   if (data.value.status) {
+   let { data } = await useFetch("/api/image", config)
+   if (data?.value?.status) {
       headerLogo.value = data.value.data
    }
 }
@@ -48,24 +49,24 @@ async function getSite() {
    };
 
    const { data } = await useFetch("/api/site", config);
-   if (data.value.status) {
-      site.value = data.value.data
+   if (data?.value.status) {
+      site.value = data?.value.data
    }
 }
 
 function pageChange(to, route = "", item) {
    if (route && item) {
       // router.push({ path: `/${route}/${to}`, query: { id: item.id } })
-      router.push({ name: `category-name___${locale.value}`, params: { name: item.name }, query: { id: item.id } })
+      router.push({ name: `category-name___${locale?.value}`, params: { name: item.name }, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
-      router.push({ name: `${to}___${locale.value}` })
+      router.push({ name: `${to}___${locale?.value}` })
    }
 }
 
 const availableLocales = computed(() => {
-   return (locales.value).filter(i => i !== locale.value)
+   return (locales.value).filter(i => i !== locale?.value)
 })
 
 function formTypeChange(str) {
@@ -91,8 +92,8 @@ async function getCategory() {
       console.error(error);
    });
 
-   if (data.value.status) {
-      categories.value = data.value.data
+   if (data?.value.status) {
+      categories.value = data?.value.data
    }
 }
 
@@ -157,7 +158,7 @@ let loginFormType = ref("login")
                <li class="" :class="`${item.dropdown ? 'dropdown-toggle' : ''}`"
                   :data-bs-toggle="`${item.dropdown ? 'dropdown' : ''}`">
                   <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2"
-                     :class="`${router.currentRoute.value.name?.includes(item.to) ? 'active' : ''}`">
+                     :class="`${router.currentRoute?.value.name?.includes(item.to) ? 'active' : ''}`">
                      {{ $t(item.text) }}
                   </NuxtLink>
                   <template v-if="item.dropdown">
@@ -191,12 +192,6 @@ let loginFormType = ref("login")
                      <Icon class="ms-1" color="white" name="ri:arrow-down-s-fill" />
                   </a>
                   <ul class="dropdown-menu" style="cursor: pointer;">
-                     <!-- <li><a class="dropdown-item">New project...</a></li>
-                     <li><a class="dropdown-item">Settings</a></li>
-                     <li><a class="dropdown-item">Profile</a></li>
-                     <li>
-                        <hr class="dropdown-divider">
-                     </li> -->
                      <li><a class="dropdown-item" @click="logout">Sign out</a></li>
                   </ul>
                </div>

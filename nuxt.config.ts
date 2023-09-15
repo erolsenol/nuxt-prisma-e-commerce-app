@@ -101,9 +101,9 @@ export default defineNuxtConfig({
     duration: 5000,
   },
   i18n: {
-    vueI18n: "/i18n.config.ts", // if you are using custom path, default
+    vueI18n: "./i18n.config.ts", // if you are using custom path, default
     locales: ["en", "tr"],
-    defaultLocale: "tr",
+    // defaultLocale: "tr",
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',

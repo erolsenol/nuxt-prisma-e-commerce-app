@@ -97,7 +97,7 @@ export default {
   footer_color: "Alt başlık rengi",
   warning: "Uyarı",
   are_you_sure: "Emin misin?",
-  back:"Geri",
+  back: "Geri",
   are_you_sure_delete: "Silmek istediğinize emin misiniz?",
   page_was_not_found: "Aradığınız sayfa bulunamadı",
   turkish_characters_no: "Ürün isminde türkçe karakter ve boşluk olmamalıdır",
@@ -112,7 +112,8 @@ export default {
   no_found_products: "Ürün Bulunamadı",
   no_found_products_this_category: "Bu kategoride ürün bulunamadı",
   select_product_to_receive_comments: "Yorumların gelmesi için ürün seçiniz",
-  footer_text: "Neva - Telif Hakkı © 2023. Tüm hakları saklıdır. Kopyalanması, çoğaltılması ve dağıtılması halinde yasal haklarımız kullanılacaktır.",
+  footer_text:
+    "Neva - Telif Hakkı © 2023. Tüm hakları saklıdır. Kopyalanması, çoğaltılması ve dağıtılması halinde yasal haklarımız kullanılacaktır.",
 
   password_hint:
     "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
