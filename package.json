@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "buildd": "nuxt build",
     "build:nitro":"nitro build",
     "dev": "nuxt dev",
     "start": "nuxt dev",
