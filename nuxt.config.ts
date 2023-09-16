@@ -5,13 +5,13 @@ import { fileURLToPath } from 'url'
 import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   devtools: { enabled: true },
   nitro: {
-    // baseURL: "http://localhost:8000",
+    // baseURL: "http://localhost:80",
     prerender: {
       // crawlLinks: true,
-      failOnError: false
+      // failOnError: false
     }
   },
   modules: [
