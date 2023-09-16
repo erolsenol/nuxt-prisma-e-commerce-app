@@ -1,23 +1,19 @@
-// export default defineNuxtPlugin({
-//     name: 'helper',
-//     parallel: true,
-//     enforce: 'pre', // or 'post'
-//     async setup (nuxtApp) {
-//       // this is the equivalent of a normal functional plugin
-//     },
-//     hooks: {
-//       // You can directly register Nuxt app hooks here
-//       'app:created'() {
-//         const nuxtApp = useNuxtApp()
-//         // 
-//       }
-//     }
-//   })
-  
+import {
+  fileToBase64,
+  replaceTurkishCharacters,
+  paginationCondition,
+  imageToObj
+} from "../helper";
+
 export default defineNuxtPlugin(() => {
-    return {
-      provide: {
-        helper: (msg: string) => `Helper ${msg}!`
-      }
-    }
-  })
+  return {
+    provide: {
+      helper: {
+        fileToBase64,
+        replaceTurkishCharacters,
+        paginationCondition,
+        imageToObj
+      },
+    },
+  };
+});

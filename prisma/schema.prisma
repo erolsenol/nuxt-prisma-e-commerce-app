@@ -2,57 +2,241 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  // relationMode = "prisma"
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  firstname String?   @db.VarChar(255)
-  lastname  String?   @db.VarChar(255)
-  username  String    @db.VarChar(255)
-  email     String    @db.VarChar(255)
-  phone     String?   @db.VarChar(255)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  id        Int         @id @unique @default(autoincrement())
+  firstname String?     @db.VarChar(255)
+  lastname  String?     @db.VarChar(255)
+  username  String      @db.VarChar(255)
+  password  String      @db.VarChar(255)
+  email     String      @unique @db.VarChar(255)
+  phone     String?     @db.VarChar(255)
   age       Int?
+  verify    Boolean?    @default(false)
+  deleted   Boolean?    @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   comments  Comment[]
+  star      Star[]
+  question  Question[]
+  contactUs ContactUs[]
+
+  @@unique([email, username])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Product {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique @db.VarChar(255)
-  title     String    @db.VarChar(255)
-  content   String    @db.VarChar(255)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  images    Image[]
-  comments  Comment[]
+  id         Int     @id @unique @default(autoincrement())
+  name       String  @unique @db.VarChar(255)
+  name_en    String? @db.VarChar(255)
+  title      String  @db.VarChar(255)
+  title_en   String? @db.VarChar(255)
+  content    String  @db.VarChar(255)
+  content_en String? @db.VarChar(255)
+
+  otherLangs    Json?
+  deleted       Boolean?     @default(false)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+  subCategoryId Int?
+  category      Category?    @relation(fields: [categoryId], references: [id])
+  categoryId    Int?
+  tags          Json?
+  images        Image[]
+  comments      Comment[]
+  star          Star[]
+  question      Question[]
+
+  @@index([categoryId, subCategoryId])
+}
+
+model Star {
+  id        Int     @id @unique @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+model Question {
+  id        Int      @id @unique @default(autoincrement())
+  title     String   @db.VarChar(255)
+  content   String   @db.VarChar(1000)
+  reply     String?  @db.VarChar(1000)
+  answered  Boolean? @default(false)
+  product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+}
+
+model Category {
+  id             Int           @id @unique @default(autoincrement())
+  name           String        @unique @db.VarChar(255)
+  name_en        String?       @db.VarChar(255)
+  description    String?       @db.VarChar(255)
+  description_en String?       @db.VarChar(255)
+  deleted        Boolean?      @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  subCategory    SubCategory[]
+  product        Product[]
+}
+
+model SubCategory {
+  id                 Int           @id @unique @default(autoincrement())
+  name               String        @unique @db.VarChar(255)
+  name_en            String?       @db.VarChar(255)
+  description        String?       @db.VarChar(255)
+  description_en     String?       @db.VarChar(255)
+  deleted            Boolean?      @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  category           Category?     @relation(fields: [categoryId], references: [id])
+  categoryId         Int?
+  lowerSubCategoryId Int?
+  topSubCategory     SubCategory?  @relation("topLowSubCategories", fields: [lowerSubCategoryId], references: [id])
+  lowerSubCategories SubCategory[] @relation("topLowSubCategories")
+  product            Product[]
 }
 
 model Image {
-  id        Int      @id @default(autoincrement())
-  path      String   @db.VarChar(255)
-  name      String   @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  product   Product  @relation(fields: [productId], references: [id])
-  productId Int
+  id            Int          @id @unique @default(autoincrement())
+  path          String       @db.VarChar(255)
+  name          String       @unique @db.VarChar(255)
+  ownerName     String?      @db.VarChar(255)
+  deleted       Boolean?     @default(false)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  product       Product?     @relation(fields: [productId], references: [id])
+  productId     Int?
+  pageContent   Pagecontent? @relation(fields: [pageContentId], references: [id])
+  pageContentId Int?
+  comment       Comment?     @relation(fields: [commentId], references: [id])
+  commentId     Int?
+  minislider    Minislider?  @relation(fields: [minisliderId], references: [id])
+  minisliderId  Int?
+  Photo         Photo[]
+}
+
+model Photo {
+  id      Int     @id @unique @default(autoincrement())
+  name    String?
+  type    String?
+  image   Image   @relation(fields: [imageId], references: [id])
+  imageId Int
+}
+
+model Phototype {
+  id       Int    @id @unique @default(autoincrement())
+  typeName String @unique
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id @unique @default(autoincrement())
+  username  String?  @db.VarChar(255)
   title     String?  @db.VarChar(255)
-  content   String?  @db.VarChar(255)
+  content   String?  @db.VarChar(755)
   point     Int?
+  deleted   Boolean? @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   product   Product  @relation(fields: [productId], references: [id])
   productId Int
   user      User?    @relation(fields: [userId], references: [id])
   userId    Int?
+  images    Image[]
+
+  @@fulltext([username, title, content])
+}
+
+model ContactUs {
+  id        Int      @id @unique @default(autoincrement())
+  name      String?  @db.VarChar(255)
+  surname   String?  @db.VarChar(255)
+  email     String?  @db.VarChar(255)
+  phone     String?  @db.VarChar(255)
+  title     String?  @db.VarChar(255)
+  content   String?  @db.VarChar(255)
+  readed    Boolean? @default(false)
+  deleted   Boolean? @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  @@fulltext([name, surname, email, phone, title, content])
+}
+
+model Pagecontent {
+  id        Int      @id @unique @default(autoincrement())
+  locale    String   @db.VarChar(255)
+  bigTitle  String?  @db.VarChar(255)
+  title     String   @db.VarChar(255)
+  content   String   @db.VarChar(2000)
+  pageName  String   @db.VarChar(255)
+  deleted   Boolean? @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  images    Image[]
+}
+
+model Minislider {
+  id        Int      @id @unique @default(autoincrement())
+  texts     Json
+  deleted   Boolean? @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Image     Image[]
+}
+
+model Site {
+  id              Int     @id @unique @default(autoincrement())
+  headerLogo      String? @db.VarChar(255)
+  footerLogo      String? @db.VarChar(255)
+  headerBgColor   String? @db.VarChar(255)
+  footerBgColor   String? @db.VarChar(255)
+  headerFontColor String? @db.VarChar(255)
+  footerFontColor String? @db.VarChar(255)
+  mail            String? @db.VarChar(255)
+  mail_en         String? @db.VarChar(255)
+  phone           String? @db.VarChar(255)
+  phone_en        String? @db.VarChar(255)
+  address         String? @db.VarChar(255)
+  address_en      String? @db.VarChar(255)
+  footerText      String? @db.VarChar(255)
+  aboutUsText     String? @db.VarChar(1500)
+  footerJson      Json?
+  headerJson      Json?
+  point           Int?
+
+  instagramName String?  @db.VarChar(255)
+  facebookName  String?  @db.VarChar(255)
+  twitterName   String?  @db.VarChar(255)
+  instagramUrl  String?  @db.VarChar(255)
+  facebookUrl   String?  @db.VarChar(255)
+  twitterUrl    String?  @db.VarChar(255)
+  instagramShow Boolean? @db.TinyInt
+  facebookShow  Boolean? @db.TinyInt
+  twitterShow   Boolean? @db.TinyInt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pageAbout Json?
 }

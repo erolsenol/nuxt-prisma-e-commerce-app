@@ -1,5 +1,11 @@
 <template>
-      <TheHeader></TheHeader>
-      <slot />
-      <TheFooter></TheFooter>
+      
+            
+            <TheHeaderr></TheHeaderr>
+
+            <slot />
+
+            <TheFooter></TheFooter>
+      
+      
 </template>

@@ -8,7 +8,7 @@
     :loop="true"
     :effect="'creative'"
     :autoplay="{
-      delay: 8000,
+      delay: 5000,
       disableOnInteraction: true,
     }"
     :creative-effect="{
@@ -22,7 +22,7 @@
     }"
   >
     <SwiperSlide v-for="slide in 10" :key="slide">
-        <nuxt-img src="img/horizontal-image.jpg" class="img-fluid" style="width: 100%;" />
+        <nuxt-img src="horizontal-image.jpg" class="img-fluid" style="width: 100%;" />
     </SwiperSlide>
   </Swiper>
 </template>
