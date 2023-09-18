@@ -1,5 +1,4 @@
-import users from "../../data/users";
-import { bcryptPassword, createJwt } from "../../utils/utils"
+import subCategories from "../../data/subCategories";
 
 interface response {
   data: Object[],
@@ -40,9 +39,9 @@ export default defineEventHandler(async (event) => {
     }
   })
 
-  const items = await users.getAll(paginateObj, where)
+  const items = await subCategories.getAll(paginateObj, where)
 
-  let total = await users.count(where)
+  let total = await subCategories.count(where)
   const currentPage = (paginateObj.skip / paginateObj.take) + 1
 
   if (items) {
@@ -58,6 +57,5 @@ export default defineEventHandler(async (event) => {
     response.status = true
     return response
   }
-  
   return response
 });
