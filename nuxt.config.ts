@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
     // baseURL: "http://localhost:80",
+    preset: 'node-server',
     prerender: {
       // crawlLinks: true,
       // failOnError: false
