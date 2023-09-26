@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import fs from "fs"
 
 export async function bcryptPassword(pass: string) {
     return await bcrypt.hash(pass, 10)
@@ -25,5 +26,83 @@ export function definePaginate(paginate: paginate, total: number) {
         take: paginate.take,
         skip: paginate.skip
     }
-
 }
+
+interface fileRes {
+    success: Boolean;
+    path?: String;
+    name?: String;
+    error?: String;
+  }
+
+export async function createFolder(path: string) {
+    return new Promise<boolean>((resolve, reject) => {
+  
+      const pathArr = path.split("/")
+  
+      let strPath = ``
+      for (let index = 1; index < pathArr.length - 1; index++) {
+        const pathStr = pathArr[index];
+  
+        strPath += `/${pathStr}`
+  
+        if (!fs.existsSync(strPath)) {
+          fs.mkdirSync(strPath);
+        }
+      }
+  
+      resolve(true)
+    })
+  }
+
+  export function fileExists(path: string) {
+    return new Promise<Boolean>((resolve, reject) => {
+      fs.access(path, fs.constants.F_OK, function (err: string) {
+        if (err) {
+          return resolve(false);
+        } else {
+          return resolve(true);
+        }
+      });
+    });
+  }
+
+  export function writeFile(
+    filePath: string,
+    name: string,
+    data: string,
+    dataType:string = "base64"
+  ) {
+    return new Promise<fileRes>((resolve, reject) => {
+      fs.writeFile(filePath, data, dataType, function (err: String) {
+        if (err) {
+          console.log(err);
+          return resolve({ success: false, error: "There is a problem" });
+        }
+  
+        console.log("The file was saved!");
+        return resolve({ success: true, path: filePath, name: name });
+      });
+    });
+  }
+
+//   export async function saveFile(filePath: string, name: string, data: string) {
+//     return new Promise<fileRes>(async (resolve, reject) => {
+//       fs.access(filePath, fs.constants.F_OK, async (err: string) => {
+//         if (err) {
+//           return resolve(await writeFile(filePath, data, name));
+//         } else {
+//           return resolve(
+//             await writeFile(
+//               filePath.replace(".", "0."),
+//               data,
+//               name.replace(".", "0.")
+//             )
+//           );
+  
+//           // console.log('Dosya mevcut.');
+//           // return resolve({ success: false, error: "File exists" })
+//         }
+//       });
+//     });
+//   }
