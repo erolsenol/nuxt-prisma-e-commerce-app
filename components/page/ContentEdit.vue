@@ -33,18 +33,6 @@ const { $helper } = useNuxtApp()
 
 const snackbar = useSnackbar();
 
-
-async function formClear() {
-    return new Promise((resolve, reject) => {
-        form.value.title = null
-        form.value.content = null
-        imageBase64.value = ""
-        imageData.value.name = null
-        imageData.value.data = null
-        resolve(true)
-    })
-}
-
 function upload() {
     const imgInput = document.querySelector(`#img-input-${lang}-${index}`)
 
@@ -54,9 +42,9 @@ function upload() {
 }
 
 async function onFileChange(e) {
-    
+
     let files = e.target.files || e.dataTransfer.files;
-    
+
     if (!files.length) return;
     imageBase64.value = null
     imageBase64.value = await $helper.fileToBase64(files[0])
@@ -64,7 +52,7 @@ async function onFileChange(e) {
     imageData.value.data = imageBase64.value
 }
 
-async function save() {
+async function save(values, { resetForm }) {
     if (!form.value.title || !form.value.content || !imageBase64.value) {
         snackbar.add({
             type: "error",
@@ -98,7 +86,7 @@ async function save() {
             }]
         }
 
-        const {imgData = data} = await useFetch("/api/image", {
+        const { imgData = data } = await useFetch("/api/image", {
             method: "post",
             body: imageBody,
         }).catch((error) => {
@@ -111,7 +99,7 @@ async function save() {
                 type: "success",
                 text: "Görsel Yüklendi",
             });
-            await formClear()
+            resetForm()
         } else {
             console.log("Görsel Kaydedilemedi");
             snackbar.add({

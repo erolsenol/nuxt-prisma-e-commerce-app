@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
   const where = {}
   const keys = Object.keys(filterObj)
   keys.forEach(i => {
-    if (filterObj[i]) {
+    console.log("i",i);
+    if (filterObj[i] || ['deleted','readed'].includes(i)) {
       if (i === 'deleted' || i === 'readed') {
         where[i] = filterObj[i]
       } else {
@@ -27,6 +28,7 @@ export default defineEventHandler(async (event) => {
       }
     }
   })
+  console.log("where",where);
 
   let items = await contactus.getAll(paginateObj, where)
   if (items && items.length > 0) {
