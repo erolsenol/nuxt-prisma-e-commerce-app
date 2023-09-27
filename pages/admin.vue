@@ -144,6 +144,12 @@ const tabs = [
               </div>
             </div>
 
+            <Accordion :title="$t(`page_image_setting`)" name="PageImageSettings">
+              <template #content>
+              <AdminSlider />
+              </template>
+            </Accordion>
+
             <!-- <div class="accordion-item mt-3">
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"

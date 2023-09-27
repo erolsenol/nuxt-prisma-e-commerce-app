@@ -101,7 +101,6 @@ export default {
   are_you_sure_delete: "Silmek istediğinize emin misiniz?",
   page_was_not_found: "Aradığınız sayfa bulunamadı",
   turkish_characters_no: "Ürün isminde türkçe karakter ve boşluk olmamalıdır",
-
   page_valid_for_language: "Bu alan türkçe({0}) için geçerlidir",
   page_about: "Hakkımızda Sayfası",
   page_contact: "İletişim Sayfası",
@@ -114,10 +113,8 @@ export default {
   select_product_to_receive_comments: "Yorumların gelmesi için ürün seçiniz",
   footer_text:
     "Neva - Telif Hakkı © 2023. Tüm hakları saklıdır. Kopyalanması, çoğaltılması ve dağıtılması halinde yasal haklarımız kullanılacaktır.",
-
   password_hint:
     "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
-
   errors: {
     password_not_match: "Girdiğiniz şifreler uyuşmuyor",
     password_min_length_8: "Şifreniz en az 8 karakter olmalıdır",
@@ -135,11 +132,9 @@ export default {
     image_saved: "Görsel Kaydedildi",
     item_count: "{0} sayısı 0",
   },
-
   validation: {
     passwords_must_match: "Şifreler aynı olmalıdır",
   },
-
   api: {
     success: "{0} işlemi yapıldı",
     created: "{0} Kaydedildi",
@@ -148,7 +143,6 @@ export default {
     republish: "{0} yayına alındı",
     count_zero: "There are 0 {0}",
     comment_send: "Yorum gönderildi",
-
     error: {
       user_not_created: "Kullanıcı oluşturulamadı",
       login_failed: "Giriş Yapılamadı",
