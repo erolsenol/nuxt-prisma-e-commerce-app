@@ -6,7 +6,12 @@ import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default defineNuxtConfig({
   ssr: true,
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV == 'development' },
+  bridge: {
+    vite: true,
+    nitro: true,
+    meta: true
+  },
   nitro: {
     // baseURL: "http://localhost:80",
     preset: 'node-server',
@@ -44,6 +49,14 @@ export default defineNuxtConfig({
     ]
   },
   app: {
+    head: {
+      titleTemplate: '%s - Buyfast',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'Buyfast Seller Site', content: 'Buyfast Seller Site' }
+      ]
+    }
     // pageTransition: {
     //   name: 'fade',
     //   mode: 'out-in' // default
