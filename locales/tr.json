@@ -118,6 +118,8 @@
   "password_hint": "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
   "admin_slider_title": "Kayan Görseller",
   "verify": "Doğrulanmış",
+  "active":"Aktif",
+  "passive":"Pasif",
   "errors": {
     "password_not_match": "Girdiğiniz şifreler uyuşmuyor",
     "password_min_length_8": "Şifreniz en az 8 karakter olmalıdır",

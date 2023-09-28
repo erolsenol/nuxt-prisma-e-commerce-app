@@ -72,7 +72,12 @@ export default defineEventHandler(async (event) => {
         name: res.name,
       };
       if (body.ownerName) {
-        imageData[body.ownerName] = body.ownerId;
+        if (body.ownerId) {
+          imageData[body.ownerName] = body.ownerId;
+        }
+        else {
+          imageData.ownerName = body.ownerName
+        }
       }
 
       console.log("postImage", imageData);

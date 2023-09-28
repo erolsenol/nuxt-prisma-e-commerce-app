@@ -103,7 +103,8 @@
   "are_you_sure_delete": "Are you sure you want to delete?",
   "page_was_not_found": "The page you were looking for was not found",
   "turkish_characters_no": "There should be no Turkish characters or spaces in the product name",
-
+  "active":"Active",
+  "passive":"Passive",
   "page_valid_for_language": "This page is valid for english({0}) language",
   "page_about": "About Us Page",
   "page_contact": "Contact Us Page",

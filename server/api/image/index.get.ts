@@ -38,7 +38,12 @@ export default defineEventHandler(async (event) => {
   if ("ownerName" in where) {
     const images = await getImageOwnerName(where["ownerName"]);
     if (images && images.length > 0) {
-      response.data = images[0];
+
+      if (where["ownerName"] != 'slider') {
+        response.data = images[0];
+      } else {
+        response.data = images;
+      }
       response.status = true;
     }
   } else {

@@ -16,7 +16,6 @@ const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs, $helper } = useNuxtApp()
 
-
 const schema = object().shape({
     name: string().required(),
     name_en: string().required(),
@@ -37,6 +36,7 @@ const props = defineProps({
 let formData = ref({})
 let data = ref([])
 let uploadImages = ref([])
+let sliderState = ref(true)
 
 watch(() => props.formId, async (newVal) => {
     if (newVal > -1) {
@@ -105,6 +105,7 @@ async function save() {
             type: "success",
             text: t('success.image_saved'),
         });
+        getAll()
     }
 }
 
@@ -133,7 +134,11 @@ async function getAll() {
 <template>
     <div class="admin-slider">
         <p class="fs-6">{{ $t('admin_slider_title') }}</p>
-        <div></div>
+        <div>
+            <button type="button" class="btn float-end" :class="sliderState ? 'btn-success' : 'btn-danger'"
+                @click="sliderState = !sliderState">{{ sliderState ?
+                    $t('active') : $t('passive') }}</button>
+        </div>
 
         <div class="mt-4">
             <input v-show="false" name="image" @change="onFileChange" class="form-control" type="file"
