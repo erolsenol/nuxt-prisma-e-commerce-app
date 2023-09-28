@@ -158,5 +158,9 @@
       "site_info_get_error": "Error fetching site information",
       "site_info_update_error": "Error updating site information"
     }
+  },
+  "mail": {
+    "welcome": "Welcome to the Buyfast family",
+    "welcome_text": "We are happy to have you join us. We wish you good shopping"
   }
 }

@@ -114,7 +114,7 @@
   "select_product_to_receive_comments": "Yorumların gelmesi için ürün seçiniz",
   "footer_text": "Neva - Telif Hakkı © 2023. Tüm hakları saklıdır. Kopyalanması, çoğaltılması ve dağıtılması halinde yasal haklarımız kullanılacaktır.",
   "password_hint": "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
-  "admin_slider_title":"Kayan Görseller",
+  "admin_slider_title": "Kayan Görseller",
   "errors": {
     "password_not_match": "Girdiğiniz şifreler uyuşmuyor",
     "password_min_length_8": "Şifreniz en az 8 karakter olmalıdır",
@@ -154,5 +154,9 @@
       "site_info_get_error": "Site bilgileri getirilirken hata oluştu",
       "site_info_update_error": "Site bilgileri güncellenirken hata oluştu"
     }
+  },
+  "mail": {
+    "welcome": "Buyfast ailesine hoş geldiniz",
+    "welcome_text": "Aramıza katılmanızdan mutluluk duyuyoruz. İyi alışverişler dileriz."
   }
 }
