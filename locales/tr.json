@@ -19,6 +19,7 @@
   "description": "Açıklama",
   "description_en": "İngilizce açıklama",
   "lastname": "Soyisim",
+  "firstname_lastname": "İsim Soyisim",
   "username": "Kullanıcı Adı",
   "email": "E-posta",
   "phone": "Telefon Numarası",
@@ -58,6 +59,7 @@
   "top_category": "Üst Kategori",
   "sub_category": "Alt Kategori",
   "category_get": "Kategori Getir",
+  "user_get": "Kullanıcı Getir",
   "get": "Getir",
   "get_products": "Ürünleri Getir",
   "update": "Güncelle",
@@ -115,6 +117,7 @@
   "footer_text": "Neva - Telif Hakkı © 2023. Tüm hakları saklıdır. Kopyalanması, çoğaltılması ve dağıtılması halinde yasal haklarımız kullanılacaktır.",
   "password_hint": "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
   "admin_slider_title": "Kayan Görseller",
+  "verify": "Doğrulanmış",
   "errors": {
     "password_not_match": "Girdiğiniz şifreler uyuşmuyor",
     "password_min_length_8": "Şifreniz en az 8 karakter olmalıdır",

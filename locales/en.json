@@ -19,6 +19,7 @@
   "description": "Description",
   "description_en": "English description",
   "lastname": "Lastname",
+  "firstname_lastname":"Firstname Lastname",
   "username": "Username",
   "email": "E-mail",
   "phone": "Phone",
@@ -58,6 +59,7 @@
   "top_category": "Top Category",
   "sub_category": "Sub Category",
   "category_get": "Categories Get",
+  "user_get": "Users Get",
   "get": "Get",
   "get_products": "Get Products",
   "update": "Update",
@@ -114,7 +116,7 @@
   "no_found_products_this_category": "No products found in this category",
   "select_product_to_receive_comments": "Please select a product to receive comments",
   "footer_text": "Neva - Copyright © 2021. All rights reserved. In case of copying, reproduction and distribution, our legal rights will be exercised.",
-
+  "verify": "Verify",
   "password_hint": "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.",
   "admin_slider_title": "Slider Images",
   "errors": {
