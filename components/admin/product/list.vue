@@ -195,8 +195,7 @@ function itemUpdate(val) {
                 {{ $t('actions') }}
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
-                  data-bs-target="#productFormModal">
+                <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal">
                   {{ $t('update') }}</li>
                 <li class="dropdown-item" @click="remove(row.id)"> {{ $t('delete') }}
                 </li>
@@ -240,7 +239,7 @@ function itemUpdate(val) {
       </div>
 
       <button type="button" class="btn btn-primary" @click="getPage(goPage)">
-        Ürünleri Getir
+        {{$t('get_products')}}
       </button>
     </nav>
 

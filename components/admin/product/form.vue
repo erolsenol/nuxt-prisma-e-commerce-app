@@ -315,8 +315,7 @@ async function removeImage(id) {
             <hr class="hr" />
             <div class="product-form-footer d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
-                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal-product-form"
-                    data-bs-target="#productFormModal">{{ $t('close') }}</button>
+                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal-product-form">{{ $t('close') }}</button>
             </div>
 
         </Form>

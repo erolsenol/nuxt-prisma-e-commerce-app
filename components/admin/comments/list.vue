@@ -199,11 +199,9 @@ async function getAll(page) {
                     {{ $t('actions') }}
                   </button>
                   <ul class="dropdown-menu">
-                    <!-- <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
-                    data-bs-target="#productFormModal">
+                    <!-- <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal">
                     {{ $t('update') }}</li> -->
-                    <li class="dropdown-item" @click="remove(row.id, row.deleted)" data-bs-toggle="modal"
-                      data-bs-target="#productFormModal">
+                    <li class="dropdown-item" @click="remove(row.id, row.deleted)" data-bs-toggle="modal">
                       {{ row.deleted ? $t('republish') : $t('delete') }}
                     </li>
                   </ul>
