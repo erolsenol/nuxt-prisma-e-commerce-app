@@ -34,16 +34,16 @@ const props = defineProps({
     },
 })
 let formData = ref({})
-let data = ref([])
+let images = ref([])
 let uploadImages = ref([])
 let sliderState = ref(true)
 
-watch(() => props.formId, async (newVal) => {
-    if (newVal > -1) {
-        console.log("watch formId:", newVal);
-        await get(newVal)
-    }
-})
+// watch(() => props.formId, async (newVal) => {
+//     if (newVal > -1) {
+//         console.log("watch formId:", newVal);
+//         await get(newVal)
+//     }
+// })
 
 onMounted(() => {
     getAll()
@@ -94,7 +94,8 @@ async function save() {
         method: "post",
         body: {
             ownerName: "slider",
-            images: uploadImages
+            path: "slider/",
+            images: [...uploadImages.value]
         },
     }).catch((error) => {
         console.error(error);
@@ -106,27 +107,37 @@ async function save() {
             text: t('success.image_saved'),
         });
         getAll()
+    } else {
+        response.data.value.data.forEach(el => {
+            if ("error" in el) {
+                snackbar.add({
+                    type: "error",
+                    text: t('errors.image_upload_failed_name', [el.name]),
+                });
+            }
+        });
     }
 }
 
-async function get(id) {
-    console.log("qweqweqw");
-    const { data } = await useFetch("/api/category/" + id);
-    if (!data.value) return
+// async function get(id) {
 
-    if (data.value.status) {
-        console.log("data.value.data", data.value.data);
-        formData.value = data.value.data
-    }
-}
+//     const { data } = await useFetch("/api/category/" + id);
+//     if (!data.value) return
+
+//     if (data.value.status) {
+//         console.log("data.value.data", data.value.data);
+//         formData.value = data.value.data
+//     }
+// }
 
 async function getAll() {
     const { data } = await useFetch("/api/image?ownerName=slider");
-    if (!data.value) return
 
+    console.log("data.status",data.value.status);
+    console.log("data",data.value.data);
     if (data.value.status) {
-        console.log("data.value.data", data.value.data);
-        data.value = data.value.data
+        console.log("12312312312312");
+        images.value = data.value.data
     }
 }
 </script>
@@ -138,6 +149,17 @@ async function getAll() {
             <button type="button" class="btn float-end" :class="sliderState ? 'btn-success' : 'btn-danger'"
                 @click="sliderState = !sliderState">{{ sliderState ?
                     $t('active') : $t('passive') }}</button>
+        </div>
+
+        <div class="admin-slider-swiper">
+            {{ data }}
+            <template v-if="images?.length > 0">
+                <ImageSwiper class="mt-0" :loading="loading" :images="images.map(i => i.path)"
+                    :imageNames="images.map(i => i.name)" />
+            </template>
+            <template v-else>
+                {{ $t('no_found_image') }}
+            </template>
         </div>
 
         <div class="mt-4">
