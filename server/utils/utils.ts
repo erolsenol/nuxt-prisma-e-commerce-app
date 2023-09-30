@@ -104,7 +104,8 @@ export async function sendMail({ subject = null, text = null, toMail = null }) {
         from: baseMail,
         to: toMail,
         subject: subject,
-        text: text
+        text: text,
+        // attachments: [{ filename: "pic-1.jpeg", path: "./attachments/pic-1.jpeg" }],
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
