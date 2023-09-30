@@ -3,7 +3,7 @@ import { deleteProduct } from "../../data/products";
 import fs from "fs";
 import path from "path";
 
-import { createFolder, fileExists, writeFile } from "../../utils/utils"
+import { createFolder, fileExists, writeFile } from "../../utils/utils";
 
 const base64Replace = (str: String) =>
   str.replace(/^data:image\/\w+;base64,/, "");
@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
     data: [],
     status: false,
   };
+  let innerStatus = true;
   const body = await readBody(event);
 
   if (!body.images || body.images.length < 1) {
@@ -36,13 +37,12 @@ export default defineEventHandler(async (event) => {
     const image = body.images[index];
     const data = base64Replace(image.image);
 
-    const dir = process.cwd();
+    const dir = process.cwd().replaceAll("\\", "/");
 
     console.log("image.name1", image.name);
 
-
     while (await getImageWhere({ name: image.name })) {
-      image.name = image.name.replace(".", "0.")
+      image.name = image.name.replace(".", "0.");
     }
 
     let filePath = null;
@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
       prefix += "0";
     }
 
-    await createFolder(filePath)
+    await createFolder(filePath);
 
     const res = await writeFile(
       filePath.replace(".", prefix + "."),
@@ -66,6 +66,7 @@ export default defineEventHandler(async (event) => {
       data
     );
 
+    console.log("writeFile res:", res);
     if (res.success) {
       const imageData = {
         path: res.path,
@@ -74,9 +75,8 @@ export default defineEventHandler(async (event) => {
       if (body.ownerName) {
         if (body.ownerId) {
           imageData[body.ownerName] = body.ownerId;
-        }
-        else {
-          imageData.ownerName = body.ownerName
+        } else {
+          imageData.ownerName = body.ownerName;
         }
       }
 
@@ -93,6 +93,7 @@ export default defineEventHandler(async (event) => {
         response.data.push(errData);
       }
     } else {
+      innerStatus = false;
       const errData: errorData = {
         name: image.name,
         error: "could not write to image files",
@@ -101,7 +102,7 @@ export default defineEventHandler(async (event) => {
     }
   }
   if (response.data.length > 0) {
-    response.status = true;
+    response.status = innerStatus;
     return response;
   }
   await deleteProduct(body.productId);

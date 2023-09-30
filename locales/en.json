@@ -114,6 +114,7 @@
   "header_logo": "Header logo",
   "footer_logo": "Footer logo",
   "no_found_products": "Product Not Found",
+  "no_found_image": "Image Not Found",
   "no_found_products_this_category": "No products found in this category",
   "select_product_to_receive_comments": "Please select a product to receive comments",
   "footer_text": "Neva - Copyright © 2021. All rights reserved. In case of copying, reproduction and distribution, our legal rights will be exercised.",
@@ -129,7 +130,9 @@
     "email_already_existing": "Email address registered",
     "register_failed": "Registration Failed",
     "your_password_wrong": "Your password is wrong",
-    "login_failed": "Login Failed"
+    "login_failed": "Login Failed",
+    "image_upload_failed": "Image could not be uploaded",
+    "image_upload_failed_name": "{0} Image could not be uploaded"
   },
   "success": {
     "user_created": "Registration successful",

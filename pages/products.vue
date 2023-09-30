@@ -120,9 +120,9 @@ async function get(id) {
                 {{ $t('actions') }}
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal" data-bs-target="#productFormModal">
+                <li class="dropdown-item" @click="get(row.id)" data-bs-toggle="modal">
                   {{ $t('update') }}</li>
-                <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productFormModal"> TEST </li>
+                <li class="dropdown-item" data-bs-toggle="modal"> TEST </li>
               </ul>
             </div>
           </td>

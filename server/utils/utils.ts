@@ -38,8 +38,10 @@ interface fileRes {
 
 export async function createFolder(path: string) {
   return new Promise<boolean>((resolve, reject) => {
-    const pathArr = path.split("/");
+    console.log("createFolder",path);
+    const pathArr = path.replaceAll("\\","/").split("/");
 
+    console.log("createFolder pathArr",pathArr);
     let strPath = ``;
     for (let index = 1; index < pathArr.length - 1; index++) {
       const pathStr = pathArr[index];
@@ -67,8 +69,8 @@ export function fileExists(path: string) {
   });
 }
 
-const baseMail = process.env.MAIL_USER
-const baseMailPassword = process.env.MAIL_PASSWORD
+const baseMail = process.env.MAIL_USER;
+const baseMailPassword = process.env.MAIL_PASSWORD;
 
 export function writeFile(
   filePath: string,
@@ -77,6 +79,11 @@ export function writeFile(
   dataType: string = "base64"
 ) {
   return new Promise<fileRes>((resolve, reject) => {
+    console.log("data", data);
+    console.log("filePath", filePath);
+    console.log("name", name);
+    console.log("dataType", dataType);
+
     fs.writeFile(filePath, data, dataType, function (err: String) {
       if (err) {
         console.log(err);
@@ -93,11 +100,11 @@ export async function sendMail({ subject = null, text = null, toMail = null }) {
   return new Promise<Boolean>((resolve, reject) => {
     try {
       let transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: "gmail",
         auth: {
           user: baseMail,
-          pass: baseMailPassword
-        }
+          pass: baseMailPassword,
+        },
       });
 
       let mailOptions = {
@@ -111,17 +118,16 @@ export async function sendMail({ subject = null, text = null, toMail = null }) {
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           console.log(error);
-          return resolve(false)
+          return resolve(false);
         } else {
-          console.log('Email sent: ' + info.response);
-          return resolve(true)
+          console.log("Email sent: " + info.response);
+          return resolve(true);
         }
       });
     } catch (error) {
-      reject(false)
+      reject(false);
     }
-
-  })
+  });
 }
 
 //   export async function saveFile(filePath: string, name: string, data: string) {

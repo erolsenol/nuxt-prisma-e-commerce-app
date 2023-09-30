@@ -112,14 +112,15 @@
   "header_logo": "Üst logo",
   "footer_logo": "Alt logo",
   "no_found_products": "Ürün Bulunamadı",
+  "no_found_image": "Görsel Bulunamadı",
   "no_found_products_this_category": "Bu kategoride ürün bulunamadı",
   "select_product_to_receive_comments": "Yorumların gelmesi için ürün seçiniz",
   "footer_text": "Neva - Telif Hakkı © 2023. Tüm hakları saklıdır. Kopyalanması, çoğaltılması ve dağıtılması halinde yasal haklarımız kullanılacaktır.",
   "password_hint": "Şifreniz 8-20 karakter uzunluğunda olmalı, harf ve rakam içermeli, boşluk, özel karakter, emoji içermemelidir.",
   "admin_slider_title": "Kayan Görseller",
   "verify": "Doğrulanmış",
-  "active":"Aktif",
-  "passive":"Pasif",
+  "active": "Aktif",
+  "passive": "Pasif",
   "errors": {
     "password_not_match": "Girdiğiniz şifreler uyuşmuyor",
     "password_min_length_8": "Şifreniz en az 8 karakter olmalıdır",
@@ -129,7 +130,9 @@
     "email_already_existing": "E-posta adresi kayıtlı",
     "register_failed": "Kayıt Yapılamadı",
     "your_password_wrong": "Şifreniz yanlış",
-    "login_failed": "Giriş yapılamadı"
+    "login_failed": "Giriş yapılamadı",
+    "image_upload_failed": "Görsel yüklenemedi",
+    "image_upload_failed_name": "{0} Görseli yüklenemedi"
   },
   "success": {
     "user_created": "Kayıt başarılı",
