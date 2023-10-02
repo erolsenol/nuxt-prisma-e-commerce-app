@@ -133,8 +133,8 @@ async function save() {
 async function getAll() {
     const { data } = await useFetch("/api/image?ownerName=slider");
 
-    console.log("data.status",data.value.status);
-    console.log("data",data.value.data);
+    console.log("data.status", data.value.status);
+    console.log("data", data.value.data);
     if (data.value.status) {
         console.log("12312312312312");
         images.value = data.value.data
@@ -146,7 +146,7 @@ async function getAll() {
     <div class="admin-slider">
         <p class="fs-6">{{ $t('admin_slider_title') }}</p>
         <div>
-            <button type="button" class="btn float-end" :class="sliderState ? 'btn-success' : 'btn-danger'"
+            <button type="button" class="btn" :class="sliderState ? 'btn-success' : 'btn-danger'"
                 @click="sliderState = !sliderState">{{ sliderState ?
                     $t('active') : $t('passive') }}</button>
         </div>
@@ -173,3 +173,12 @@ async function getAll() {
         </div>
     </div>
 </template>
+
+
+<style lang="scss">
+.admin-slider {
+    .btn {
+        cursor: pointer;
+    }
+}
+</style>

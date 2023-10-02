@@ -61,13 +61,16 @@ async function getSite() {
 }
 
 function pageChange(to, route = "", item) {
+   console.log("router",router.getRoutes())
+   console.log("to",to);
    if (route && item) {
       // router.push({ path: `/${route}/${to}`, query: { id: item.id } })
-      router.push({ name: `category-name___${locale?.value}`, params: { name: item.name }, query: { id: item.id } })
+      router.push({ name: `category-name`, params: { name: item.name }, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
       // router.push({ name: `${to}___${locale?.value}` })
+      // router.push({ name: `category-name`,params: { name: to } })
       router.push({ name: `${to}` })
    }
 }
@@ -142,6 +145,10 @@ const headerItems = [
    },
 ]
 
+function triggerrr(){
+   console.log("12312312")
+}
+
 let selectedIndex = ref("0")
 let loginFormType = ref("login")
 </script>
@@ -163,7 +170,7 @@ let loginFormType = ref("login")
 
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <template v-for="(item, index) in headerItems" :key="index">
-               <li class="" :class="`${item.dropdown ? 'dropdown-toggle' : ''}`"
+               <li class="" @hover="triggerrr" @touchmove="triggerrr" :class="`${item.dropdown ? '' : ''}`"
                   :data-bs-toggle="`${item.dropdown ? 'dropdown' : ''}`">
                   <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2"
                      :class="`${router.currentRoute?.value.name?.includes(item.to) ? 'active' : ''}`">
