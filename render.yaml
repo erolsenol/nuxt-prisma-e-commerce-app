@@ -1,7 +1,10 @@
 services:
-- type: web
-  name: nuxt-js
-  env: node
-  plan: starter
-  buildCommand: yarn; yarn build:render
-  startCommand: yarn start:render
+  - type: web
+    name: nuxt-app-buyfast
+    env: node
+    branch: main
+    startCommand: node .output/server/index.mjs
+    buildCommand: npm install && npm run build
+    envVars:
+    - key: NITRO_PRESET
+      value: render_com
