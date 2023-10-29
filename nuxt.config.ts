@@ -5,13 +5,10 @@ import { fileURLToPath } from 'url'
 import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   devtools: { enabled: process.env.NODE_ENV == 'development' },
-  bridge: {
-    vite: true,
-    nitro: true,
-    meta: true
-  },
+  build: {
+},
   nitro: {
     // baseURL: "http://localhost:80",
     preset: 'node-server',
