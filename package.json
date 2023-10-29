@@ -1,7 +1,7 @@
 {
   "name": "nuxt-app",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "build": "nuxt build",
     "build:render": "node_modules/.bin/nuxt build -c ./nuxt.config.ts",
@@ -31,7 +31,7 @@
     "@types/node": "^20.6.0",
     "@types/nodemailer": "^6.4.10",
     "eslint": "^8.46.0",
-    "nuxt": "^3.7.4",
+    "nuxt": "^3.8.0",
     "nuxt-bootstrap-icons": "^1.0.2",
     "nuxt-icon": "^0.5.0",
     "nuxt-lodash": "^2.5.0",
@@ -65,6 +65,7 @@
     "nuxt-swiper": "^1.2.0",
     "path": "^0.12.7",
     "pinia": "^2.1.6",
+    "pm2": "^5.3.0",
     "qs": "^6.11.2",
     "sass": "^1.64.2",
     "sweetalert2": "^11.7.27",

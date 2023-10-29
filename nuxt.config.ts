@@ -8,14 +8,6 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: process.env.NODE_ENV == 'development' },
   build: {
-},
-  nitro: {
-    // baseURL: "http://localhost:80",
-    preset: 'node-server',
-    prerender: {
-      // crawlLinks: true,
-      // failOnError: false
-    }
   },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
