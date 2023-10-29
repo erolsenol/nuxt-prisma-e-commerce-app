@@ -4,17 +4,20 @@ export default {
 };
 </script>
 <script setup>
-const { text } = defineProps({
+const props = defineProps({
     text: {
         type: String,
         default: ""
+    },
+    placement: {
+        type: String,
+        default: "top"
     },
 })
 </script>
 
 <template>
-        <div class="my-tooltip">
-            <slot name="content"></slot>
-            <span class="my-tooltiptext">{{ text }}</span>
-        </div>
+    <a data-bs-toggle="tooltip" :data-bs-placement="placement" :data-bs-title="props.text">
+        <slot name="content"></slot>
+    </a>
 </template>

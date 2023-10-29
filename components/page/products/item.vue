@@ -2,26 +2,37 @@
 export default {
   name: "ProductItem",
 };
+
 </script>
 <script setup>
-import { useLocalePath } from '#imports'
+
 import { ref, onMounted } from 'vue'
+import { useI18n } from "vue-i18n"
+
+const { locale } = useI18n()
 const router = useRouter();
-const { id, title, content, name, images } = defineProps({
+const storeApp = useApp()
+const props = defineProps({
   id: Number,
   title: String,
   content: String,
   name: String,
+  name_en: String,
   images: Array,
 })
 let point = ref(3.5)
 let starColor = ref("red")
 let starBgWidth = ref(0)
-const image = images && images.length > 0 && images[0]
+const image = props.images && props.images.length > 0 && props.images[0]
 
 function openDetail() {
-  router.push({ path: "/product-" + name, params: { id: name } });
-
+  console.log("props", props);
+  console.log("props.name", props.name);
+  console.log("props.value", props.value);
+  storeApp.setProductDetail({ id: props.id, name: props.name, name_en: props.name_en })
+  router.push({ name: `product-name___${locale.value}`, params: { name: props.name, name_en: props.name_en }, query: { id: props.id } })
+  // router.push({ path: `${locale.value !== 'tr' ? locale.value : ''}/product/${props.name}` });
+  // router.push(localeLocation({ path: "/product-" + props.name, params: { id: props.name } }))
 }
 
 // declare a ref to hold the element reference
@@ -32,19 +43,20 @@ const paginate = ref({ skip: 0, take: 20 })
 
 <template>
   <div class="product-item col-6 col-md-4 col-lg-3 px-md-2 px-sm-1 px-xs-1 mb-3">
-    <nuxt-link :to="localePath({ path: '/product/' + name, params: { id: name } })">
+    <!-- <nuxt-link :to="localePath({ path: '/product/' + props.name, params: { id: props.name } })"> -->
+    <nuxt-link @click="openDetail">
       <div class="card shadow dark" style="width: 100%; height: 27rem;">
         <NuxtImg class="border-bottom border-secondary-subtle" v-if="image" :src="'images/' + image.name"
           style="height: 15rem;" />
         <NuxtImg class="border-bottom border-secondary-subtle" v-else :src="'default/no_image.jpeg'"
           style="height: 15rem;" />
         <div class="card-body p-2 overflow-y-auto position-relative scrollbar-light">
-          <h6 class="card-title text-capitalize mb-2">{{ title }}</h6>
+          <h6 class="card-title text-capitalize mb-2">{{ props.title }}</h6>
           <div class="product-item-name text-break">
-            <p class="fs-6 card-subtitle text-body-secondary  text-capitalize  mb-2">{{ name }} qweqweqwqweqweqweqw</p>
+            <p class="fs-6 card-subtitle text-body-secondary  text-capitalize  mb-2">{{ props.name }} </p>
           </div>
-         
-          <div class="d-flex aling-items-center justify-content-start mb-3">
+
+          <div class="d-flex align-items-center justify-content-start mb-3">
             <template v-for="index in 5">
               <!-- <Icon name="fontisto:star" :color="`${index < point ? 'orange' : 'black'}`" class="product-item-star"
                 :class="`${index != 1 ? 'ms-2' : ''}`" /> -->

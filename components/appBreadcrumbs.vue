@@ -1,13 +1,16 @@
 <script>
 export default {
-    name: "Breadcrumbs",
+    name: "Breadcrumb",
 };
 </script>
 
 <script setup>
 import { ref, watch, computed, toRefs, toRef } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { useI18n } from "vue-i18n"
+
 const { locale } = useI18n();
+const router = useRouter()
 
 const emit = defineEmits(['value:update'])
 const { $qs } = useNuxtApp()
@@ -16,66 +19,61 @@ let items = ref([]);
 let innerValue = ref(-1);
 
 let props = defineProps({
-    value: Number,
+    value: Object,
 })
 
-watch(() => innerValue.value, async (newVal) => {
-    emit('value:update', newVal)
-}, { deep: true })
+const breadcrumbItems = computed(() => {
+    return items.value.reverse()
+})
 
 watch(() => props.value, async (newVal) => {
-    innerValue.value = newVal
-})
+    get(props.value)
+}, { deep: true })
 
-onMounted(() => {
-    setTimeout(() => {
-        get()
-    }, 150);
-});
 
-async function get() {
+async function get({ name, id }) {
     const config = {
         params: {
-            all: "1"
         },
         paramsSerializer: (params) => $qs.stringify(params, { encode: false })
     };
 
-    const { data, pending, error, refresh } = await useFetch("/api/category", {
+    const { data, pending, error, refresh } = await useFetch(`/api/${name}/${id}`, {
         ...config,
         method: "get",
     }).catch((error) => {
         console.error(error);
     });
 
-    console.log("locale", locale.value);
     if (data.value.status) {
         const localName = `name${locale.value !== 'tr' ? `_${locale.value}` : ''}`
-        items.value = data.value.data.map(item => ({ text: item[localName], value: item.id }))
-        console.log("items.value", items);
+        const resData = data.value.data
+        // items.value.push(data.value.data.map(item => ({ text: item[localName], value: item.id })))
+        items.value.push(resData)
+
+        const topCategory = resData.lowerSubCategoryId ? { name: 'subCategory', id: resData.lowerSubCategoryId } :
+            resData.categoryId ? { name: 'category', id: resData.categoryId } : null
+        if (topCategory) {
+            get(topCategory)
+        }
     }
+}
+
+function pageChange(item) {
+    router.push({ name: `category-name___${locale.value}`, params: { name: item.name }, query: { id: item.id } })
 }
 </script>
 
 <template>
-    <div class="container my-5">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center bg-body-tertiary border rounded-3">
-                <li class="breadcrumb-item">
-                    <a class="link-body-emphasis fw-semibold text-decoration-none" href="#">
-                        <svg class="bi" width="16" height="16">
-                            <use xlink:href="#house-door-fill"></use>
-                        </svg>
-                        Home
-                    </a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a class="link-body-emphasis fw-semibold text-decoration-none" href="#">Library</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Data
-                </li>
-            </ol>
-        </nav>
-    </div>
+    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+        <ol class="breadcrumb breadcrumb-custom overflow-hidden text-center bg-body-tertiary border rounded-3 ps-4">
+            <li class="breadcrumb-item" v-for="(item, index) in breadcrumbItems">
+                <NuxtLink class="link-body-emphasis text-decoration-none text-capitalize" @click="pageChange(item)"
+                    :class="items.length > index + 1 ? 'fw-semibold' : ''">
+                    <i class="bi bi-house-door-fill"></i>
+                    {{ item[`name${locale !== 'tr' ? `_${locale}` : ''}`] }}
+                </NuxtLink>
+            </li>
+        </ol>
+    </nav>
 </template>

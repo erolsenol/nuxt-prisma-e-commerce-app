@@ -8,6 +8,8 @@ export default {
 import { ref, computed, toRefs, watch } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
+import { useI18n } from "vue-i18n"
+
 const emit = defineEmits(['update', 'get'])
 
 const { t } = useI18n();
@@ -136,7 +138,7 @@ async function save(e, { resetForm }) {
             formData.value.categoryId = -1
             formData.value.subCategoryId = -1
             if (props.type !== "create") {
-                const closeModal = document.querySelector('#close-modal')
+                const closeModal = document.querySelector('#close-modal-product-form')
                 closeModal?.click()
                 emit('getAll')
                 emit('formId:reset', -1)
@@ -205,6 +207,8 @@ async function removeImage(id) {
         text: "Görsel Silindi",
     });
 }
+
+
 </script>
 
 <template>
@@ -219,12 +223,26 @@ async function removeImage(id) {
                     <span class="input-group-text">TR *</span>
                     <Field name="name" v-model="formData.name" type="text" class="form-control" id="product-form-name"
                         rules="required" />
+                    <span class="input-group-text">
+                        <Tooltip :text="$t('turkish_characters_no')">
+                            <template #content>
+                                <BootstrapIconInfoCircle class="position-relative" width="40" />
+                            </template>
+                        </Tooltip>
+                    </span>
                 </div>
                 <ErrorMessage class="invalid" name="name" />
                 <div class="input-group mt-2">
                     <span class="input-group-text px-3">EN</span>
                     <Field name="name-en" v-model="formData.name_en" type="text" class="form-control"
                         id="product-form-name-en" rules="" />
+                    <span class="input-group-text">
+                        <Tooltip :text="$t('turkish_characters_no')">
+                            <template #content>
+                                <BootstrapIconInfoCircle class="position-relative" width="40" />
+                            </template>
+                        </Tooltip>
+                    </span>
                 </div>
             </div>
             <div class="mb-3">
@@ -297,8 +315,7 @@ async function removeImage(id) {
             <hr class="hr" />
             <div class="product-form-footer d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
-                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal"
-                    data-bs-target="#productFormModal">{{ $t('close') }}</button>
+                <button class="btn btn-secondary" data-bs-toggle="modal" id="close-modal-product-form">{{ $t('close') }}</button>
             </div>
 
         </Form>

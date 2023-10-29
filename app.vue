@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+
 const { $bootstrap } = useNuxtApp()
 const storage = useStorage()
 const storeUser = useUser()
@@ -27,8 +28,8 @@ onMounted(() => {
   <!-- <el-config-provider :size="elConfig.size" :z-index="elConfig.zIndex" :locale="locale"> -->
   <NuxtLayout>
 
-    <router-view></router-view>
-
+    <!-- <router-view></router-view> -->
+    <NuxtPage />
     <NuxtSnackbar />
     <SeoKit />
   </NuxtLayout>

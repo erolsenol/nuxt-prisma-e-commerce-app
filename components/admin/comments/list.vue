@@ -6,9 +6,10 @@ export default {
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-const { $qs, $helper } = useNuxtApp()
-const { t } = useI18n();
-const { locale } = useI18n();
+import { useI18n } from "vue-i18n"
+
+const { $qs, $helper, $swal } = useNuxtApp()
+const { locale, t } = useI18n();
 
 let props = defineProps({
   productId: Number,
@@ -62,11 +63,27 @@ function getPage(page) {
   getAll()
 }
 
-async function remove(id) {
+async function remove(id, deleted) {
+  if (!deleted) {
+    const result = await $swal.fire({
+      title: t('are_you_sure_delete'),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `${t('yes')} ${t('delete')}`
+    })
+
+    if (!result.isConfirmed) {
+      return
+    }
+  }
+
   const config = {
     method: "delete",
     body: {
-      id
+      id,
+      deleted
     }
   };
 
@@ -143,7 +160,7 @@ async function getAll(page) {
             </label>
           </div>
         </div>
-
+        
         <div class="comment-list-filter-container d-flex flex-row collapse">
           <div class="filter-item">
             <label for="filter-name" class="form-label">{{ $t('general') }}</label>
@@ -182,13 +199,10 @@ async function getAll(page) {
                     {{ $t('actions') }}
                   </button>
                   <ul class="dropdown-menu">
-                    <!-- <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
-                    data-bs-target="#productFormModal">
+                    <!-- <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal">
                     {{ $t('update') }}</li> -->
-                    <li class="dropdown-item" @click="remove(row.id)" data-bs-toggle="modal"
-                      data-bs-target="#productFormModal">
-                      {{
-                        $t('delete') }}
+                    <li class="dropdown-item" @click="remove(row.id, row.deleted)" data-bs-toggle="modal">
+                      {{ row.deleted ? $t('republish') : $t('delete') }}
                     </li>
                   </ul>
                 </div>

@@ -1,4 +1,6 @@
 export default {
+  yes: "Yes",
+  no: "No",
   welcome: "Welcome",
   services: "Services",
   news_and_publications: "News and publications",
@@ -94,6 +96,13 @@ export default {
   do_you_see: "Do you see",
   header_color: "Header color",
   footer_color: "Footer color",
+  warning: "Warning",
+  are_you_sure: "Are you sure?",
+  back: "Back",
+  are_you_sure_delete: "Are you sure you want to delete?",
+  page_was_not_found: "The page you were looking for was not found",
+  turkish_characters_no:
+    "There should be no Turkish characters or spaces in the product name",
 
   page_valid_for_language: "This page is valid for english({0}) language",
   page_about: "About Us Page",
@@ -104,8 +113,10 @@ export default {
   footer_logo: "Footer logo",
   no_found_products: "Product Not Found",
   no_found_products_this_category: "No products found in this category",
-  select_product_to_receive_comments: "Please select a product to receive comments",
-  footer_text: "Neva - Copyright © 2021. All rights reserved. In case of copying, reproduction and distribution, our legal rights will be exercised.",
+  select_product_to_receive_comments:
+    "Please select a product to receive comments",
+  footer_text:
+    "Neva - Copyright © 2021. All rights reserved. In case of copying, reproduction and distribution, our legal rights will be exercised.",
 
   password_hint:
     "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.",

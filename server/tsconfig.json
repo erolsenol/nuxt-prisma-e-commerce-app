@@ -1,3 +1,8 @@
 {
-  "extends": "../.nuxt/tsconfig.server.json"
+  "extends": "../.nuxt/tsconfig.server.json",
+  "compilerOptions": {
+    "strict": true,
+    "module": "Node16",
+    "target": "ES2021"
+  }
 }

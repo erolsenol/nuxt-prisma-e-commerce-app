@@ -8,13 +8,12 @@ export default {
 import { ref, toRef, computed } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import * as Yup from 'yup';
+import { useI18n } from "vue-i18n"
 
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
 
 const storage = useStorage()
-
-console.log("storage", storage);
 
 const schema = Yup.object().shape({
     firstname: Yup.string(),

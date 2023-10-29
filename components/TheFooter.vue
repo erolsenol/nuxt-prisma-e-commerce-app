@@ -4,8 +4,10 @@ export default {
 };
 </script>
 <script setup>
+import { useI18n } from "vue-i18n"
+
 const { $qs } = useNuxtApp()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const router = useRouter()
 
 let footerLogo = ref({})
@@ -18,11 +20,13 @@ const footerColor = computed(() => {
 
 function pageChange(to, route = "", item) {
    if (route && item) {
-      router.push({ path: `/${route}/${to}`, query: { id: item.id } })
+      router.push({ name: `category-name___${locale.value}`, params: { name: item.name }, query: { id: item.id } })
+      // router.push({ path: `/${route}/${to}`, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
-      router.push({ name: `${to}___${locale.value}` })
+      // router.push({ name: `${to}___${locale.value}` })
+      router.push({ name: `${to}` })
    }
 }
 
@@ -106,7 +110,7 @@ const headerItems = [
    },
    {
       text: "communication",
-      to: null
+      to: "contact"
    },
 ]
 </script>
@@ -167,7 +171,7 @@ const headerItems = [
                <div class="footer-list-category">
                   <ul class="list-group list-group-vertical  overflow-scrool-y">
                      <li class="list-group-item" v-for="(category, index) in categories">
-                        <span class="cool-link" @click="pageChange(category.name, 'category', category)">
+                        <span class="cool-link text-capitalize" @click="pageChange(category.name, 'category', category)">
                            {{ category[`name${locale !== 'tr' ? `_${locale}` : ''}`] }}
                         </span>
                      </li>

@@ -5,11 +5,12 @@ export default {
 </script>
 <script setup>
 import { ref, computed } from "vue"
-import { useI18n, useLocalePath } from '#imports'
+import { useI18n } from "vue-i18n"
 import { setLocale } from '@vee-validate/i18n';
 
 const { $qs } = useNuxtApp()
-const { locale, locales } = useI18n()
+const { locale } = useI18n()
+
 const router = useRouter()
 const storeUser = useUser()
 const storage = useStorage()
@@ -21,8 +22,13 @@ const headerColor = computed(() => {
 })
 
 function langChange(lang) {
-   const pathName = router.currentRoute.value.name.substring(0, router.currentRoute.value.name.length - 2)
-   router.push(({ name: `${pathName}${lang}` }))
+   console.log("router", router.getRoutes())
+   console.log("router.currentRoute", router.currentRoute.value);
+   // const pathName = router.currentRoute?.value.name.substring(0, router.currentRoute?.value.name.length - 2)
+   // router.push(({ name: `${pathName}${lang}` }))
+
+   locale.value = lang
+   // router.push(({ name: `${router.currentRoute.value.name}` }))
 }
 
 async function getHeaderLogo() {
@@ -33,8 +39,8 @@ async function getHeaderLogo() {
       },
       paramsSerializer: (params) => qs.stringify(params, { encode: false })
    };
-   const { data } = await useFetch("/api/image", config)
-   if (data.value.status) {
+   let { data } = await useFetch("/api/image", config)
+   if (data?.value?.status) {
       headerLogo.value = data.value.data
    }
 }
@@ -49,24 +55,29 @@ async function getSite() {
    };
 
    const { data } = await useFetch("/api/site", config);
-   if (data.value.status) {
-      site.value = data.value.data
+   if (data?.value.status) {
+      site.value = data?.value.data
    }
 }
 
 function pageChange(to, route = "", item) {
-
+   console.log("router",router.getRoutes())
+   console.log("to",to);
    if (route && item) {
-      router.push({ path: `/${route}/${to}`, query: { id: item.id } })
+      // router.push({ path: `/${route}/${to}`, query: { id: item.id } })
+      router.push({ name: `category-name`, params: { name: item.name }, query: { id: item.id } })
       // router.push({ name: `${route}-${to}___${locale.value}` })
    }
    else if (to) {
-      router.push({ name: `${to}___${locale.value}` })
+      // router.push({ name: `${to}___${locale?.value}` })
+      // router.push({ name: `category-name`,params: { name: to } })
+      router.push({ name: `${to}` })
    }
 }
 
 const availableLocales = computed(() => {
-   return (locales.value).filter(i => i !== locale.value)
+   // return (locales.value).filter(i => i !== locale?.value)
+   return ["tr", "en"].filter(i => i !== locale?.value)
 })
 
 function formTypeChange(str) {
@@ -92,8 +103,8 @@ async function getCategory() {
       console.error(error);
    });
 
-   if (data.value.status) {
-      categories.value = data.value.data
+   if (data?.value.status) {
+      categories.value = data?.value.data
    }
 }
 
@@ -134,6 +145,10 @@ const headerItems = [
    },
 ]
 
+function triggerrr(){
+   console.log("12312312")
+}
+
 let selectedIndex = ref("0")
 let loginFormType = ref("login")
 </script>
@@ -155,10 +170,10 @@ let loginFormType = ref("login")
 
          <ul class="nav col-lg-7 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <template v-for="(item, index) in headerItems" :key="index">
-               <li class="" :class="`${item.dropdown ? 'dropdown-toggle' : ''}`"
+               <li class="" @hover="triggerrr" @touchmove="triggerrr" :class="`${item.dropdown ? '' : ''}`"
                   :data-bs-toggle="`${item.dropdown ? 'dropdown' : ''}`">
                   <NuxtLink @click="pageChange(item.to)" class="nav-link cool-link px-2"
-                     :class="`${router.currentRoute.value.name.includes(item.to) ? 'active' : ''}`">
+                     :class="`${router.currentRoute?.value.name?.includes(item.to) ? 'active' : ''}`">
                      {{ $t(item.text) }}
                   </NuxtLink>
                   <template v-if="item.dropdown">
@@ -192,12 +207,6 @@ let loginFormType = ref("login")
                      <Icon class="ms-1" color="white" name="ri:arrow-down-s-fill" />
                   </a>
                   <ul class="dropdown-menu" style="cursor: pointer;">
-                     <!-- <li><a class="dropdown-item">New project...</a></li>
-                     <li><a class="dropdown-item">Settings</a></li>
-                     <li><a class="dropdown-item">Profile</a></li>
-                     <li>
-                        <hr class="dropdown-divider">
-                     </li> -->
                      <li><a class="dropdown-item" @click="logout">Sign out</a></li>
                   </ul>
                </div>
@@ -237,7 +246,7 @@ let loginFormType = ref("login")
 </template>
 
 <style lang="scss" scoped>
-   .header {
-      background-color: v-bind('headerColor') !important
-   }
+.header {
+   background-color: v-bind('headerColor') !important
+}
 </style>

@@ -6,9 +6,10 @@ export default {
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import { useI18n } from "vue-i18n"
+
 const { $qs, $helper } = useNuxtApp()
-const { t } = useI18n();
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const rows = ref([])
 const loading = ref(true)
@@ -186,7 +187,7 @@ function itemUpdate(val) {
           <td>{{ row.name }}</td>
           <td>{{ row.title }}</td>
           <td>{{ row.content }}</td>
-          <td>{{ row?.category[`name${locale != 'tr' ? `_${locale}` : ''}`] }}</td>
+          <td>{{ row?.category && row.category[`name${locale != 'tr' ? `_${locale}` : ''}`] }}</td>
           <td>
             <div class="btn-group dropstart">
               <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
@@ -194,8 +195,7 @@ function itemUpdate(val) {
                 {{ $t('actions') }}
               </button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal"
-                  data-bs-target="#productFormModal">
+                <li class="dropdown-item" @click="formId = row.id" data-bs-toggle="modal">
                   {{ $t('update') }}</li>
                 <li class="dropdown-item" @click="remove(row.id)"> {{ $t('delete') }}
                 </li>
@@ -239,7 +239,7 @@ function itemUpdate(val) {
       </div>
 
       <button type="button" class="btn btn-primary" @click="getPage(goPage)">
-        Ürünleri Getir
+        {{$t('get_products')}}
       </button>
     </nav>
 

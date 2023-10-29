@@ -7,9 +7,9 @@ export default {
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { string, object } from 'yup';
 import { onMounted, watch, reactive } from "vue"
+import { useI18n } from "vue-i18n"
 
-const { t } = useI18n();
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
 
@@ -60,18 +60,13 @@ async function getAll() {
   }
 }
 
-function formClear() {
-  form = {}
-}
-
-async function send() {
-  console.log("send");
+async function send(values, { resetForm }) {
 
   const body = { ...form }
   const { data } = await useFetch('/api/contactus', { method: "post", body })
 
   if (data.value.status) {
-    formClear()
+    resetForm()
 
     snackbar.add({
       type: "success",

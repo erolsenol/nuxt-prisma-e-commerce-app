@@ -4,22 +4,35 @@ export default {
 };
 </script>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { useI18n } from "vue-i18n"
+
 const route = useRoute()
+const router = useRouter()
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
 const storeUser = useUser()
+const storeApp = useApp()
 const snackbar = useSnackbar();
+
 
 const item = ref({})
 let loading = ref(true)
 let likeStatus = ref(false)
 
-onMounted(() => {
-  setTimeout(() => {
-    get()
-  }, 150);
+// const getProductDetail = computed(() => {
+//   return storeApp.getProductDetail
+// })
 
+const breadcrumbObj = computed(() => {
+  return item.value.subCategoryId ? { name: 'subCategory', id: item.value.subCategoryId } : item.value.categoryId ? { name: 'category', id: item.value.categoryId } : null
+})
+
+onMounted(() => {
+  setTimeout(get, 150);
+})
+onUnmounted(() => {
+  formClear()
 })
 
 // async function sendComment() {
@@ -47,9 +60,14 @@ onMounted(() => {
 //   }
 // }
 
-async function get() {
+function formClear() {
+  item.value = {}
+  loading.value = true
+  likeStatus.value = false
+}
 
-  console.log("getttttt");
+async function get() {
+  formClear()
   const config = {
     params: {
       name: route.params.name
@@ -58,11 +76,11 @@ async function get() {
   };
 
   const { data } = await useFetch("/api/product", config).finally(() => loading.value = false);
-  console.log("data123123", data);
-  if (!data || !data.value || !data.value.data) return
 
-  item.value = data.value.data
-  console.log("item.value", item.value);
+  if (data?.value?.status) {
+    item.value = data.value.data
+  }
+
 }
 
 async function sendStar() {
@@ -100,7 +118,6 @@ async function sendStar() {
 }
 
 async function getStar() {
-
   const config = {
     params: {
       productId: item.id
@@ -119,12 +136,13 @@ async function getStar() {
 
 <template>
   <div class="container product-detail" style="min-height: 40vw;">
+    <AppBreadcrumbs :value="breadcrumbObj" />
     <div class="row" v-if="!loading">
       <div
-        class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex aling-items-center justify-content-start"
+        class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex align-items-center justify-content-start"
         style=" min-height: 20rem;">
         <template v-if="item.images && item.images.length > 0">
-          <NuxtImg class="rounded-2" placeholder="./images/no-image.jpeg" :src="'images/' + item.images[0].name" />
+          <NuxtImg class="rounded-2" :src="'images/' + item.images[0].name" />
         </template>
         <NuxtImg class="" v-else :src="'default/no_image.jpeg'" />
       </div>
@@ -170,7 +188,8 @@ async function getStar() {
             </div>
           </div>
 
-          <span class="badge bg-secondary text-wrap py-3 px-3 fs-6">{{ $t('ask_question') }}</span>
+          <span class="badge bg-secondary text-wrap py-3 px-3 fs-6" data-bs-toggle="modal"
+            data-bs-target="#productQuestion">{{ $t('ask_question') }}</span>
         </div>
         <hr />
         <div class="fs-6 overflow-y-auto" style="max-height: 13rem;">
@@ -183,8 +202,9 @@ async function getStar() {
           <Icon name="icon-park-outline:like" color="black" size="30" style="cursor: pointer;" />
         </div> -->
       </div>
-      <PageProductsComments :productId="item.id" />
-      <PageProductsSendComment :productId="item.id" />
+      <PageProductsComments v-if="item.id" :productId="item.id" />
+      <PageProductsSendComment v-if="item.id" :productId="item.id" />
+      <PageProductsQuestionModal v-if="item.id" :productId="item.id" />
     </div>
     <Loading v-else />
 

@@ -7,6 +7,8 @@ export default {
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { useI18n } from "vue-i18n"
+
 const { locale, t } = useI18n()
 const { $qs } = useNuxtApp()
 const rows = ref([])
@@ -43,7 +45,7 @@ async function getAll(page) {
     },
     paramsSerializer: (params) => $qs.stringify(params, { encode: true })
   };
-  const { data } = await useFetch("/api/category", config);
+  const { data } = await useFetch("/api/user", config);
   if (!data.value) return
   if (data?.value?.status) {
     rows.value = data.value.data
@@ -55,20 +57,20 @@ async function getAll(page) {
       });
     }
   } else {
-    console.log("Kategoriler çekilirken bir sorun oluştu");
+    console.log("Kullanıcılar çekilirken bir sorun oluştu");
     snackbar.add({
       type: "error",
       text: t('same_error', [t('user')]),
     });
   }
 }
-function tooltipText(arr) {
-  return arr.subCategory.map(item => item[`name${locale.value !== 'tr' ? `_${locale.value}` : ''}`]).join(', ')
-}
+// function tooltipText(arr) {
+//   return arr.subCategory.map(item => item[`name${locale.value !== 'tr' ? `_${locale.value}` : ''}`]).join(', ')
+// }
 </script>
 <template>
-  <div class="category-list">
-    <div class="category-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
+  <div class="user-list">
+    <div class="user-list-filter alert alert-primary border border-2 border-secondary border-opacity-50 rounded p-2"
       role="alert">
       <div class="d-flex justify-content-between mb-3">
         <span class="fs-5">{{ $t('filters') }}</span>
@@ -79,39 +81,39 @@ function tooltipText(arr) {
           </label>
         </div>
       </div>
-      <div class="category-list-filter-container d-flex flex-row collapse">
+      <div class="user-list-filter-container d-flex flex-row collapse">
         <div class="filter-item">
-          <label for="filter-name" class="form-label">{{ $t('name') }}</label>
-          <input type="text" v-model="filter.name" class="form-control" id="filter-name">
+          <label for="filter-name" class="form-label">{{ $t('firstname_lastname') }}</label>
+          <input type="text" v-model="filter.firstname_lastname" class="form-control" id="filter-name">
         </div>
         <div class="filter-item">
-          <label for="filter-name-en" class="form-label">{{ $t('name_en') }}</label>
-          <input type="text" v-model="filter.name_en" class="form-control" id="filter-name-en">
+          <label for="filter-username" class="form-label">{{ $t('username') }}</label>
+          <input type="text" v-model="filter.username" class="form-control" id="filter-username">
         </div>
         <div class="filter-item">
-          <label for="filter-description" class="form-label">{{ $t('description') }}</label>
-          <input type="text" v-model="filter.description" class="form-control" id="filter-description">
+          <label for="filter-email" class="form-label">{{ $t('email') }}</label>
+          <input type="text" v-model="filter.email" class="form-control" id="filter-email">
         </div>
         <div class="filter-item">
-          <label for="filter-description-en" class="form-label">{{ $t('description_en') }}</label>
-          <input type="text" v-model="filter.description_en" class="form-control" id="filter-description-en">
+          <label for="filter-phone" class="form-label">{{ $t('phone') }}</label>
+          <input type="text" v-model="filter.phone" class="form-control" id="filter-phone">
         </div>
       </div>
     </div>
     <div class="filter-item mb-3 text-end d-flex flex-row justify-content-between">
-      <h5 class="ps-1">{{ $t('category') }} {{ $t('list') }}</h5>
-      <button @click="getAll" class="btn btn-primary">{{ $t('category_get') }}</button>
+      <h5 class="ps-1">{{ $t('user') }} {{ $t('list') }}</h5>
+      <button @click="getAll" class="btn btn-primary">{{ $t('user_get') }}</button>
     </div>
     <table class="table table-responsive table-hover table-striped ">
       <thead>
         <tr class="table-light">
           <th scope="col">{{ $t('order') }}</th>
           <th scope="col">Id</th>
-          <th scope="col">{{ $t('name') }}</th>
-          <th scope="col">{{ $t('name_en') }}</th>
-          <th scope="col">{{ $t('description') }}</th>
-          <th scope="col">{{ $t('description_en') }}</th>
-          <th scope="col">{{ $t('sub_category') }}</th>
+          <th scope="col">{{ $t('firstname_lastname') }}</th>
+          <th scope="col">{{ $t('username') }}</th>
+          <th scope="col">{{ $t('email') }}</th>
+          <th scope="col">{{ $t('phone') }}</th>
+          <th scope="col">{{ $t('verify') }}</th>
           <th scope="col">{{ $t('actions') }}</th>
         </tr>
       </thead>
@@ -119,16 +121,14 @@ function tooltipText(arr) {
         <tr class="table-light" v-for="(row, index) in rows" :key="index">
           <th>{{ index + 1 }}</th>
           <th scope="row">{{ row.id }}</th>
-          <td>{{ row.name }}</td>
-          <td>{{ row.name_en }}</td>
-          <td>{{ row.description }}</td>
-          <td>{{ row.description_en }}</td>
-          <td class="text-center">
-            <!-- <Tooltip text="123123123"> -->
-            <!-- <template v-slot:content> -->
-            <TableItemsCountBadge :count="row.subCategory?.length" />
-            <!-- </template> -->
-            <!-- </Tooltip> -->
+          <td>{{ `${row.firstname} ${row.lastname}` }}</td>
+          <td>{{ row.username }}</td>
+          <td>{{ row.email }}</td>
+          <td>{{ row.phone }}</td>
+          <td>
+            <BootstrapIconCheckLg v-if="row.verify" class=" position-relative me-4" width="32" height="40"
+              fill="#39a223" />
+            <BootstrapIconXLg v-else class=" position-relative me-4" width="32" height="40" fill="#c52626" />
           </td>
           <td>
             <div class="btn-group dropstart">
@@ -138,13 +138,13 @@ function tooltipText(arr) {
               </button>
               <ul class="dropdown-menu">
                 <li class="dropdown-item" @click="formOpen('update', row.id)" data-bs-toggle="modal"
-                  data-bs-target="#categoryFormModal">
+                  data-bs-target="#userFormModal">
                   {{ $t('update') }}</li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
                 <li class="dropdown-item" @click="formOpen('delete', row.id, row.deleted)" data-bs-toggle="modal"
-                  data-bs-target="#categoryFormModal"> {{ row.deleted ? $t('republish') : $t('delete') }}
+                  data-bs-target="#userFormModal"> {{ row.deleted ? $t('republish') : $t('delete') }}
                 </li>
               </ul>
             </div>
@@ -153,19 +153,19 @@ function tooltipText(arr) {
       </tbody>
     </table>
     <div class="d-flex flex-row justify-content-between">
-      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('category_get') }}</button>
+      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('user_get') }}</button>
       <Pagination :paginate="paginate" @page="getAll" />
     </div>
-    <div class="modal fade" id="categoryFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="categoryFormModalLabel" aria-hidden="true">
+    <div class="modal fade" id="userFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="userFormModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="categoryFormModalLabel">{{ $t('category') }}</h1>
+            <h1 class="modal-title fs-5" id="userFormModalLabel">{{ $t('user') }}</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <CategoryForm @getAll="getAll" :type="formType" @formId:reset="(e) => formId = e" closeBtnStatus
+            <UserForm @getAll="getAll" :type="formType" @formId:reset="(e) => formId = e" closeBtnStatus
               :formId="formId" />
           </div>
         </div>

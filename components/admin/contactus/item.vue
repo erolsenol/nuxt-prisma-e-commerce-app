@@ -8,6 +8,7 @@ export default {
 import { ref, toRef, computed } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, number, string, object } from 'yup';
+import { useI18n } from "vue-i18n"
 
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
@@ -53,20 +54,26 @@ async function get(id) {
 <template>
     <div class="contact-us-item card mt-3 border-1 border-primary">
         <div class="card-body position-relative">
-            <div class="d-flex flex-row align-items-center">
-                <div>
-                    <Icon name="majesticons:chat-2" class="me-2" size="30" />
-                    <strong class="fs-6 me-1">{{ $t('name') }}:</strong> <span class="fs-6 me-5 text-break">
-                        {{ props.form.name }}
-                    </span>
+            <div class="d-flex flex-row align-items-start justify-content-between">
+                <div class="d-flex flex-wrap align-items-center">
+                    <div class="mr-1 mt-1">
+                        <Icon name="majesticons:chat-2" class="me-2" size="30" />
+                        <strong class="fs-6 me-1">{{ $t('name') }}:</strong> <span class="fs-6 me-5 text-break">
+                            {{ props.form.name }}
+                        </span>
+                    </div>
+                    <div class="mr-1 mt-1">
+                        <strong class="fs-6 me-1">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5 text-break">
+                            {{ props.form.surname }}
+                        </span>
+                    </div>
+                    <div class="mr-1 mt-1">
+                        <strong class="fs-6 me-1">{{ $t('phone') }}:</strong> <span class="fs-6 me-5 text-break">
+                            {{ props.form.phone }}
+                        </span>
+                    </div>
                 </div>
-                <strong class="fs-6 me-1">{{ $t('lastname') }}:</strong> <span class="fs-6 me-5 text-break">
-                    {{ props.form.surname }}
-                </span>
-                <strong class="fs-6 me-1">{{ $t('phone') }}:</strong> <span class="fs-6 me-5 text-break">
-                    {{ props.form.phone }}
-                </span>
-                <div class="position-relative right-0  d-flex flex-row justify-content-end">
+                <div class="d-flex flex-row-reverse mr-1 mt-1">
                     <div @click="updateItem({ id: props.form.id, readed: !props.form.readed })">
                         <BootstrapIconEnvelope v-if="!props.form.readed" class="mail-icon position-relative me-4" width="40"
                             height="40" fill="#c96161" />
@@ -81,6 +88,7 @@ async function get(id) {
                     </div>
                 </div>
             </div>
+
             <hr class="my-1" />
             <Icon name="majesticons:mail" class="me-2" size="30" /> <strong class="fs-6">{{ $t('email') }}:</strong> <span
                 class="fs-6 me-5">{{ props.form.email }}</span>

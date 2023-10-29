@@ -8,6 +8,7 @@ export default {
 import { ref, toRef, computed } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, number, string, object } from 'yup';
+import { useI18n } from "vue-i18n"
 
 const { t } = useI18n();
 const { $qs } = useNuxtApp()
@@ -45,7 +46,7 @@ async function getAll(page) {
         paramsSerializer: (params) => $qs.stringify(params, { encode: false })
     };
 
-    const { data } = await useFetch('api/contactus', config)
+    const { data } = await useFetch('/api/contactus', config)
 
     if (data.value.status) {
         console.log("12312312 getAllll");
@@ -83,20 +84,20 @@ async function getAll(page) {
                 </div>
             </div>
 
-            <div class="contact-us-list-filter-container d-flex flex-row collapse">
-                <div class="filter-item">
+            <div class="contact-us-list-filter-container row">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-name" class="form-label">{{ $t('name') }}</label>
                     <input type="text" v-model="filter.name" class="form-control" id="filter-name">
                 </div>
-                <div class="filter-item">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-name-en" class="form-label">{{ $t('lastname') }}</label>
                     <input type="text" v-model="filter.surname" class="form-control" id="filter-name-en">
                 </div>
-                <div class="filter-item">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-description" class="form-label">{{ $t('email') }}</label>
                     <input type="text" v-model="filter.email" class="form-control" id="filter-description">
                 </div>
-                <div class="filter-item">
+                <div class="filter-item col-12 col-md-6 col-lg-3">
                     <label for="filter-description-en" class="form-label">{{ $t('phone') }}</label>
                     <input type="text" v-model="filter.phone" class="form-control" id="filter-description-en">
                 </div>

@@ -7,6 +7,8 @@ export default {
 <script setup>
 import { ref, watch, computed, toRefs, toRef } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { useI18n } from "vue-i18n"
+
 const { locale } = useI18n();
 
 const emit = defineEmits(['value:update'])
@@ -52,7 +54,7 @@ async function get() {
     if (data.value.status) {
         const localName = `name${locale.value !== 'tr' ? `_${locale.value}` : ''}`
         items.value = data.value.data.map(item => ({ text: item[localName], value: item.id }))
-        console.log("items.value", items);
+        
     }
 }
 </script>

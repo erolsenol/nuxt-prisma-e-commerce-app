@@ -1,7 +1,13 @@
 import users from "../../data/users";
-import { bcryptPassword, createJwt } from "../../utils/utils"
+import { bcryptPassword, createJwt, sendMail } from "../../utils/utils"
+
+// import i18n from "~/plugins/i18n";
+
+// console.log('i18n',i18n)
 
 export default defineEventHandler(async (event) => {
+  console.log('event.context.$t', event.context.$t)
+  console.log('event.context', event.context)
   let response = {
     data: null,
     status: false,
@@ -27,6 +33,9 @@ export default defineEventHandler(async (event) => {
   const user = await users.create(body);
 
   if (user?.id) {
+    // await sendMail({ subject: i18n.t('mail.welcome'), text: i18n.t('mail.welcome_text'), toMail: user.email })
+    await sendMail({ subject: "test title", text: "test text", toMail: user.email })
+
     response.data = {
       access_token: createJwt(user),
       user: {

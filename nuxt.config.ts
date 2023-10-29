@@ -1,12 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from "path";
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'url'
+import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default defineNuxtConfig({
-  ssr: true,
-  devtools: { enabled: true },
+  ssr: false,
+  devtools: { enabled: process.env.NODE_ENV == 'development' },
+  build: {
+},
+  nitro: {
+    // baseURL: "http://localhost:80",
+    preset: 'node-server',
+    prerender: {
+      // crawlLinks: true,
+      // failOnError: false
+    }
+  },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
-    "@nuxtjs/i18n",
     "@nuxt/image",
     "@nuxtjs/device",
     "nuxt-icon",
@@ -19,15 +31,52 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "nuxt-bootstrap-icons",
   ],
-  app: {
-    pageTransition: {
-      name: 'fade',
-      mode: 'out-in' // default
+  vite: {
+    resolve: {
+      alias: {
+        'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
+      }
     },
-    layoutTransition: {
-      name: 'slide',
-      mode: 'out-in' // default
+    plugins: [
+      VueI18nVitePlugin({
+        include: [
+          resolve(dirname(fileURLToPath(import.meta.url)), './locales/*.json')
+        ]
+      })
+    ]
+  },
+  app: {
+    head: {
+      titleTemplate: '%s - Buyfast',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'Buyfast Seller Site', content: 'Buyfast Seller Site' }
+      ]
     }
+    // pageTransition: {
+    //   name: 'fade',
+    //   mode: 'out-in' // default
+    // },
+    // layoutTransition: {
+    //   name: 'slide',
+    //   mode: 'out-in' // default
+    // }
+  },
+  routeRules: {
+    // Homepage pre-rendered at build time
+    // '/': { prerender: true },
+    // Product page generated on-demand, revalidates in background
+    // '/products/**': { swr: 3600 },
+    // Blog post generated on-demand once until next deploy
+    '/about/**': { isr: true },
+    '/contact/**': { isr: true },
+    // Admin dashboard renders only on client-side
+    '/admin/**': { ssr: false },
+    // Add cors headers on API routes
+    '/api/**': { cors: true },
+    // Redirects legacy urls
+    // '/old-page': { redirect: '/new-page' }
   },
   components: [
     {
@@ -68,14 +117,15 @@ export default defineNuxtConfig({
       "acceptHMRUpdate",
     ],
   },
-  nitro: {},
   extends: ["nuxt-seo-kit"],
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://example.com",
-      siteName: "Awesome Site",
-      siteDescription: "Welcome to my awesome site!",
-      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+      // siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "www.buyfast.com.tr",
+      MAIL_USER: process.env.MAIL_USER,
+      MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+      siteName: "Buyfast",
+      siteDescription: "Welcome to buy fast!",
+      // GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       language: "tr", // prefer more explicit language codes like `en-AU` over `en`
     },
   },
@@ -98,11 +148,6 @@ export default defineNuxtConfig({
     bottom: true,
     right: true,
     duration: 5000,
-  },
-  i18n: {
-    vueI18n: "./i18n.config.ts", // if you are using custom path, default
-    locales: ["en", "tr"],
-    defaultLocale: "tr",
   },
   image: {
     // Options
