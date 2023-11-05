@@ -9,7 +9,7 @@
     "start": "nux start",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "prisma generate && prisma migrate dev",
+    
     "migrate": "npx prisma migrate dev",
     "migrate reset": "npx prisma migrate reset",
     "deploy": "/opt/cpanel/ea-nodejs10/bin/pm2 start /opt/cpanel/ea-nodejs10/bin/npm --name yourpm2name -- start",
