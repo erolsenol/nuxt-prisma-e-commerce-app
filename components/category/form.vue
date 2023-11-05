@@ -108,7 +108,6 @@ async function save(e, { resetForm }) {
 }
 
 async function get(id) {
-    console.log("qweqweqw");
     const { data } = await useFetch("/api/category/" + id);
     if (!data.value) return
 
