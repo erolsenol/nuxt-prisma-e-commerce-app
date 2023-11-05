@@ -3,11 +3,11 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "build": "./node_modules/.bin/nuxi build -c ./nuxt.config.ts",
+    "build": "nuxt build",
     "build:render": "node_modules/.bin/nuxt build -c ./nuxt.config.ts",
     "build:nitro": "nitro build",
     "dev": "nuxt dev",
-    "start": "./node_modules/.bin/nuxi start -c ./nuxt.config.ts",
+    "start": "nux start",
     "start:render": "node_modules/.bin/nuxt dev -c ./nuxt.config.ts",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
