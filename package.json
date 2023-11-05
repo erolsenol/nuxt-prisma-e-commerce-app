@@ -3,7 +3,7 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "build": "prisma generate && prisma migrate status --schema=./prisma/schema.prisma && nuxt build",
+    "build": "nuxt build",
     "build:nitro": "prisma generate && nitro build",
     "dev": "nuxt dev",
     "start": "nux start",
