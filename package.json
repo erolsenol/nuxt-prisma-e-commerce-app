@@ -3,8 +3,8 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "build": "nuxt build",
-    "build:nitro": "nitro build",
+    "build": "prisma generate && nuxt build",
+    "build:nitro": "prisma generate && nitro build",
     "dev": "nuxt dev",
     "start": "nux start",
     "generate": "nuxt generate",
