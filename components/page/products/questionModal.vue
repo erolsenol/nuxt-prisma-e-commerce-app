@@ -49,7 +49,12 @@ async function send(value) {
                 type: "success",
                 text: t('question_send'),
             });
+            return
     }
+    snackbar.add({
+            type: "error",
+            text: t('api.error.same_error', [t('ask_question')]),
+        });
 }
 
 </script>
