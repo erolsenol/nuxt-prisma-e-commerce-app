@@ -3,7 +3,7 @@
   "version": 2,
   "installCommand": "npm install",
   "buildCommand": "nuxt build",
-  "framework": "nuxt",
+  "framework": "nuxtjs",
   "outputDirectory": ".output",
   "public": true,
   "headers": [
