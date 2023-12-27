@@ -108,6 +108,7 @@ CREATE TABLE `SubCategory` (
 CREATE TABLE `Image` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `path` VARCHAR(255) NOT NULL,
+    `url` VARCHAR(255) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
     `ownerName` VARCHAR(255) NULL,
     `deleted` BOOLEAN NULL DEFAULT false,

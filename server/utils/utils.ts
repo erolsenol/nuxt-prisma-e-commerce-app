@@ -3,6 +3,10 @@ import jwt from "jsonwebtoken";
 import fs from "fs";
 import nodemailer from "nodemailer";
 
+import { AwsS3Client } from "./aws";
+
+const S3Client = new AwsS3Client();
+
 export async function bcryptPassword(pass: string) {
   return await bcrypt.hash(pass, 10);
 }
@@ -38,10 +42,10 @@ interface fileRes {
 
 export async function createFolder(path: string) {
   return new Promise<boolean>((resolve, reject) => {
-    console.log("createFolder",path);
-    const pathArr = path.replaceAll("\\","/").split("/");
+    console.log("createFolder", path);
+    const pathArr = path.replaceAll("\\", "/").split("/");
 
-    console.log("createFolder pathArr",pathArr);
+    console.log("createFolder pathArr", pathArr);
     let strPath = ``;
     for (let index = 1; index < pathArr.length - 1; index++) {
       const pathStr = pathArr[index];
@@ -59,12 +63,11 @@ export async function createFolder(path: string) {
 
 export function fileExists(path: string) {
   return new Promise<Boolean>((resolve, reject) => {
-    fs.access(path, fs.constants.F_OK, function (err: string) {
+    fs.access(path, fs.constants.F_OK, (err) => {
       if (err) {
         return resolve(false);
-      } else {
-        return resolve(true);
       }
+      return resolve(true);
     });
   });
 }
@@ -73,26 +76,29 @@ const baseMail = process.env.MAIL_USER;
 const baseMailPassword = process.env.MAIL_PASSWORD;
 
 export function writeFile(
-  filePath: string,
   name: string,
   data: string,
-  dataType: string = "base64"
 ) {
-  return new Promise<fileRes>((resolve, reject) => {
+  return new Promise<boolean>(async (resolve, reject) => {
     console.log("data", data);
-    console.log("filePath", filePath);
     console.log("name", name);
-    console.log("dataType", dataType);
 
-    fs.writeFile(filePath, data, dataType, function (err: String) {
-      if (err) {
-        console.log(err);
-        return resolve({ success: false, error: "There is a problem" });
-      }
+    const response = await S3Client.uploadImage({ body: data, key: name });
 
-      console.log("The file was saved!");
-      return resolve({ success: true, path: filePath, name: name });
-    });
+    if (response.$metadata.httpStatusCode === 200) {
+      return resolve(true);
+    }
+    return resolve(false);
+
+    // fs.writeFile(filePath, data, dataType, function (err) {
+    //   if (err) {
+    //     console.log(err);
+    //     return resolve({ success: false, error: "There is a problem" });
+    //   }
+
+    //   console.log("The file was saved!");
+    //   return resolve({ success: true, path: filePath, name: name });
+    // });
   });
 }
 

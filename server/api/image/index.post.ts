@@ -41,8 +41,13 @@ export default defineEventHandler(async (event) => {
 
     console.log("image.name1", image.name);
 
-    while (await getImageWhere({ name: image.name })) {
-      image.name = image.name.replace(".", "0.");
+    if (await getImageWhere({ name: image.name })) {
+      const dotIndex = image.name.indexOf(".");
+      if (dotIndex > -1) {
+        image.name.replace(".", `${Date.now()}.`);
+      } else {
+        image.name = `${image.name}${Date.now()}`;
+      }
     }
 
     let filePath = null;
@@ -52,25 +57,21 @@ export default defineEventHandler(async (event) => {
       filePath = `${dir}/public/images/${image.name}`;
     }
 
-    let prefix = "";
+    // let prefix = "";
 
-    while (await fileExists(filePath.replace(".", prefix + "."))) {
-      prefix += "0";
-    }
+    // while (await fileExists(filePath.replace(".", prefix + "."))) {
+    //   prefix += "0";
+    // }
 
-    await createFolder(filePath);
+    // await createFolder(filePath);
 
-    const res = await writeFile(
-      filePath.replace(".", prefix + "."),
-      image.name.replace(".", prefix + "."),
-      data
-    );
+    const res = await writeFile(encodeURIComponent(image.name), data);
 
-    console.log("writeFile res:", res);
-    if (res.success) {
+    console.log("aws s3 response:", res);
+    if (res) {
       const imageData = {
-        path: res.path,
-        name: res.name,
+        url: encodeURIComponent(image.name),
+        name: image.name,
       };
       if (body.ownerName) {
         if (body.ownerId) {

@@ -21,11 +21,16 @@ watch(() => innerValue.value, async (newVal) => {
     emit('value:update', newVal)
 }, { deep: true })
 
-watch(() => props.value, async (newVal) => {
+let props = defineProps({
+    value: Number,
+    categoryId: Number,
+})
+
+watch(() => props?.value, async (newVal) => {
     innerValue.value = newVal
 })
 
-watch(() => props.categoryId, async (newVal) => {
+watch(() => props?.categoryId, async (newVal) => {
     if (newVal < 0) {
         delete filter.categoryId
     } else {
@@ -34,10 +39,7 @@ watch(() => props.categoryId, async (newVal) => {
     get()
 })
 
-let props = defineProps({
-    value: Number,
-    categoryId: Number,
-})
+
 
 onMounted(() => {
     setTimeout(() => {
