@@ -3,8 +3,11 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "module": "Node16",
-    "target": "ES2021",
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ES2022"],
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "target": "ES2022",
     
     "types": [
       "@nuxt/types",

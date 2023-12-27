@@ -7,7 +7,9 @@ import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
 export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: process.env.NODE_ENV == 'development' },
-  build: {
+  build: {},
+  typescript: {
+    "strict": true,
   },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
