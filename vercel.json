@@ -1,8 +1,6 @@
 {
   "name": "nuxt-buyfast",
   "version": 2,
-  "installCommand": "npm install",
-  "buildCommand": "nuxt build",
   "framework": "nuxtjs",
   "outputDirectory": ".output",
   "public": true,
