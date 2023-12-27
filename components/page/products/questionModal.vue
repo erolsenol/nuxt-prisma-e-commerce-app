@@ -8,7 +8,10 @@ export default {
 import { ref, onMounted } from 'vue'
 import { object, string } from 'yup';
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { useI18n } from "vue-i18n"
 
+const { t } = useI18n();
+const snackbar = useSnackbar();
 const storeUser = useUser()
 const props = defineProps({
     productId: Number,
@@ -37,9 +40,15 @@ async function send(value) {
 
     const { data } = await useFetch("/api/question/", config);
 
+    console.log("data.value",data.value);
     if (data.value.status) {
         const closeBtn = document.querySelector('#product-question-close-btn')
         closeBtn.click()
+
+        snackbar.add({
+                type: "success",
+                text: t('question_send'),
+            });
     }
 }
 

@@ -72,18 +72,26 @@ export function fileExists(path: string) {
   });
 }
 
+function base64ToArrayBuffer(base64) {
+  var binaryString = atob(base64);
+  var bytes = new Uint8Array(binaryString.length);
+  for (var i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes.buffer;
+}
+
 const baseMail = process.env.MAIL_USER;
 const baseMailPassword = process.env.MAIL_PASSWORD;
 
-export function writeFile(
-  name: string,
-  data: string,
-) {
+export function writeFile(name: string, data: string) {
   return new Promise<boolean>(async (resolve, reject) => {
-    console.log("data", data);
     console.log("name", name);
 
-    const response = await S3Client.uploadImage({ body: data, key: name });
+    const response = await S3Client.uploadImage({
+      body: base64ToArrayBuffer(data),
+      key: name,
+    });
 
     if (response.$metadata.httpStatusCode === 200) {
       return resolve(true);

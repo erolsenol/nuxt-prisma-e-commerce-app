@@ -122,6 +122,7 @@
   "active": "Aktif",
   "passive": "Pasif",
   "go_to_home_page":"Ana Sayfaya Git",
+  "question_send": "Soru gönderildi",
   "errors": {
     "password_not_match": "Girdiğiniz şifreler uyuşmuyor",
     "password_min_length_8": "Şifreniz en az 8 karakter olmalıdır",

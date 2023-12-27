@@ -25,8 +25,7 @@ async function getAll({ skip = 0, take = 20 }, where = {}) {
       ...where
     },
     include: {
-      subCategory: true,
-      product: true,
+
     },
   });
 
@@ -39,8 +38,7 @@ async function get(id: Number) {
       id,
     },
     include: {
-      subCategory: true,
-      product: true,
+    
     },
   });
   return response;

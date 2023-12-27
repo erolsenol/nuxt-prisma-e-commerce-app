@@ -5,9 +5,10 @@ export default {
 
 </script>
 <script setup>
-
 import { ref, onMounted } from 'vue'
 import { useI18n } from "vue-i18n"
+
+const runtimeConfig = useRuntimeConfig()
 
 const { locale } = useI18n()
 const router = useRouter();
@@ -29,8 +30,10 @@ function openDetail() {
   console.log("props", props);
   console.log("props.name", props.name);
   console.log("props.value", props.value);
+  console.log("router.getRoutes()", router.getRoutes());
   storeApp.setProductDetail({ id: props.id, name: props.name, name_en: props.name_en })
-  router.push({ name: `product-name___${locale.value}`, params: { name: props.name, name_en: props.name_en }, query: { id: props.id } })
+  router.push({ name: `product-name`, params: { name: props.name, name_en: props.name_en }, query: { id: props.id } })
+  // router.push({ name: `product-name___${locale.value}`, params: { name: props.name, name_en: props.name_en }, query: { id: props.id } })
   // router.push({ path: `${locale.value !== 'tr' ? locale.value : ''}/product/${props.name}` });
   // router.push(localeLocation({ path: "/product-" + props.name, params: { id: props.name } }))
 }
@@ -46,8 +49,8 @@ const paginate = ref({ skip: 0, take: 20 })
     <!-- <nuxt-link :to="localePath({ path: '/product/' + props.name, params: { id: props.name } })"> -->
     <nuxt-link @click="openDetail">
       <div class="card shadow dark" style="width: 100%; height: 27rem;">
-        <NuxtImg class="border-bottom border-secondary-subtle" v-if="image" :src="'images/' + image.name"
-          style="height: 15rem;" />
+        <NuxtImg class="border-bottom border-secondary-subtle" v-if="image"
+          :src="`${runtimeConfig.public.AWS_S3_IMAGE_PREFIX}${image.name}`" style="height: 15rem;" />
         <NuxtImg class="border-bottom border-secondary-subtle" v-else :src="'default/no_image.jpeg'"
           style="height: 15rem;" />
         <div class="card-body p-2 overflow-y-auto position-relative scrollbar-light">

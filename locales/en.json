@@ -122,6 +122,7 @@
   "password_hint": "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.",
   "admin_slider_title": "Slider Images",
   "go_to_home_page":"Go To Home Page",
+  "question_send": "Question sent",
   "errors": {
     "password_not_match": "The passwords you entered do not match",
     "password_min_length_8": "Your password must be at least 8 characters",

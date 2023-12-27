@@ -2,7 +2,6 @@
 const { isMobile } = useDevice();
 const { $anime } = useNuxtApp();
 const snackbar = useSnackbar();
-const runtimeConfig = useRuntimeConfig();
 
 import { useForm, Field, Form } from "vee-validate";
 

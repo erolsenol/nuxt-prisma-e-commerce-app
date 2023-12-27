@@ -7,6 +7,7 @@ export default {
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useI18n } from "vue-i18n"
 
+const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n();
@@ -142,7 +143,7 @@ async function getStar() {
         class="col-12 col-md-7 col-lg-6 product-detail-image border border-end-0 border-start-0 p-2 py-3 d-flex align-items-center justify-content-start"
         style=" min-height: 20rem;">
         <template v-if="item.images && item.images.length > 0">
-          <NuxtImg class="rounded-2" :src="'images/' + item.images[0].name" />
+          <NuxtImg class="rounded-2" :src="`${runtimeConfig.public.AWS_S3_IMAGE_PREFIX}${item.images[0].name}`" />
         </template>
         <NuxtImg class="" v-else :src="'default/no_image.jpeg'" />
       </div>

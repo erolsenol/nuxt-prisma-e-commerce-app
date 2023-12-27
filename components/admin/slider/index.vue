@@ -133,10 +133,8 @@ async function save() {
 async function getAll() {
     const { data } = await useFetch("/api/image?ownerName=slider");
 
-    console.log("data.status", data.value.status);
-    console.log("data", data.value.data);
+   
     if (data.value.status) {
-        console.log("12312312312312");
         images.value = data.value.data
     }
 }

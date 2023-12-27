@@ -117,6 +117,7 @@ export default defineNuxtConfig({
       // siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "www.buyfast.com.tr",
       MAIL_USER: process.env.MAIL_USER,
       MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+      AWS_S3_IMAGE_PREFIX: process.env.AWS_S3_IMAGE_PREFIX,
       siteName: "Buyfast",
       siteDescription: "Welcome to buy fast!",
       // GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,

@@ -44,18 +44,19 @@ export default defineEventHandler(async (event) => {
     if (await getImageWhere({ name: image.name })) {
       const dotIndex = image.name.indexOf(".");
       if (dotIndex > -1) {
-        image.name.replace(".", `${Date.now()}.`);
+        image.name = image.name.replace(".", `${Date.now()}.`);
       } else {
         image.name = `${image.name}${Date.now()}`;
       }
     }
+    console.log("new image name", image.name);
 
-    let filePath = null;
-    if (writePath) {
-      filePath = `${dir}/public/images/${writePath}${image.name}`;
-    } else {
-      filePath = `${dir}/public/images/${image.name}`;
-    }
+    // let filePath = null;
+    // if (writePath) {
+    //   filePath = `${dir}/public/images/${writePath}${image.name}`;
+    // } else {
+    //   filePath = `${dir}/public/images/${image.name}`;
+    // }
 
     // let prefix = "";
 
