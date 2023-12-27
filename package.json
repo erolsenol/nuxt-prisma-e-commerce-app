@@ -6,7 +6,7 @@
     "build": "nuxt build",
     "build:nitro": "prisma generate && nitro build",
     "dev": "nuxt dev",
-    "start": "nux start",
+    "start": "nuxt start",
     "postinstall": "npx prisma generate",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
