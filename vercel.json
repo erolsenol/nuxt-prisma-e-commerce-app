@@ -3,14 +3,14 @@
   "version": 2,
   "framework": "nuxtjs",
   "outputDirectory": ".output",
-  "public": true,
+  "public": false,
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "s-maxage=1, stale-while-revalidate=59"
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     }
