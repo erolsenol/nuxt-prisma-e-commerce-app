@@ -104,7 +104,7 @@ async function save(e, { resetForm }) {
         type: "error",
         text: t(`api.error.${data.value.error}`, [t('sub_category')]),
     });
-    return  
+    return
 
 }
 
@@ -114,7 +114,7 @@ async function get(id) {
 
     if (data.value.status) {
         console.log("data.value.data", data.value.data);
-        formData.value = data.value.data
+        formData.value = { ...data.value.data }
     }
 }
 
@@ -161,7 +161,8 @@ async function get(id) {
                 <button type="submit" class="btn px-4"
                     :class="`${props.type == 'delete' ? 'btn-danger' : 'btn-primary'}`">{{ props.type == 'delete' ?
                         formData.deleted ? $t('republish') : $t('delete') : $t('save') }}</button>
-                <button v-if="closeBtnStatus" class="close btn btn-secondary px-4" id="close-modal-sub-category" data-bs-toggle="modal">{{ $t('close') }}</button>
+                <button v-if="closeBtnStatus" class="close btn btn-secondary px-4" id="close-modal-sub-category"
+                    data-bs-toggle="modal">{{ $t('close') }}</button>
             </div>
         </Form>
     </div>

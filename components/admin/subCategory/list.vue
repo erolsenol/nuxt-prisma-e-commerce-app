@@ -56,8 +56,8 @@ async function getAll(page) {
 
   if (data?.value?.status) {
     console.log("Alt Kategori Yüklendi");
-    rows.value = data.value.data
-    paginate = data.value.paginate
+    rows.value = [...data.value.data]
+    paginate = { ...data.value.paginate }
 
     if (rows.value.length == 0) {
       snackbar.add({
@@ -166,7 +166,8 @@ async function getAll(page) {
       </tbody>
     </table>
     <div class="d-flex flex-row justify-content-between">
-      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('sub_category') }} {{ $t('get') }}</button>
+      <button @click="getAll" class="btn btn-primary" v-if="rows.length > 0">{{ $t('sub_category') }} {{ $t('get')
+      }}</button>
       <Pagination v-if="paginate.totalPage > 1" :paginate="paginate" @page="getAll" />
     </div>
 
