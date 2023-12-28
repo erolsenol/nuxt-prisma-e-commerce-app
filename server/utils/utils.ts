@@ -84,10 +84,8 @@ function base64ToArrayBuffer(base64) {
 const baseMail = process.env.MAIL_USER;
 const baseMailPassword = process.env.MAIL_PASSWORD;
 
-export function writeFile(name: string, data: string) {
+export function uploadS3(name: string, data: string) {
   return new Promise<boolean>(async (resolve, reject) => {
-    console.log("name", name);
-
     const response = await S3Client.uploadImage({
       body: base64ToArrayBuffer(data),
       key: name,
@@ -97,16 +95,25 @@ export function writeFile(name: string, data: string) {
       return resolve(true);
     }
     return resolve(false);
+  });
+}
 
-    // fs.writeFile(filePath, data, dataType, function (err) {
-    //   if (err) {
-    //     console.log(err);
-    //     return resolve({ success: false, error: "There is a problem" });
-    //   }
+export function writeFile(
+  path: string,
+  name: string,
+  data: string,
+  dataType: string = "base64"
+) {
+  return new Promise<boolean>(async (resolve, reject) => {
+    fs.writeFile(path, data, dataType, function (err) {
+      if (err) {
+        console.log(err);
+        return resolve({ success: false, error: "There is a problem" });
+      }
 
-    //   console.log("The file was saved!");
-    //   return resolve({ success: true, path: filePath, name: name });
-    // });
+      console.log("The file was saved!");
+      return resolve({ success: true, path, name: name });
+    });
   });
 }
 
@@ -141,6 +148,25 @@ export async function sendMail({ subject = null, text = null, toMail = null }) {
     } catch (error) {
       reject(false);
     }
+  });
+}
+
+export function pathCalc(path: string, imageName: string) {
+  return new Promise<boolean | string>(async (resolve, reject) => {
+    const dir = process.cwd().replaceAll("\\", "/");
+    let filePath = null;
+
+    if (path) {
+      filePath = `${dir}/public/images/${path}${imageName}`;
+    } else {
+      filePath = `${dir}/public/images/${imageName}`;
+    }
+
+    const res = await createFolder(filePath);
+    if (res) {
+      return resolve(filePath);
+    }
+    return resolve(false);
   });
 }
 

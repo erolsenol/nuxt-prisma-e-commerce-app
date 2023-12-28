@@ -3,7 +3,13 @@ import { deleteProduct } from "../../data/products";
 import fs from "fs";
 import path from "path";
 
-import { createFolder, fileExists, writeFile } from "../../utils/utils";
+import {
+  createFolder,
+  fileExists,
+  uploadS3,
+  writeFile,
+  pathCalc,
+} from "../../utils/utils";
 
 const base64Replace = (str: String) =>
   str.replace(/^data:image\/\w+;base64,/, "");
@@ -31,7 +37,7 @@ export default defineEventHandler(async (event) => {
     return response;
   }
 
-  const writePath = body.path || false;
+  const writePath = body.path || "";
 
   for (let index = 0; index < body.images.length; index++) {
     const image = body.images[index];
@@ -51,22 +57,18 @@ export default defineEventHandler(async (event) => {
     }
     console.log("new image name", image.name);
 
-    // let filePath = null;
-    // if (writePath) {
-    //   filePath = `${dir}/public/images/${writePath}${image.name}`;
-    // } else {
-    //   filePath = `${dir}/public/images/${image.name}`;
-    // }
+    let imageSaveStatus = false;
 
-    // let prefix = "";
-
-    // while (await fileExists(filePath.replace(".", prefix + "."))) {
-    //   prefix += "0";
-    // }
-
-    // await createFolder(filePath);
-
-    const res = await writeFile(encodeURIComponent(image.name), data);
+    if (image.storageType === "s3") {
+      imageSaveStatus = await uploadS3(encodeURIComponent(image.name), data);
+    } else if (image.storageType === "local") {
+      const writeCalcPath = await pathCalc(writePath, image.name);
+      if (typeof writeCalcPath !== "boolean") {
+        imageSaveStatus = await writeFile(writeCalcPath, image.name, data);
+      } else {
+        console.log("image write error name:", image.name);
+      }
+    }
 
     console.log("aws s3 response:", res);
     if (res) {
