@@ -11,9 +11,6 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
-  nitro: {
-    preset: "node-server",
-  },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
     "@nuxt/image",
@@ -44,7 +41,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      titleTemplate: "%s - Buyfast",
+      titleTemplate: "Buyfast",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
