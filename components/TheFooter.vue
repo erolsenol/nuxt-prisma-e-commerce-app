@@ -125,7 +125,8 @@ const headerItems = [
                      <template v-if="footerLogo.name">
                         <NuxtImg class="logo" :src="`images/app/${footerLogo.name}`" />
                      </template>
-                     <SpinnerGrow v-else color="secondary" size="1" />
+                     <NuxtImg v-else class="logo" :src="`default/footer.svg`" />
+                     <!-- <SpinnerGrow v-else color="secondary" size="1" /> -->
                   </li>
                   <li class="list-group-item">
                      <Icon name="material-symbols:call-sharp" color="white" size="30" />

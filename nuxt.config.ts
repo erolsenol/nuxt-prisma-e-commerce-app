@@ -1,15 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from "path";
-import { resolve, dirname } from 'node:path'
-import { fileURLToPath } from 'url'
-import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite'
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "url";
+import VueI18nVitePlugin from "@intlify/unplugin-vue-i18n/vite";
 
 export default defineNuxtConfig({
   ssr: false,
-  devtools: { enabled: process.env.NODE_ENV == 'development' },
+  devtools: { enabled: process.env.NODE_ENV == "development" },
   build: {},
   typescript: {
-    "strict": true,
+    strict: true,
+  },
+  nitro: {
+    preset: "node-server",
   },
   modules: [
     //   ['@nuxtjs/eslint-module', { ...eslint }]
@@ -28,26 +31,26 @@ export default defineNuxtConfig({
   vite: {
     resolve: {
       alias: {
-        'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
-      }
+        "vue-i18n": "vue-i18n/dist/vue-i18n.runtime.esm-bundler.js",
+      },
     },
     plugins: [
       VueI18nVitePlugin({
         include: [
-          resolve(dirname(fileURLToPath(import.meta.url)), './locales/*.json')
-        ]
-      })
-    ]
+          resolve(dirname(fileURLToPath(import.meta.url)), "./locales/*.json"),
+        ],
+      }),
+    ],
   },
   app: {
     head: {
-      titleTemplate: '%s - Buyfast',
+      titleTemplate: "%s - Buyfast",
       meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'Buyfast Seller Site', content: 'Buyfast Seller Site' }
-      ]
-    }
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "Buyfast Seller Site", content: "Buyfast Seller Site" },
+      ],
+    },
     // pageTransition: {
     //   name: 'fade',
     //   mode: 'out-in' // default
@@ -63,12 +66,12 @@ export default defineNuxtConfig({
     // Product page generated on-demand, revalidates in background
     // '/products/**': { swr: 3600 },
     // Blog post generated on-demand once until next deploy
-    '/about/**': { isr: true },
-    '/contact/**': { isr: true },
+    "/about/**": { isr: true },
+    "/contact/**": { isr: true },
     // Admin dashboard renders only on client-side
-    '/admin/**': { ssr: false },
+    "/admin/**": { ssr: false },
     // Add cors headers on API routes
-    '/api/**': { cors: true },
+    "/api/**": { cors: true },
     // Redirects legacy urls
     // '/old-page': { redirect: '/new-page' }
   },

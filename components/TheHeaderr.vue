@@ -161,10 +161,11 @@ let loginFormType = ref("login")
          </div>
          <div class="col-lg-1 col-md-2 mb-2 mb-md-0">
             <a @click="pageChange('index')" class="d-inline-flex link-body-emphasis text-decoration-none">
-               <template v-if="headerLogo.name">
+               <template v-if="headerLogo?.name">
                   <NuxtImg class="logo" :src="`images/app/${headerLogo.name}`" />
                </template>
-               <SpinnerGrow v-else color="secondary" size="1" />
+               <NuxtImg v-else class="logo" :src="`default/header.svg`" />
+               <!-- <SpinnerGrow v-else color="secondary" size="1" /> -->
             </a>
          </div>
 
