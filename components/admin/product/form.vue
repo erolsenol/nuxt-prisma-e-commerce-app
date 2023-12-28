@@ -12,6 +12,8 @@ import { useI18n } from "vue-i18n"
 
 const emit = defineEmits(['update', 'get'])
 
+const imageStorageTypeCalc = useImageStorageTypeCalc()
+
 const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
@@ -116,13 +118,13 @@ async function save(e, { resetForm }) {
         });
         return
     } else {
-
         const { imageData = data } = await useFetch("/api/image", {
             method: "post",
             body: {
                 ownerName: "productId",
                 ownerId: data.value.data.id,
-                images: images.value
+                images: images.value,
+                saveS3: runtimeConfig.public.SAVE_IMAGE_S3
             },
         }).catch((error) => {
             console.error(error);

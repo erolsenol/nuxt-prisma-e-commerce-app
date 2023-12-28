@@ -71,7 +71,8 @@ async function save(event) {
       body: {
         ownerName: "productId",
         ownerId: data.value.data.id,
-        images: imageData
+        images: imageData,
+        saveS3: runtimeConfig.public.SAVE_IMAGE_S3
       },
     }).catch((error) => {
       console.error(error);

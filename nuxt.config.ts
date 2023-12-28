@@ -118,6 +118,7 @@ export default defineNuxtConfig({
       MAIL_USER: process.env.MAIL_USER,
       MAIL_PASSWORD: process.env.MAIL_PASSWORD,
       AWS_S3_IMAGE_PREFIX: process.env.AWS_S3_IMAGE_PREFIX,
+      SAVE_IMAGE_S3: process.env.SAVE_IMAGE_S3,
       siteName: "Buyfast",
       siteDescription: "Welcome to buy fast!",
       // GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,

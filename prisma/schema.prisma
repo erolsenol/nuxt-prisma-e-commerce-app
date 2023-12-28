@@ -127,6 +127,7 @@ model Image {
   url           String       @db.VarChar(255)
   name          String       @unique @db.VarChar(255)
   ownerName     String?      @db.VarChar(255)
+  storageType   String?
   deleted       Boolean?     @default(false)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
