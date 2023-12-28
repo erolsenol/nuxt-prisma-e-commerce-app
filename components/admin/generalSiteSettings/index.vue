@@ -15,6 +15,7 @@ const emit = defineEmits(['update', 'get'])
 const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
+const imageStorageTypeCalc = useImageStorageTypeCalc()
 
 const schema = object().shape({
     mail: string().email().required(),
@@ -75,6 +76,7 @@ async function onFileChange(e, type) {
         // image.value[type] = imageData
         const body = {
             path: "app/",
+            storageType: imageStorageTypeCalc,
             images: [{
                 name: `${type}.${imageData.name.split(".")[1]}`,
                 ownerName: type,

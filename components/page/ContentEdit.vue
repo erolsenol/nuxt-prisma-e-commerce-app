@@ -9,6 +9,10 @@ import { ref, reactive } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { object, string } from 'yup';
 
+const { $helper } = useNuxtApp()
+const snackbar = useSnackbar();
+const imageStorageTypeCalc = useImageStorageTypeCalc()
+
 const schema = object().shape({
     title: string().required(),
     content: string().required(),
@@ -29,9 +33,6 @@ const form = ref({
     title: null,
     content: null,
 })
-const { $helper } = useNuxtApp()
-
-const snackbar = useSnackbar();
 
 function upload() {
     const imgInput = document.querySelector(`#img-input-${lang}-${index}`)
@@ -80,6 +81,7 @@ async function save(values, { resetForm }) {
             path: imagePath,
             ownerName: "pageContentId",
             ownerId: data.value.data.id,
+            storageType: imageStorageTypeCalc,
             images: [{
                 name: imageData.value.name,
                 image: imageData.value.data

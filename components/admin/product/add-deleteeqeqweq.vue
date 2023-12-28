@@ -9,10 +9,7 @@ import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
 
-const runtimeConfig = useRuntimeConfig()
 const imageStorageTypeCalc = useImageStorageTypeCalc()
-console.log("@@@@@@@@@@@@@@@");
-console.log("112312312312", imageStorageTypeCalc("s3"))
 
 const { $helper } = useNuxtApp();
 
@@ -107,6 +104,7 @@ async function save() {
         ownerName: "productId",
         ownerId: data.value.data.id,
         images: imageData,
+        storageType: imageStorageTypeCalc,
       },
     }).catch((error) => {
       console.error(error);

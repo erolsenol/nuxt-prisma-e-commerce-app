@@ -11,6 +11,7 @@ const emit = defineEmits(['update'])
 
 const snackbar = useSnackbar();
 const { $qs } = useNuxtApp()
+const imageStorageTypeCalc = useImageStorageTypeCalc()
 
 let { type, form } = defineProps({
     type: String,
@@ -86,7 +87,8 @@ async function save(event) {
             body: {
                 ownerName: "productId",
                 ownerId: data.value.data.id,
-                images: imageData
+                images: imageData,
+                storageType: imageStorageTypeCalc,
             },
         }).catch((error) => {
             console.error(error);

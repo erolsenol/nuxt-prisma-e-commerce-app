@@ -15,6 +15,7 @@ const emit = defineEmits(['getAll', 'formId:reset'])
 const { t } = useI18n();
 const snackbar = useSnackbar();
 const { $qs, $helper } = useNuxtApp()
+const imageStorageTypeCalc = useImageStorageTypeCalc()
 
 const schema = object().shape({
     name: string().required(),
@@ -95,7 +96,8 @@ async function save() {
         body: {
             ownerName: "slider",
             path: "slider/",
-            images: [...uploadImages.value]
+            images: [...uploadImages.value],
+            storageType: imageStorageTypeCalc
         },
     }).catch((error) => {
         console.error(error);

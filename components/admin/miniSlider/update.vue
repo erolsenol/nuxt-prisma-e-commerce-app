@@ -9,6 +9,7 @@ import { ref } from "vue";
 import { Field, Form, ErrorMessage } from 'vee-validate';
 
 const snackbar = useSnackbar();
+const imageStorageTypeCalc = useImageStorageTypeCalc()
 
 const initialProduct = () => ({
   name: null,
@@ -71,7 +72,8 @@ async function save(event) {
       body: {
         ownerName: "productId",
         ownerId: data.value.data.id,
-        images: imageData
+        images: imageData,
+        storageType: imageStorageTypeCalc,
       },
     }).catch((error) => {
       console.error(error);

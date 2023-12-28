@@ -10,6 +10,8 @@ import { Field, Form, ErrorMessage } from 'vee-validate';
 import { array, string, object } from 'yup';
 
 const { $helper } = useNuxtApp();
+const snackbar = useSnackbar();
+const imageStorageTypeCalc = useImageStorageTypeCalc()
 
 const schema = object().shape({
   name: string().required(),
@@ -17,8 +19,6 @@ const schema = object().shape({
   content: string().required(),
   image: array().min(1).required(),
 });
-
-const snackbar = useSnackbar();
 
 const initialProduct = () => ({
   name: null,
@@ -110,7 +110,8 @@ async function save() {
       body: {
         ownerName: "productId",
         ownerId: data.value.data.id,
-        images: imageData
+        images: imageData,
+        storageType: imageStorageTypeCalc,
       },
     }).catch((error) => {
       console.error(error);

@@ -13,6 +13,7 @@ const { t } = useI18n();
 const { $qs, $helper } = useNuxtApp()
 const { event } = useEventBus()
 const snackbar = useSnackbar();
+const imageStorageTypeCalc = useImageStorageTypeCalc()
 
 const schema = object().shape({
     username: string().required().max(255),
@@ -80,7 +81,8 @@ async function send(e, { resetForm }) {
                 ownerName: "commentId",
                 ownerId: data.value.data.id,
                 path: "comment/",
-                images: [...images.value]
+                images: [...images.value],
+                storageType: imageStorageTypeCalc,
             },
         }).catch((error) => {
             console.error(error);
